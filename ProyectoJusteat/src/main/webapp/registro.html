@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/script.js" defer></script>
+  </head>
+
+  <body class="page-registro">
+    <header class="top">
+      <a class="back" href="index.html" aria-label="Volver">&lt;</a>
+
+      <a class="brand" href="index.html" aria-label="Inicio">
+        <img src="images/logo_justeat.svg" alt="Logo Just Eat" width="30" height="30" />
+        <strong>JUST EAT</strong>
+      </a>
+    </header>
+
+    <main class="wrap">
+      <section class="card auth-card" aria-label="Registro de usuario">
+        <h1>Completar cuenta</h1>
+
+        <form id="userForm" action="#" method="post" novalidate>
+          <div class="field">
+            <label for="u_name">Nombre</label>
+            <input id="u_name" name="u_name" type="text" autocomplete="given-name" placeholder="Nombre" required />
+          </div>
+
+          <div class="field">
+            <label for="u_surname">Apellidos</label>
+            <input
+              id="u_surname"
+              name="u_surname"
+              type="text"
+              autocomplete="family-name"
+              placeholder="Apellidos"
+              required />
+          </div>
+
+          <div class="field">
+            <label for="u_email">Correo electrónico</label>
+            <input
+              id="u_email"
+              name="u_email"
+              type="email"
+              autocomplete="email"
+              placeholder="Correo electrónico"
+              required />
+          </div>
+
+          <div class="field">
+            <label for="u_phone">Teléfono</label>
+            <input id="u_phone" name="u_phone" type="tel" required placeholder="9 dígitos" />
+          </div>
+
+          <div class="field">
+            <label for="u_pass">Contraseña</label>
+            <div class="pw">
+              <input
+                id="u_pass"
+                name="u_pass"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Contraseña"
+                required />
+              <!-- comentado de momento <button type="button" class="eye" aria-label="Mostrar u ocultar contraseña">👁</button> -->
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="u_pass2">Confirmar contraseña</label>
+            <div class="pw">
+              <input
+                id="u_pass2"
+                name="u_pass2"
+                type="password"
+                placeholder="Repite la contraseña"
+                autocomplete="new-password"
+                required />
+              <!-- comentado de momento <button type="button" class="eye" aria-label="Mostrar u ocultar contraseña">👁</button> -->
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="terms">
+              <input id="u_terms" name="u_terms" type="checkbox" required />
+              <label for="u_terms">Acepto los términos</label>
+            </div>
+          </div>
+
+          <button class="boton" type="submit">Completar</button>
+
+          <p id="userMsg" class="msg" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
