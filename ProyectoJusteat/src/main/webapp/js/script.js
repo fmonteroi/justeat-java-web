@@ -26,7 +26,7 @@
       bike: "No",
       priceMin: 10,
       priceMax: 20,
-      img: "../images/restaurantes/meson_pestorejo.webp",
+      img: "images/restaurantes/meson_pestorejo.webp",
       rating: 4.7,
       reviews: "500+",
       deliveryFee: 2,
@@ -43,7 +43,7 @@
       bike: "Si",
       priceMin: 8,
       priceMax: 18,
-      img: "../images/restaurantes/tapas_foro.webp",
+      img: "images/restaurantes/tapas_foro.webp",
       rating: 4.6,
       reviews: "120+",
       deliveryFee: 1.2,
@@ -60,7 +60,7 @@
       bike: "Si",
       priceMin: 1,
       priceMax: 10,
-      img: "../images/restaurantes/cume.jpeg",
+      img: "images/restaurantes/cume.jpeg",
       rating: 5.0,
       reviews: "5000+",
       deliveryFee: 1,
@@ -77,7 +77,7 @@
       bike: "No",
       priceMin: 12,
       priceMax: 25,
-      img: "../images/restaurantes/plaza_caceres.jpg",
+      img: "images/restaurantes/plaza_caceres.jpg",
       rating: 3.2,
       reviews: "67+",
       deliveryFee: 1,
@@ -94,7 +94,7 @@
       bike: "Si",
       priceMin: 9,
       priceMax: 19,
-      img: "../images/restaurantes/taco_norte.webp",
+      img: "images/restaurantes/taco_norte.webp",
       rating: 3.3,
       reviews: "33+",
       deliveryFee: 1,
@@ -958,7 +958,7 @@
       // Imagen
       var img = document.createElement("img");
       img.className = "r-img";
-      img.src = rr.img || "../images/placeholder.png";
+      img.src = rr.img || "/images/placeholder.png";
       img.alt = "Restaurante";
 
       // Cuerpo de texto
