@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Busqueda</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
+  </head>
+  <body class="page-busqueda">
+    <header class="top">
+      <a class="back" href="LoginServlet.do" aria-label="Volver">&lt;</a>
+
+      <a class="brand" href="LoginServlet.do" aria-label="Inicio">
+        <img src="${pageContext.request.contextPath}/images/logo_justeat.svg" alt="Logo Just Eat" width="30" height="30" />
+        <strong>JUST EAT</strong>
+      </a>
+
+      <div class="top-right top-right-all">
+        <nav class="top-nav" aria-label="Navegacion principal">
+          <a href="#">Pedidos de empresa</a>
+          <a href="#">Trabaja como repartidor</a>
+          <a href="#">Registra tu negocio</a>
+        </nav>
+
+        <a class="top-userlink" href="LoginServlet.do">
+          <span aria-hidden="true">U</span>
+          <span>Inicia sesion</span>
+        </a>
+
+        <span class="flag" aria-hidden="true">ES</span>
+        <button class="menu" type="button" aria-label="Menu">=</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Busqueda por direccion">
+        <div class="hero-grid">
+          <div class="hero-left">
+            <div class="hero-box">
+              <h1>Pide comida y mucho mas</h1>
+              <p class="muted">Restaurantes y tiendas de alimentacion que realizan entregas cerca de ti</p>
+
+              <form class="search" action="ListRestaurantServlet.do" method="get">
+                <input
+                  name="direccion"
+                  type="text"
+                  placeholder="Calle Santa Eulalia 2, 06800 Merida"
+                  list="direccion-list"
+                  autocomplete="address-line1"
+                  required />
+                <button class="boton" type="submit">Buscar</button>
+                <datalist id="direccion-list">
+                  <option value="Plaza de Espana, 20, 06800 Merida, Espana"></option>
+                  <option value="Avenida Reina Sofia, 12, 06800 Merida, Espana"></option>
+                  <option value="Calle Santa Eulalia, 5, 06800 Merida, Espana"></option>
+                  <option value="Avenida de la Universidad, s/n, 10071 Caceres, Espana"></option>
+                  <option value="Calle Pintores, 18, 10003 Caceres, Espana"></option>
+                  <option value="Plaza Mayor, 1, 10003 Caceres, Espana"></option>
+                  <option value="Calle Mayor, 45, 06002 Badajoz, Espana"></option>
+                  <option value="Avenida de Europa, 7, 06004 Badajoz, Espana"></option>
+                  <option value="Plaza Alta, 3, 06001 Badajoz, Espana"></option>
+                </datalist>
+              </form>
+
+              <div class="hero-cats">
+                <h2>Categorias populares</h2>
+                <p class="muted">
+                  Explora los tipos de cocina mas populares y encuentra tus tiendas y restaurantes favoritos.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right" aria-hidden="true">
+            <img class="hero-right-img" src="${pageContext.request.contextPath}/images/logo_busqueda.png" alt="" />
+          </div>
+        </div>
+      </section>
+      
+      <section class="container" aria-label="Categorias populares">
+        <h2>Categorias populares</h2>
+        <div class="cats">
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/destacados.webp" alt="" /><span>Destacados</span></a>
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/tradicional.webp" alt="" /><span>Tradicional</span></a>
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/tapas.webp" alt="" /><span>Tapas</span></a>
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/carnes.png" alt="" /><span>Carnes</span></a>
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/italiana.webp" alt="" /><span>Italiana</span></a>
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/mexicana.webp" alt="" /><span>Mexicana</span></a>
+          <a href="#"><img src="${pageContext.request.contextPath}/images/categorias/china.png" alt="" /><span>China</span></a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

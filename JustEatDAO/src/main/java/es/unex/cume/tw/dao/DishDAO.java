@@ -88,4 +88,6 @@ public interface DishDAO {
 	 */
 	
 	public boolean delete(long id);
+	
+	public List<Dish> getAllByRestaurant(long idr);
 }

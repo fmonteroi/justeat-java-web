@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Listado</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="../js/script.js" defer></script>
+  </head>
+
+  <body class="page-listado">
+    <header class="top top-listado">
+      <a class="back" href="busqueda.html" aria-label="Volver">&lt;</a>
+
+      <a class="brand" href="index.html">
+        <img src="../images/logo_justeat.svg" alt="Logo Just Eat" width="30" height="30" />
+        <strong>JUST EAT</strong>
+      </a>
+
+      <div class="top-mid">
+        <div class="pill addr" id="addrPill">
+          <span aria-hidden="true">📍</span>
+          <span id="addrText">Calle Santa Eulalia 2, 06800 Mérida</span>
+        </div>
+
+        <nav class="pill tabs" aria-label="Tipo de pedido">
+          <a class="is-active" href="#">Entrega</a>
+          <a href="#">Recogida</a>
+        </nav>
+      </div>
+
+      <div class="top-right">
+        <span class="flag" aria-hidden="true">🇪🇸</span>
+        <button class="menu" type="button" aria-label="Menú">☰</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="layout">
+        <aside class="filters">
+          <p class="f-title">
+            <strong><span class="countText">0</span> establecimientos</strong>
+          </p>
+
+          <form class="stack" action="#" method="get">
+            <label class="toggle">
+              <span>Abiertos ahora</span>
+              <input type="checkbox" name="abiertos" />
+              <i aria-hidden="true"></i>
+            </label>
+
+            <label class="toggle">
+              <span>Nuevo</span>
+              <input type="checkbox" name="nuevo" />
+              <i aria-hidden="true"></i>
+            </label>
+
+            <label class="toggle">
+              <span>Gastos de entrega gratis</span>
+              <input type="checkbox" name="envio_gratis" />
+              <i aria-hidden="true"></i>
+            </label>
+
+            <fieldset>
+              <legend>Importe mínimo del pedido</legend>
+              <label><input type="radio" name="min" value="all" checked /> Mostrar todo (9)</label>
+              <label><input type="radio" name="min" value="10" /> 10,00 € o menos (9)</label>
+              <label><input type="radio" name="min" value="15" /> 15,00 € o menos (9)</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Puntuación</legend>
+              <div class="stars">☆☆☆☆☆</div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Ofertas y ahorros</legend>
+              <label><input type="checkbox" name="filtros[]" value="ofertas" /> Ofertas (0)</label>
+              <label><input type="checkbox" name="filtros[]" value="sellos" /> Tarjeta de sellos (6)</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Dieta</legend>
+              <label><input type="checkbox" name="filtros[]" value="halal" disabled /> Halal (0)</label>
+            </fieldset>
+          </form>
+        </aside>
+
+        <section class="results">
+          <header class="results-top">
+            <form class="searchbar" action="listado.html" method="get">
+              <span aria-hidden="true">🔍</span>
+              <input type="search" name="q" placeholder="¿Buscas restaurantes?" />
+            </form>
+
+            <label class="orderby">
+              <span>Ordenar por</span>
+              <select name="orden">
+                <option selected>Reseñas</option>
+                <option>Tiempo de entrega</option>
+                <option>Precio</option>
+              </select>
+            </label>
+
+            <button class="sliders" type="button" aria-label="Filtros rápidos">🎚️</button>
+          </header>
+
+          <nav class="catbar" aria-label="Categorías">
+            <a class="cat is-selected" href="#">
+              <img src="../images/categorias/destacados.webp" alt="" />
+              <span>Destacados</span>
+            </a>
+
+            <a class="cat" href="#"><img src="../images/categorias/tradicional.webp" alt="Categoría tradicional" /><span>Tradicional</span></a>
+            <a class="cat" href="#"><img src="../images/categorias/tapas.webp" alt="Categoria tapas"/><span>Tapas</span></a>
+            <a class="cat" href="#"><img src="../images/categorias/carnes.png" alt="Categoría carnes" /><span>Carnes</span></a>
+            <a class="cat" href="#"><img src="../images/categorias/italiana.webp" alt="Categoría italiana" /><span>Italiana</span></a>
+            <a class="cat" href="#"><img src="../images/categorias/mexicana.webp" alt="Categoría mexicana" /><span>Mexicana</span></a>
+            <a class="cat" href="#"><img src="../images/categorias/china.png" alt="Categoría china" /><span>China</span></a>
+            <a class="cat" href="#"><img src="../images/turca.webp" alt="" /><span>Turca</span></a>
+
+            <a class="showall" href="#">Show all</a>
+          </nav>
+
+          <div class="match">
+            <p><strong><span class="countText">0</span> establecimientos</strong> coinciden con <strong>"Destacados"</strong></p>
+            <a class="btn-link" href="#">Elimina este filtro</a>
+          </div>
+
+          <section class="cards" id="cards">
+            <!-- Se deja comentado ya que lo rellena el js
+            <article class="r-card">
+
+              <a class="r-card-link" href="detalles_cume.html" aria-label="Ver detalles de Cafetería del CUMe"></a>
+              <img class="r-img" src="../images/cume.jpeg" alt="Restaurante" />
+              <div class="r-body">
+                <h3>Cafetería del CUMe</h3>
+                <p class="r-meta">★ 5 (5000+) · Casera</p>
+                <p class="r-meta">🛵 Entrega gratis · ⏱ 10–20 min.</p>
+              </div>
+            </article>
+            
+            <article class="r-card">
+              <a class="r-card-link" href="detalles_cume.html" aria-label="Ver detalles de The Sushi Merida"></a>
+              <img class="r-img" src="../images/the_sushi_merida.webp" alt="Restaurante" />
+              <div class="r-body">
+                <h3>The Sushi Merida</h3>
+                <p class="r-meta">★ 4,6 (880+) · Japonesa</p>
+                <p class="r-meta">🛵 1 € Entrega · ⏱ 10–20 min.</p>
+              </div>
+            </article>
+
+            <article class="r-card">
+              <a class="r-card-link" href="detalles_cume.html" aria-label="Ver detalles de Asador de Pollos Koki"></a>
+              <img class="r-img" src="../images/pollos_koki.webp" alt="Restaurante" />
+              <div class="r-body">
+                <h3>Asador de Pollos Koki</h3>
+                <p class="r-meta">★ 4,6 (560+) · Pollo</p>
+                <p class="r-meta">🛵 1,5 € Entrega · ⏱ 20–35 min.</p>
+              </div>
+            </article>
+
+            <article class="r-card">
+              <a class="r-card-link" href="detalles_cume.html" aria-label="Ver detalles de Aguacate Mexican"></a>
+              <img class="r-img" src="../images/aguacate_mexican.webp" alt="Restaurante" />
+              <div class="r-body">
+                <h3>Aguacate Mexican And Caribbean Food</h3>
+                <p class="r-meta">★ 4,8 (81) · Mexicana, Venezolana</p>
+                <p class="r-meta">🛵 3,49 € Entrega · ⏱ 25–40 min.</p>
+              </div>
+            </article>
+            -->
+          </section>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

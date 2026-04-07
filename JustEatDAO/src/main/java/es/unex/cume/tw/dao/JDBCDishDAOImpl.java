@@ -216,11 +216,42 @@ public class JDBCDishDAOImpl implements DishDAO {
 		}
 		return done;
 	}
+	
+	@Override
+	public List<Dish> getAllByRestaurant(long idr) {
+
+	    if (conn == null) return null;
+
+	    ArrayList<Dish> dishes = new ArrayList<Dish>();
+	    try {
+	        Statement stmt = conn.createStatement();
+	        ResultSet rs = stmt.executeQuery("SELECT * FROM Dishes WHERE idr = " + idr);
+
+	        while (rs.next()) {
+	            Dish dish = new Dish();
+	            dish.setId(rs.getInt("id"));
+	            dish.setName(rs.getString("name"));
+	            dish.setPrice(rs.getInt("price"));
+	            dish.setDescription(rs.getString("description"));
+	            dish.setIdr(rs.getInt("idr"));
+
+	            dishes.add(dish);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return dishes;
+	}
+
 
 	@Override
 	public void setConnection(Connection conn) {
 		this.conn = conn;
 	}
+	
+	
 
 	
 }

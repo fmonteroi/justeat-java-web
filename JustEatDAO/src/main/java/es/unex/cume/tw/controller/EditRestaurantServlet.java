@@ -42,7 +42,13 @@ public class EditRestaurantServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("LoginServlet.do");
+            return;
+        }
+        
         User user = (User) session.getAttribute("user");
         try {
             Connection conn = (Connection) getServletContext().getAttribute("dbConn");
@@ -104,8 +110,21 @@ public class EditRestaurantServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
+        // PREGUNTAR POR ESTO
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("LoginServlet.do");
+            return;
+        }
+        
         User user = (User) session.getAttribute("user");
         Restaurant restaurant = (Restaurant) session.getAttribute("restaurant");
+        
+        // PREGUNTAR POR ESTO
+        if (restaurant == null) {
+            response.sendRedirect("ListRestaurantServlet.do");
+            return;
+        }
 
         restaurant.setName(request.getParameter("restaurant-name"));
         restaurant.setAddress(request.getParameter("restaurant-address"));
