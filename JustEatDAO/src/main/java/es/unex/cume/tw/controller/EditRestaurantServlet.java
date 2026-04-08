@@ -2,6 +2,7 @@ package es.unex.cume.tw.controller;
 
 import es.unex.cume.tw.dao.*;
 import es.unex.cume.tw.model.Category;
+import es.unex.cume.tw.model.Dish;
 import es.unex.cume.tw.model.Restaurant;
 import es.unex.cume.tw.model.RestaurantCategories;
 import es.unex.cume.tw.model.User;
@@ -60,11 +61,16 @@ public class EditRestaurantServlet extends HttpServlet {
 
             RestaurantCategoriesDAO restaurantsCategoriesDAO = new JDBCRestaurantCategoriesDAOImpl();
             restaurantsCategoriesDAO.setConnection(conn);
+            
+            DishDAO dishDao = new JDBCDishDAOImpl();
+            dishDao.setConnection(conn);
 
             logger.info(request.getParameter("id"));
 
             long rid = Long.parseLong(request.getParameter("id"));
             Restaurant restaurant = restaurantDao.get(rid);
+            
+            List<Dish> dishes = dishDao.getAllByRestaurant(rid);
 
             List<RestaurantCategories> restaurantCategories = restaurantsCategoriesDAO.getAll();
 
@@ -92,6 +98,8 @@ public class EditRestaurantServlet extends HttpServlet {
             if (restaurant != null && restaurant.getIdu() == user.getId()) {
                 session.setAttribute("restaurant", restaurant);
                 session.setAttribute("categories", categoriesChecked);
+                request.setAttribute("dishes", dishes);
+                
                 RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/restaurant_edit.jsp");
                 view.forward(request, response);
             } else {

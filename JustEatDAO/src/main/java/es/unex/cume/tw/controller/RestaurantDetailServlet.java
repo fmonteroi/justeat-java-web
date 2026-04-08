@@ -10,13 +10,16 @@ import es.unex.cume.tw.dao.JDBCRestaurantDAOImpl;
 import es.unex.cume.tw.dao.JDBCUserDAOImpl;
 import es.unex.cume.tw.dao.UserDAO;
 import es.unex.cume.tw.model.Category;
+import es.unex.cume.tw.model.Dish;
 import es.unex.cume.tw.model.Restaurant;
 import es.unex.cume.tw.model.RestaurantCategories;
 import es.unex.cume.tw.model.User;
 import es.unex.cume.tw.dao.RestaurantDAO;
 import es.unex.cume.tw.dao.RestaurantCategoriesDAO;
 import es.unex.cume.tw.dao.CategoryDAO;
+import es.unex.cume.tw.dao.DishDAO;
 import es.unex.cume.tw.dao.JDBCCategoryDAOImpl;
+import es.unex.cume.tw.dao.JDBCDishDAOImpl;
 import es.unex.cume.tw.dao.JDBCRestaurantCategoriesDAOImpl;
 
 import java.io.IOException;
@@ -58,6 +61,9 @@ public class RestaurantDetailServlet extends HttpServlet {
 
 		CategoryDAO categoryDao = new JDBCCategoryDAOImpl();
 		categoryDao.setConnection(conn);
+		
+		DishDAO dishDao = new JDBCDishDAOImpl();
+		dishDao.setConnection(conn);
 
 		Restaurant restaurant = null;
 		long rid = 0;
@@ -87,10 +93,14 @@ public class RestaurantDetailServlet extends HttpServlet {
 				categories.add(category);
 			}
 		}
+		
+		List<Dish> dishes = dishDao.getAllByRestaurant(rid);
+		
 
 		request.setAttribute("restaurant", restaurant);
 		request.setAttribute("owner", owner);
 		request.setAttribute("categories", categories);
+		request.setAttribute("dishes", dishes);
 		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/restaurant_detail.jsp");
 		view.forward(request, response);

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
   </head>
 
-  <body class="page-registro">
+  <body class="page-editar">
     <header class="top">
       <a class="back" href="ListRestaurantServlet.do" aria-label="Volver">&lt;</a>
 
@@ -21,97 +21,153 @@
           height="30" />
         <strong>JUST EAT</strong>
       </a>
+
+      <div class="top-right top-right-all">
+        <nav class="top-nav" aria-label="Navegacion principal">
+          <a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos de empresa</span></a>
+          <a href="#"><span class="top-nav-ico" aria-hidden="true">&#128692;</span><span>Trabaja como repartidor</span></a>
+          <a href="#"><span class="top-nav-ico" aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+        </nav>
+
+        <a class="top-userlink" href="EditUserServlet.do">
+          <span aria-hidden="true">&#128100;</span>
+          <span>${sessionScope.user.name} ${sessionScope.user.surname}</span>
+        </a>
+
+        <span class="flag" aria-hidden="true">ES</span>
+        <button class="menu" type="button" aria-label="Menu">=</button>
+      </div>
     </header>
 
-    <main class="wrap">
-      <section class="card auth-card" aria-label="Editar perfil">
-        <h1>Mi perfil</h1>
+    <main class="container" role="main">
+      <div class="edit-header">
+        <a class="edit-back" href="ListRestaurantServlet.do" aria-label="Volver">&larr; Volver</a>
+      </div>
 
-        <div class="messages" aria-live="polite">
-          <c:if test="${not empty messages}">
-            <p class="msg msg--error">${messages}</p>
-          </c:if>
+      <div class="edit-layout">
+        <aside class="edit-side" aria-label="Menu lateral">
+          <nav class="edit-sidecard" aria-label="Secciones privadas">
+            <ul class="edit-sidemenu">
+              <li>
+                <a class="edit-sidelink is-active" href="EditUserServlet.do">
+                  <span class="edit-sidelink-label">Mi perfil</span>
+                </a>
+              </li>
+              <li>
+                <a class="edit-sidelink" href="ListRestaurantServlet.do">
+                  <span class="edit-sidelink-label">Mis restaurantes</span>
+                </a>
+              </li>
+              <li>
+                <a class="edit-sidelink" href="CreateRestaurantServlet.do">
+                  <span class="edit-sidelink-label">Añadir restaurante</span>
+                </a>
+              </li>
+              <li>
+                <a class="edit-sidelink" href="LogoutServlet.do">
+                  <span class="edit-sidelink-label">Salir</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
 
-          <c:if test="${not empty messagesOk}">
-            <p class="msg msg--ok">${messagesOk}</p>
-          </c:if>
-        </div>
+          <form action="EditUserServlet.do" method="post" novalidate>
+            <input type="hidden" name="action" value="delete" />
+            <button class="btn btn-danger" type="submit">Eliminar cuenta</button>
+          </form>
+        </aside>
 
-        <form id="userEditForm" action="EditUserServlet.do" method="post" novalidate>
-          <input type="hidden" name="action" value="update" />
+        <section class="edit-main" aria-label="Mi perfil">
+          <article class="card edit-card" aria-label="Formulario de perfil">
+            <form id="userEditForm" class="edit-form" action="EditUserServlet.do" method="post" novalidate>
+              <div class="messages" aria-live="polite">
+                <c:if test="${not empty messages}">
+                  <p class="msg msg--error">${messages}</p>
+                </c:if>
 
-          <div class="field">
-            <label for="name">Nombre</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              autocomplete="given-name"
-              required
-              value="${profileUser.name}" />
-          </div>
+                <c:if test="${not empty messagesOk}">
+                  <p class="msg msg--ok">${messagesOk}</p>
+                </c:if>
+              </div>
 
-          <div class="field">
-            <label for="surname">Apellidos</label>
-            <input
-              id="surname"
-              name="surname"
-              type="text"
-              autocomplete="family-name"
-              required
-              value="${profileUser.surname}" />
-          </div>
+              <input type="hidden" name="action" value="update" />
 
-          <div class="field">
-            <label for="email">Correo electrónico</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              value="${profileUser.email}" />
-          </div>
+              <div class="edit-panels">
+                <section class="edit-panel" aria-label="Datos personales">
+                  <h2 class="edit-h2">Mi perfil</h2>
 
-          <div class="field">
-            <label for="password">Nueva contraseña</label>
-            <div class="pw">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autocomplete="new-password"
-                placeholder="Nueva contraseña" />
-            </div>
-            <p class="hint">Rellena estos campos solo si quieres cambiar tu contraseña.</p>
-          </div>
+                  <div class="field">
+                    <label for="name">Nombre</label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autocomplete="given-name"
+                      required
+                      value="${profileUser.name}" />
+                  </div>
 
-          <div class="field">
-            <label for="passwordConfirm">Confirmar nueva contraseña</label>
-            <div class="pw">
-              <input
-                id="passwordConfirm"
-                name="passwordConfirm"
-                type="password"
-                autocomplete="new-password"
-                placeholder="Repite la nueva contrasena" />
-            </div>
-          </div>
+                  <div class="field">
+                    <label for="surname">Apellidos</label>
+                    <input
+                      id="surname"
+                      name="surname"
+                      type="text"
+                      autocomplete="family-name"
+                      required
+                      value="${profileUser.surname}" />
+                  </div>
 
-          <button class="boton" type="submit">Guardar cambios</button>
-        </form>
+                  <div class="field">
+                    <label for="email">Correo electrónico</label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autocomplete="email"
+                      required
+                      value="${profileUser.email}" />
+                  </div>
+                </section>
 
-        <hr />
+                <section class="edit-panel" aria-label="Seguridad">
+                  <h2 class="edit-h2">Seguridad</h2>
 
-        <form action="EditUserServlet.do" method="post" novalidate>
-          <input type="hidden" name="action" value="delete" />
-          <button class="boton" type="submit">Eliminar cuenta</button>
-        </form>
+                  <div class="field">
+                    <label for="password">Nueva contraseña</label>
+                    <div class="pw">
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="new-password"
+                        placeholder="Nueva contraseña" />
+                    </div>
+                    <p class="hint">Rellena estos campos solo si quieres cambiar tu contraseña.</p>
+                  </div>
 
-        <p class="center muted">
-          <a class="accent" href="LogoutServlet.do">Cerrar sesion</a>
-        </p>
-      </section>
+                  <div class="field">
+                    <label for="passwordConfirm">Confirmar nueva contraseña</label>
+                    <div class="pw">
+                      <input
+                        id="passwordConfirm"
+                        name="passwordConfirm"
+                        type="password"
+                        autocomplete="new-password"
+                        placeholder="Repite la nueva contraseña" />
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <footer class="edit-actions" aria-label="Acciones del perfil">
+                <a class="btn btn-ghost" href="ListRestaurantServlet.do">Cancelar</a>
+                <button class="btn btn-primary" type="submit">Guardar cambios</button>
+              </footer>
+            </form>
+          </article>
+        </section>
+      </div>
     </main>
   </body>
 </html>

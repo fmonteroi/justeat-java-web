@@ -24,13 +24,28 @@
 
 		<div class="top-right top-right-all">
 			<nav class="top-nav" aria-label="Navegacion principal">
-				<a href="#">Pedidos de empresa</a> <a href="#">Trabaja como
-					repartidor</a> <a href="#">Registra tu negocio</a>
+				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
+						de empresa</span></a> <a href="#"><span class="top-nav-ico"
+					aria-hidden="true">&#128692;</span><span>Trabaja como
+						repartidor</span></a> <a href="#"><span class="top-nav-ico"
+					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
 			</nav>
 
-			<a class="top-userlink" href="LoginServlet.do"> <span
-				aria-hidden="true">U</span> <span>Inicia sesion</span>
-			</a> <span class="flag" aria-hidden="true">ES</span>
+			<c:choose>
+				<c:when test="${sessionScope.user != null}">
+					<a class="top-userlink" href="EditUserServlet.do"> <span
+						aria-hidden="true">&#128100;</span> <span>${sessionScope.user.name}
+							${sessionScope.user.surname}</span>
+					</a>
+				</c:when>
+				<c:otherwise>
+					<a class="top-userlink" href="LoginServlet.do"> <span
+						aria-hidden="true">&#128100;</span> <span>Inicia sesion</span>
+					</a>
+				</c:otherwise>
+			</c:choose>
+
+			<span class="flag" aria-hidden="true">ES</span>
 			<button class="menu" type="button" aria-label="Menu">=</button>
 		</div>
 	</header>
@@ -41,7 +56,7 @@
 				<div class="card detail-cover-card">
 					<img class="detail-cover"
 						src="${pageContext.request.contextPath}/images/restaurantes/cume.jpeg"
-						alt="Cafeteria del CUMe" width="1400" height="600" />
+						alt="${restaurant.name}" width="1400" height="600" />
 				</div>
 
 				<article class="card detail-info-card"
@@ -51,12 +66,12 @@
 							<h1 class="detail-name">${restaurant.name}</h1>
 
 							<p class="detail-sub">
-								<span class="detail-stars" aria-hidden="true">*****</span> <strong
+								<span class="detail-stars" aria-hidden="true">★★★★★</span> <strong
 									class="detail-score">5</strong> <span class="detail-count">(5.000+)</span>
 
-								<span class="detail-dot" aria-hidden="true">.</span> <span
+								<span class="detail-dot" aria-hidden="true">•</span> <span
 									class="detail-meta">${restaurant.minPrice}-${restaurant.maxPrice}
-									EUR</span> <span class="detail-dot" aria-hidden="true">.</span> <span
+									€</span> <span class="detail-dot" aria-hidden="true">•</span> <span
 									class="detail-meta"> Bike Friendly: <strong> <c:choose>
 											<c:when test="${restaurant.bikeFriendly eq 1}">Si</c:when>
 											<c:otherwise>No</c:otherwise>
@@ -69,16 +84,16 @@
 								test="${sessionScope.user != null && sessionScope.user.id == restaurant.idu}">
 								<p>
 									<a class="accent"
-										href="EditRestaurantServlet.do?id=${restaurant.id}">Editar restaurante</a>
+										href="EditRestaurantServlet.do?id=${restaurant.id}">Editar
+										restaurante</a>
 								</p>
 							</c:if>
-
 						</div>
 					</header>
 
 					<div class="detail-data">
 						<div class="detail-line">
-							<span class="detail-ico" aria-hidden="true">o</span>
+							<span class="detail-ico" aria-hidden="true">&#128205;</span>
 							<div>
 								<strong>Direccion</strong>
 								<p>${restaurant.address}</p>
@@ -86,7 +101,7 @@
 						</div>
 
 						<div class="detail-line">
-							<span class="detail-ico" aria-hidden="true">T</span>
+							<span class="detail-ico" aria-hidden="true">&#128222;</span>
 							<div>
 								<strong>Telefono</strong>
 								<p>
@@ -96,7 +111,7 @@
 						</div>
 
 						<div class="detail-line">
-							<span class="detail-ico" aria-hidden="true">@</span>
+							<span class="detail-ico" aria-hidden="true">✉️</span>
 							<div>
 								<strong>Correo de contacto</strong>
 								<p>
@@ -106,9 +121,9 @@
 						</div>
 
 						<div class="detail-line">
-							<span class="detail-ico" aria-hidden="true">#</span>
+							<span class="detail-ico" aria-hidden="true">🏷️</span>
 							<div>
-								<strong>Categorías</strong>
+								<strong>Categorias</strong>
 								<div class="detail-tags">
 									<c:forEach var="category" items="${categories}">
 										<span class="tag">${category.name}</span>
@@ -116,50 +131,33 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="detail-line">
-							<span class="detail-ico" aria-hidden="true">U</span>
-							<div>
-								<strong>Propietario</strong>
-								<p>${owner.name}${owner.surname}</p>
-							</div>
-						</div>
-
 					</div>
 				</article>
 
 				<article class="card detail-menu-card"
 					aria-label="Carta del restaurante">
 					<header class="menu-head">
-						<h2 class="menu-title">Carta de la Cafeteria del CUMe</h2>
+						<h2 class="menu-title">Carta de ${restaurant.name}</h2>
 					</header>
 
-					<section class="menu-row" aria-label="Destacados">
-						<article class="dish">
-							<img class="dish-img"
-								src="${pageContext.request.contextPath}/images/platos_cume/menu_del_dia.jpeg"
-								alt="Menu del dia" />
-							<div class="dish-info">
-								<p class="dish-name">Menu del dia</p>
-								<div class="dish-bottom">
-									<span class="dish-price">9,00 EUR</span>
-									<button class="dish-plus" type="button">+</button>
-								</div>
-							</div>
-						</article>
+					<section class="menu-section" id="platos"
+						aria-label="Platos del restaurante">
+						<h3 class="section-title">Platos del restaurante</h3>
 
-						<article class="dish">
-							<img class="dish-img"
-								src="${pageContext.request.contextPath}/images/platos_cume/cartucho_patatas.jpg"
-								alt="Cartucho de patatas" />
-							<div class="dish-info">
-								<p class="dish-name">Cartucho de Patatas</p>
-								<div class="dish-bottom">
-									<span class="dish-price">2,00 EUR</span>
-									<button class="dish-plus" type="button">+</button>
-								</div>
-							</div>
-						</article>
+						<div class="menu-list" role="list">
+							<c:forEach var="dish" items="${dishes}">
+								<article class="menu-item" role="listitem">
+									<div class="menu-item-main">
+										<h4 class="menu-item-title">${dish.name}</h4>
+										<p class="menu-item-desc">${dish.description}</p>
+									</div>
+									<div class="menu-item-side">
+										<span class="menu-item-price">${dish.price},00 €</span>
+										<button class="btn btn-primary btn-mini" type="button">Añadir</button>
+									</div>
+								</article>
+							</c:forEach>
+						</div>
 					</section>
 				</article>
 			</section>
@@ -174,7 +172,7 @@
 					</div>
 
 					<div class="edit-empty">
-						<div class="edit-empty-icon" aria-hidden="true">[]</div>
+						<div class="edit-empty-icon" aria-hidden="true">&#128722;</div>
 						<p class="edit-empty-title">Llena tu cesta</p>
 						<p class="help">Tu cesta esta vacia</p>
 					</div>

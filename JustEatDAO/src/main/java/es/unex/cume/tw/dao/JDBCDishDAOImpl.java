@@ -31,6 +31,7 @@ public class JDBCDishDAOImpl implements DishDAO {
 			dish.setName(rs.getString("name"));
 			dish.setPrice(rs.getInt("price"));
 			dish.setDescription(rs.getString("description"));
+			dish.setIdr(rs.getInt("idr"));
 			
 			logger.info("fetching Dish by id: "+id+" -> "+dish.getId()+" "+dish.getName()+" "+dish.getDescription());
 		} catch (SQLException e) {
