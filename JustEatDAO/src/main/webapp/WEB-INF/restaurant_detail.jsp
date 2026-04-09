@@ -153,7 +153,19 @@
 									</div>
 									<div class="menu-item-side">
 										<span class="menu-item-price">${dish.price},00 €</span>
-										<button class="btn btn-primary btn-mini" type="button">Añadir</button>
+										<c:choose>
+											<c:when test="${sessionScope.user != null}">
+												<form action="AddDishToCartServlet.do" method="post">
+													<input type="hidden" name="dishId" value="${dish.id}" />
+													<button class="btn btn-primary btn-mini" type="submit">Añadir</button>
+												</form>
+											</c:when>
+											<c:otherwise>
+												<a class="btn btn-primary btn-mini"
+													href="LoginServlet.do?redirect=RestaurantDetailServlet.do?id=${restaurant.id}">
+													Inicia sesion </a>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</article>
 							</c:forEach>
@@ -171,11 +183,44 @@
 						<button class="edit-pill" type="button">Recogida</button>
 					</div>
 
-					<div class="edit-empty">
-						<div class="edit-empty-icon" aria-hidden="true">&#128722;</div>
-						<p class="edit-empty-title">Llena tu cesta</p>
-						<p class="help">Tu cesta esta vacia</p>
-					</div>
+					<c:choose>
+						<c:when test="${sessionScope.user == null}">
+							<div class="edit-empty">
+								<div class="edit-empty-icon" aria-hidden="true">&#128722;</div>
+								<p class="edit-empty-title">Inicia sesion para pedir</p>
+								<p class="help">Necesitas una cuenta para guardar pedidos</p>
+								<a class="btn btn-primary"
+									href="LoginServlet.do?redirect=RestaurantDetailServlet.do?id=${restaurant.id}">
+									Ir a login </a>
+							</div>
+						</c:when>
+
+						<c:when test="${empty cartDishes}">
+							<div class="edit-empty">
+								<div class="edit-empty-icon" aria-hidden="true">&#128722;</div>
+								<p class="edit-empty-title">Llena tu cesta</p>
+								<p class="help">Tu cesta esta vacía</p>
+							</div>
+						</c:when>
+
+						<c:otherwise>
+							<div class="detail-tags" style="margin-bottom: 12px;">
+								<c:forEach var="cartDish" items="${cartDishes}">
+									<span class="tag">${cartDish.name} -
+										${cartDish.price},00 €</span>
+								</c:forEach>
+							</div>
+
+							<p class="edit-empty-title"
+								style="text-align: center; margin-bottom: 12px;">Total:
+								${cartTotal},00 €</p>
+
+							<form action="CreateOrderServlet.do" method="post">
+								<button class="btn btn-primary" type="submit"
+									style="width: 100%;">Confirmar pedido</button>
+							</form>
+						</c:otherwise>
+					</c:choose>
 				</section>
 			</aside>
 		</div>

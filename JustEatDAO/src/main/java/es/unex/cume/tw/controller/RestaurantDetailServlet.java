@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import es.unex.cume.tw.dao.JDBCRestaurantDAOImpl;
 import es.unex.cume.tw.dao.JDBCUserDAOImpl;
 import es.unex.cume.tw.dao.UserDAO;
@@ -48,6 +49,8 @@ public class RestaurantDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 		RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
@@ -96,11 +99,33 @@ public class RestaurantDetailServlet extends HttpServlet {
 		
 		List<Dish> dishes = dishDao.getAllByRestaurant(rid);
 		
+		List<Dish> cartDishes = new ArrayList<Dish>();
+		int cartTotal = 0;
+		
+		if (session != null) {
+		    Long cartRestaurantId = (Long) session.getAttribute("cartRestaurantId");
+
+		    @SuppressWarnings("unchecked")
+		    List<Long> cartDishIds = (List<Long>) session.getAttribute("cartDishIds");
+
+		    if (cartRestaurantId != null && cartDishIds != null && cartRestaurantId.longValue() == rid) {
+		        for (Long dishId : cartDishIds) {
+		            Dish cartDish = dishDao.get(dishId);
+		            if (cartDish != null) {
+		                cartDishes.add(cartDish);
+		                cartTotal += cartDish.getPrice();
+		            }
+		        }
+		    }
+		}
+		
 
 		request.setAttribute("restaurant", restaurant);
 		request.setAttribute("owner", owner);
 		request.setAttribute("categories", categories);
 		request.setAttribute("dishes", dishes);
+		request.setAttribute("cartDishes", cartDishes);
+		request.setAttribute("cartTotal", cartTotal);
 		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/restaurant_detail.jsp");
 		view.forward(request, response);

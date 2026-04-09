@@ -54,15 +54,17 @@
 					<ul class="edit-sidemenu">
 						<li><a class="edit-sidelink" href="EditUserServlet.do"><span
 								class="edit-sidelink-label">Mi perfil</span></a></li>
-						<li><a class="edit-sidelink" href="ListRestaurantServlet.do"><span
+						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
+								<span class="edit-sidelink-label">Mis pedidos</span>
+						</a></li>
+						<li><a class="edit-sidelink"
+							href="ListUserRestaurantServlet.do"><span
 								class="edit-sidelink-label">Mis restaurantes</span></a></li>
 						<li><a class="edit-sidelink"
 							href="CreateRestaurantServlet.do"><span
 								class="edit-sidelink-label">Añadir restaurante</span></a></li>
 						<li><a class="edit-sidelink is-active" href="#"><span
 								class="edit-sidelink-label">Establecimiento</span></a></li>
-						<li><a class="edit-sidelink" href="#restaurant-menu"><span
-								class="edit-sidelink-label">Carta</span></a></li>
 						<li><a class="edit-sidelink" href="LogoutServlet.do"><span
 								class="edit-sidelink-label">Salir</span></a></li>
 					</ul>

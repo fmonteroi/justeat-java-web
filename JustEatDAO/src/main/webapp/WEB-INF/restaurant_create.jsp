@@ -15,9 +15,9 @@
 
 <body class="page-editar">
 	<header class="top">
-		<a class="back" href="ListRestaurantServlet.do" aria-label="Volver">&lt;</a>
-
-		<a class="brand" href="LoginServlet.do" aria-label="Inicio"> <img
+		<a class="back" href="ListUserRestaurantServlet.do"
+			aria-label="Volver">&lt;</a> <a class="brand" href="LoginServlet.do"
+			aria-label="Inicio"> <img
 			src="${pageContext.request.contextPath}/images/logo_justeat.svg"
 			alt="Logo Just Eat" width="30" height="30" /> <strong>JUST
 				EAT</strong>
@@ -35,8 +35,7 @@
 			<a class="top-userlink" href="EditUserServlet.do"> <span
 				aria-hidden="true">&#128100;</span> <span>${sessionScope.user.name}
 					${sessionScope.user.surname}</span>
-			</a><span class="flag"
-				aria-hidden="true">ES</span>
+			</a><span class="flag" aria-hidden="true">ES</span>
 			<button class="menu" type="button" aria-label="Menu">=</button>
 		</div>
 	</header>
@@ -53,7 +52,11 @@
 					<ul class="edit-sidemenu">
 						<li><a class="edit-sidelink" href="EditUserServlet.do"><span
 								class="edit-sidelink-label">Mi perfil</span></a></li>
-						<li><a class="edit-sidelink" href="ListRestaurantServlet.do"><span
+						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
+								<span class="edit-sidelink-label">Mis pedidos</span>
+						</a></li>
+						<li><a class="edit-sidelink"
+							href="ListUserRestaurantServlet.do"><span
 								class="edit-sidelink-label">Mis restaurantes</span></a></li>
 						<li><a class="edit-sidelink is-active"
 							href="CreateRestaurantServlet.do"><span

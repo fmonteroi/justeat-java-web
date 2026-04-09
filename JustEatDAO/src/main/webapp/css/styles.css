@@ -1647,7 +1647,7 @@ body.page-editar .container {
 
 /* Columna lateral izquierda (menú) */
 .edit-side {
-  width: 240px;
+  flex: 0 0 240px;
   position: sticky;
   top: 16px;
   align-self: flex-start;

@@ -11,7 +11,7 @@
 
   <body class="page-editar">
     <header class="top">
-      <a class="back" href="ListRestaurantServlet.do" aria-label="Volver">&lt;</a>
+      <a class="back" href="ListUserRestaurantServlet.do" aria-label="Volver">&lt;</a>
 
       <a class="brand" href="LoginServlet.do" aria-label="Inicio">
         <img
@@ -54,7 +54,7 @@
                 </a>
               </li>
               <li>
-                <a class="edit-sidelink" href="ListRestaurantServlet.do">
+                <a class="edit-sidelink" href="ListUserRestaurantServlet.do">
                   <span class="edit-sidelink-label">Mis restaurantes</span>
                 </a>
               </li>

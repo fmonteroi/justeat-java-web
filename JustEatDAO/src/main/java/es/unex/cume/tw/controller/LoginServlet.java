@@ -40,6 +40,11 @@ public class LoginServlet extends HttpServlet {
         if (session.getAttribute("user") != null)
             response.sendRedirect("ListRestaurantServlet.do");
         else {
+        	String redirect = request.getParameter("redirect");
+        	if (redirect != null && !redirect.trim().isEmpty()) {
+        	    request.setAttribute("redirect", redirect);
+        	}
+        	
             RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/login.jsp");
             view.forward(request, response);
         }
@@ -65,7 +70,14 @@ public class LoginServlet extends HttpServlet {
         if ((user != null) && (user.getPassword().equals(password))) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("ListRestaurantServlet.do");
+            
+            String redirect = request.getParameter("redirect");
+
+            if (redirect != null && !redirect.trim().isEmpty()) {
+                response.sendRedirect(redirect);
+            } else {
+                response.sendRedirect("SearchServlet.do");
+            }
         } else {
             request.setAttribute("messages", "Email o contraseña incorrecta");
             RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/login.jsp");

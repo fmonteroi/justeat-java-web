@@ -93,7 +93,7 @@ public class ListRestaurantServlet extends HttpServlet {
 		request.setAttribute("restaurantsList",restaurantsUserList);
 		request.setAttribute("usersMap", userRestaurantsMap);
 		
-		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/ListRestaurantUser.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/restaurant_list.jsp");
 		view.forward(request,response);
 		
 	

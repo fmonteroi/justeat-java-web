@@ -48,6 +48,8 @@ public interface OrderDAO {
 	 */
 	public List<Order> getAll();
 	
+	public List<Order> getAllByUser(long idu);
+	
 
 	/**
 	 * Adds a order to the database.
@@ -82,4 +84,6 @@ public interface OrderDAO {
 	 */
 	
 	public boolean delete(long id);
+	
+	
 }
