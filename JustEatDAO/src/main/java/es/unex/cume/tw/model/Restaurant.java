@@ -14,9 +14,9 @@ public class Restaurant {
 	private int bikeFriendly;
 	private int available;
 	private int idu;
-	
-	
-	
+	private String instagramUrl;
+	private String facebookUrl;
+	private String xUrl;
 	
 	public String getName() {
 		return name;
@@ -67,7 +67,6 @@ public class Restaurant {
 		this.id = id;
 	}
 	
-	
 	public String getTelephone() {
 		return telephone;
 	}
@@ -92,8 +91,23 @@ public class Restaurant {
 	public void setIdu(int idu) {
 		this.idu = idu;
 	}
-
-
-	
+	public String getInstagramUrl() {
+		return instagramUrl;
+	}
+	public void setInstagramUrl(String instagramUrl) {
+		this.instagramUrl = instagramUrl;
+	}
+	public String getFacebookUrl() {
+		return facebookUrl;
+	}
+	public void setFacebookUrl(String facebookUrl) {
+		this.facebookUrl = facebookUrl;
+	}
+	public String getxUrl() {
+		return xUrl;
+	}
+	public void setxUrl(String xUrl) {
+		this.xUrl = xUrl;
+	}
 	
 }

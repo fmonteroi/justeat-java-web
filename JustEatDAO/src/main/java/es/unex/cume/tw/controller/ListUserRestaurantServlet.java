@@ -46,6 +46,7 @@ public class ListUserRestaurantServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("user") == null) {
 			response.sendRedirect("LoginServlet.do");
@@ -54,6 +55,7 @@ public class ListUserRestaurantServlet extends HttpServlet {
 
 		User user = (User) session.getAttribute("user");
 
+		// Prepare database access
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 		UserDAO userDao = new JDBCUserDAOImpl();
@@ -68,10 +70,12 @@ public class ListUserRestaurantServlet extends HttpServlet {
 		CategoryDAO categoryDao = new JDBCCategoryDAOImpl();
 		categoryDao.setConnection(conn);
 
+		// Load user restaurants
 		List<Restaurant> restaurants = restaurantDao.getAllByUser(user.getId());
 
 		Iterator<Restaurant> itRestaurants = restaurants.iterator();
 
+		// Build restaurant view models
 		List<Triplet<Restaurant, User, List<RestaurantCategories>>> restaurantsUserList = new ArrayList<Triplet<Restaurant, User, List<RestaurantCategories>>>();
 
 		while (itRestaurants.hasNext()) {
@@ -84,6 +88,7 @@ public class ListUserRestaurantServlet extends HttpServlet {
 					restaurantsCategories));
 		}
 
+		// Render restaurant list
 		request.setAttribute("restaurantsList", restaurantsUserList);
 
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/user_restaurant_list.jsp");
@@ -96,7 +101,7 @@ public class ListUserRestaurantServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// Reuse GET behavior
 		doGet(request, response);
 	}
 

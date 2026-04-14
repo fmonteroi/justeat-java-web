@@ -65,6 +65,11 @@
 								class="edit-sidelink-label">Añadir restaurante</span></a></li>
 						<li><a class="edit-sidelink is-active" href="#"><span
 								class="edit-sidelink-label">Establecimiento</span></a></li>
+
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Categorías</span>
+						</a></li>
+
 						<li><a class="edit-sidelink" href="LogoutServlet.do"><span
 								class="edit-sidelink-label">Salir</span></a></li>
 					</ul>
@@ -206,6 +211,27 @@
 										</label>
 									</div>
 								</fieldset>
+
+								<div class="field">
+									<label for="instagramUrl">Instagram</label> <input
+										id="instagramUrl" name="instagramUrl" type="url"
+										value="${restaurant.instagramUrl}"
+										placeholder="https://instagram.com/tu_restaurante" />
+								</div>
+
+								<div class="field">
+									<label for="facebookUrl">Facebook</label> <input
+										id="facebookUrl" name="facebookUrl" type="url"
+										value="${restaurant.facebookUrl}"
+										placeholder="https://facebook.com/tu_restaurante" />
+								</div>
+
+								<div class="field">
+									<label for="xUrl">X / Twitter</label> <input id="xUrl"
+										name="xUrl" type="url" value="${restaurant.xUrl}"
+										placeholder="https://x.com/tu_restaurante" />
+								</div>
+
 							</section>
 						</div>
 

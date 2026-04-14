@@ -43,24 +43,12 @@
 
               <form class="search" action="ListRestaurantServlet.do" method="get">
                 <input
-                  name="direccion"
+                  name="search"
                   type="text"
-                  placeholder="Calle Santa Eulalia 2, 06800 Merida"
-                  list="direccion-list"
+                  placeholder="Busca por ciudad, dirección o nombre del restaurante"
                   autocomplete="address-line1"
                   required />
                 <button class="boton" type="submit">Buscar</button>
-                <datalist id="direccion-list">
-                  <option value="Plaza de Espana, 20, 06800 Merida, Espana"></option>
-                  <option value="Avenida Reina Sofia, 12, 06800 Merida, Espana"></option>
-                  <option value="Calle Santa Eulalia, 5, 06800 Merida, Espana"></option>
-                  <option value="Avenida de la Universidad, s/n, 10071 Caceres, Espana"></option>
-                  <option value="Calle Pintores, 18, 10003 Caceres, Espana"></option>
-                  <option value="Plaza Mayor, 1, 10003 Caceres, Espana"></option>
-                  <option value="Calle Mayor, 45, 06002 Badajoz, Espana"></option>
-                  <option value="Avenida de Europa, 7, 06004 Badajoz, Espana"></option>
-                  <option value="Plaza Alta, 3, 06001 Badajoz, Espana"></option>
-                </datalist>
               </form>
 
               <div class="hero-cats">

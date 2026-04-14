@@ -47,6 +47,7 @@ public class ListUserOrderServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("user") == null) {
 			response.sendRedirect("LoginServlet.do");
@@ -55,6 +56,7 @@ public class ListUserOrderServlet extends HttpServlet {
 
 		User user = (User) session.getAttribute("user");
 
+		// Prepare database access
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 		OrderDAO orderDao = new JDBCOrderDAOImpl();
@@ -69,8 +71,10 @@ public class ListUserOrderServlet extends HttpServlet {
 		RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
 		restaurantDao.setConnection(conn);
 
+		// Load user orders
 		List<Order> orders = orderDao.getAllByUser(user.getId());
 
+		// Build order view models
 		List<Triplet<Order, Restaurant, List<Dish>>> ordersList = new ArrayList<Triplet<Order, Restaurant, List<Dish>>>();
 
 		for (Order order : orders) {
@@ -92,6 +96,7 @@ public class ListUserOrderServlet extends HttpServlet {
 			ordersList.add(new Triplet<Order, Restaurant, List<Dish>>(order, restaurant, dishes));
 		}
 		
+		// Render order history
 		request.setAttribute("ordersList", ordersList);
 
 	    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/user_order_list.jsp");
@@ -104,7 +109,7 @@ public class ListUserOrderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// Reuse GET behavior
 		doGet(request, response);
 	}
 

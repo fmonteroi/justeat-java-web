@@ -54,6 +54,7 @@ public interface RestaurantDAO {
 	 */	
 	public List<Restaurant> getAllByUser(long idu);
 	
+	public List<Restaurant> search(String search);
 	
 
 	/**

@@ -1268,6 +1268,70 @@ body.page-detalle {
   margin-top: 6px;
 }
 
+.detail-tags a.tag {
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.detail-tags a.tag:hover {
+  transform: translateY(-1px);
+}
+
+.detail-switch-card {
+  overflow: hidden;
+}
+
+.detail-switch-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(180deg, #fff7f0 0%, #fff 100%);
+  margin: -24px -24px 0;
+  padding: 0 24px;
+}
+
+.detail-switch-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 18px 20px 16px;
+  font: inherit;
+  font-weight: 700;
+  color: #5b6475;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.detail-switch-tab:hover {
+  color: #1b2335;
+}
+
+.detail-switch-tab.is-active {
+  color: #f36b00;
+}
+
+.detail-switch-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: #f36b00;
+}
+
+.detail-switch-panel {
+  display: none;
+  padding-top: 24px;
+}
+
+.detail-switch-panel.is-active {
+  display: block;
+}
+
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -1297,6 +1361,7 @@ body.page-detalle {
   font-size: 18px;
   font-weight: 950;
 }
+
 
 .menu-tabs {
   display: flex;

@@ -64,6 +64,12 @@
 							href="CreateRestaurantServlet.do"> <span
 								class="edit-sidelink-label">Añadir restaurante</span>
 						</a></li>
+
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Categorías</span>
+						</a></li>
+
+
 						<li><a class="edit-sidelink" href="LogoutServlet.do"> <span
 								class="edit-sidelink-label">Salir</span>
 						</a></li>

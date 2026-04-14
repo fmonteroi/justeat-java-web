@@ -62,6 +62,9 @@
 								class="edit-sidelink-label">Establecimiento</span></a></li>
 						<li><a class="edit-sidelink is-active" href="#"><span
 								class="edit-sidelink-label">Carta</span></a></li>
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Categorías</span>
+						</a></li>
 						<li><a class="edit-sidelink" href="LogoutServlet.do"><span
 								class="edit-sidelink-label">Salir</span></a></li>
 					</ul>

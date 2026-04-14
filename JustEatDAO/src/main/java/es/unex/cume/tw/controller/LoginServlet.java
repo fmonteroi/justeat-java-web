@@ -36,15 +36,18 @@ public class LoginServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get session
         HttpSession session = request.getSession();
         if (session.getAttribute("user") != null)
             response.sendRedirect("ListRestaurantServlet.do");
         else {
+        	// Keep optional redirect target
         	String redirect = request.getParameter("redirect");
         	if (redirect != null && !redirect.trim().isEmpty()) {
         	    request.setAttribute("redirect", redirect);
         	}
         	
+            // Render login form
             RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/login.jsp");
             view.forward(request, response);
         }
@@ -56,10 +59,12 @@ public class LoginServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Prepare database access
         Connection conn = (Connection) getServletContext().getAttribute("dbConn");
         UserDAO userDao = new JDBCUserDAOImpl();
         userDao.setConnection(conn);
 
+        // Read credentials
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -67,10 +72,12 @@ public class LoginServlet extends HttpServlet {
 
         User user = userDao.get(email);
 
+        // Create session on success
         if ((user != null) && (user.getPassword().equals(password))) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             
+            // Redirect to the requested page or default search
             String redirect = request.getParameter("redirect");
 
             if (redirect != null && !redirect.trim().isEmpty()) {

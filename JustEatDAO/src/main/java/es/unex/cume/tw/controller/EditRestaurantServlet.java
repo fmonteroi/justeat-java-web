@@ -43,6 +43,7 @@ public class EditRestaurantServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get session
         HttpSession session = request.getSession(false);
         
         if (session == null || session.getAttribute("user") == null) {
@@ -52,6 +53,7 @@ public class EditRestaurantServlet extends HttpServlet {
         
         User user = (User) session.getAttribute("user");
         try {
+            // Prepare database access
             Connection conn = (Connection) getServletContext().getAttribute("dbConn");
             RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
             restaurantDao.setConnection(conn);
@@ -65,11 +67,13 @@ public class EditRestaurantServlet extends HttpServlet {
             DishDAO dishDao = new JDBCDishDAOImpl();
             dishDao.setConnection(conn);
 
+            // Read and validate restaurant id
             logger.info(request.getParameter("id"));
 
             long rid = Long.parseLong(request.getParameter("id"));
             Restaurant restaurant = restaurantDao.get(rid);
             
+            // Load restaurant dishes and categories
             List<Dish> dishes = dishDao.getAllByRestaurant(rid);
 
             List<RestaurantCategories> restaurantCategories = restaurantsCategoriesDAO.getAll();
@@ -95,6 +99,7 @@ public class EditRestaurantServlet extends HttpServlet {
                 categoriesChecked.add(new Triplet<Category, Boolean, User>(category, exist, user));
             }
 
+            // Check restaurant ownership and render form
             if (restaurant != null && restaurant.getIdu() == user.getId()) {
                 session.setAttribute("restaurant", restaurant);
                 session.setAttribute("categories", categoriesChecked);
@@ -117,6 +122,7 @@ public class EditRestaurantServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get session
         HttpSession session = request.getSession();
         
         // PREGUNTAR POR ESTO
@@ -134,17 +140,21 @@ public class EditRestaurantServlet extends HttpServlet {
             return;
         }
 
+        // Apply form changes
         restaurant.setName(request.getParameter("restaurant-name"));
         restaurant.setAddress(request.getParameter("restaurant-address"));
         restaurant.setTelephone(request.getParameter("restaurant-tel"));
         restaurant.setCity(request.getParameter("restaurant-city"));
         restaurant.setMinPrice(Integer.parseInt(request.getParameter("min-price")));
         restaurant.setMaxPrice(Integer.parseInt(request.getParameter("max-price")));
-        restaurant.setGradesAverage(0);
         restaurant.setContactEmail(request.getParameter("restaurant-email"));
         restaurant.setBikeFriendly(Integer.parseInt(request.getParameter("bikefriendly")));
         restaurant.setAvailable(Integer.parseInt(request.getParameter("available")));
+        restaurant.setInstagramUrl(request.getParameter("instagramUrl"));
+        restaurant.setFacebookUrl(request.getParameter("facebookUrl"));
+        restaurant.setxUrl(request.getParameter("xUrl"));
 
+        // Prepare database access
         Connection conn = (Connection) getServletContext().getAttribute("dbConn");
         RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
         restaurantDao.setConnection(conn);
@@ -155,6 +165,7 @@ public class EditRestaurantServlet extends HttpServlet {
         List<RestaurantCategories> restaurantCategories = restaurantsCategoriesDAO
                 .getAllByRestaurant(restaurant.getId());
 
+        // Clear old category relations
         int len = restaurantCategories.size();
         for (int i = 0; i < len; i++) {
             RestaurantCategories rc = restaurantCategories.get(i);
@@ -162,6 +173,7 @@ public class EditRestaurantServlet extends HttpServlet {
             restaurantsCategoriesDAO.delete(rc.getIdr(), rc.getIdct());
         }
 
+        // Save selected categories
         String[] categories = request.getParameterValues("restaurant-category");
         for (int i = 0; i < categories.length; i++) {
             try {
@@ -175,9 +187,11 @@ public class EditRestaurantServlet extends HttpServlet {
             }
         }
 
+        // Persist restaurant changes
         if (restaurant.getIdu() == user.getId() && restaurantDao.update(restaurant)) {
             response.sendRedirect("ListRestaurantServlet.do");
         } else {
+            // Render form again on persistence errors
             request.setAttribute("messages", "Hubo un fallo al guardar los datos del restaurante");
             RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/restaurant_edit.jsp");
             view.forward(request, response);

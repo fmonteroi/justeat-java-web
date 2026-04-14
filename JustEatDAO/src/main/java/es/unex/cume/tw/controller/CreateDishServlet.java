@@ -40,6 +40,7 @@ public class CreateDishServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 
 		if (session == null || session.getAttribute("user") == null) {
@@ -49,11 +50,13 @@ public class CreateDishServlet extends HttpServlet {
 
 		User user = (User) session.getAttribute("user");
 
+		// Prepare database access
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 		RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
 		restaurantDao.setConnection(conn);
 
+		// Read and validate restaurant id
 		long restaurantId = 0;
 		try {
 			restaurantId = Long.parseLong(request.getParameter("restaurantId"));
@@ -64,11 +67,13 @@ public class CreateDishServlet extends HttpServlet {
 
 		Restaurant restaurant = restaurantDao.get(restaurantId);
 
+		// Check restaurant ownership
 		if (restaurant == null || restaurant.getIdu() != user.getId()) {
 			response.sendRedirect("ListRestaurantServlet.do");
 			return;
 		}
 
+		// Prepare form data
 		request.setAttribute("restaurant", restaurant);
 		request.setAttribute("formAction", "CreateDishServlet.do");
 		request.setAttribute("formTitle", "Añadir plato");
@@ -83,6 +88,7 @@ public class CreateDishServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("user") == null) {
 			response.sendRedirect("LoginServlet.do");
@@ -91,6 +97,7 @@ public class CreateDishServlet extends HttpServlet {
 
 		User user = (User) session.getAttribute("user");
 
+		// Prepare database access
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 		RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
@@ -99,6 +106,7 @@ public class CreateDishServlet extends HttpServlet {
 		DishDAO dishDao = new JDBCDishDAOImpl();
 		dishDao.setConnection(conn);
 
+		// Read form fields
 		String restaurantIdParam = request.getParameter("restaurantId");
 		String name = request.getParameter("dish-name");
 		String description = request.getParameter("dish-description");
@@ -108,6 +116,7 @@ public class CreateDishServlet extends HttpServlet {
 		String messages = null;
 		int price = 0;
 
+		// Validate restaurant id
 		try {
 			restaurantId = Long.parseLong(restaurantIdParam);
 		} catch (NumberFormatException e) {
@@ -117,16 +126,19 @@ public class CreateDishServlet extends HttpServlet {
 
 		Restaurant restaurant = restaurantDao.get(restaurantId);
 
+		// Check restaurant ownership
 		if (restaurant == null || restaurant.getIdu() != user.getId()) {
 			response.sendRedirect("ListRestaurantServlet.do");
 			return;
 		}
 
+		// Validate required fields
 		if (name == null || name.trim().isEmpty() || description == null || description.trim().isEmpty()
 				|| priceParam == null || priceParam.trim().isEmpty()) {
 			messages = "Todos los campos del plato son obligatorios.";
 		}
 
+		// Validate price
 		if (messages == null) {
 			try {
 				price = Integer.parseInt(priceParam);
@@ -138,10 +150,12 @@ public class CreateDishServlet extends HttpServlet {
 			}
 		}
 		
+		// Validate description length
 		if (messages == null && description != null && description.length() >= 150) {
 		    messages = "La descripcion del plato es demasiado larga, debe ser menor a 150 caracteres.";
 		}
 
+		// Render form again on validation errors
 		if (messages != null) {
 			request.setAttribute("messages", messages);
 			request.setAttribute("restaurant", restaurant);
@@ -156,6 +170,7 @@ public class CreateDishServlet extends HttpServlet {
 			return;
 		}
 
+		// Build the dish object
 		Dish dish = new Dish();
 		dish.setName(name.trim());
 		dish.setDescription(description.trim());
@@ -164,6 +179,7 @@ public class CreateDishServlet extends HttpServlet {
 
 		long dishId = dishDao.add(dish);
 
+		// Handle persistence errors
 		if (dishId < 0) {
 			request.setAttribute("messages", "No se pudo crear el plato.");
 			request.setAttribute("restaurant", restaurant);
@@ -178,6 +194,7 @@ public class CreateDishServlet extends HttpServlet {
 			return;
 		}
 
+		// Return to the restaurant editor
 		response.sendRedirect("EditRestaurantServlet.do?id=" + restaurant.getId());
 	}
 

@@ -42,6 +42,7 @@ public class DeleteDishServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 	    if (session == null || session.getAttribute("user") == null) {
 	        response.sendRedirect("LoginServlet.do");
@@ -50,6 +51,7 @@ public class DeleteDishServlet extends HttpServlet {
 
 	    User user = (User) session.getAttribute("user");
 
+	    // Prepare database access
 	    Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 	    DishDAO dishDao = new JDBCDishDAOImpl();
@@ -58,6 +60,7 @@ public class DeleteDishServlet extends HttpServlet {
 	    RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
 	    restaurantDao.setConnection(conn);
 	    
+	    // Read and validate dish id
 	    long dishId = 0;
 	    try {
 	        dishId = Long.parseLong(request.getParameter("id"));
@@ -72,6 +75,7 @@ public class DeleteDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Check restaurant ownership
 	    Restaurant restaurant = restaurantDao.get(dish.getIdr());
 
 	    if (restaurant == null || restaurant.getIdu() != user.getId()) {
@@ -79,8 +83,10 @@ public class DeleteDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Delete the dish
 	    dishDao.delete(dish.getId());
 
+	    // Return to the restaurant editor
 	    response.sendRedirect("EditRestaurantServlet.do?id=" + restaurant.getId());
 	}
 

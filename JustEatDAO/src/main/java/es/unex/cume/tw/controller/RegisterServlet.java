@@ -37,6 +37,7 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// Render register form
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/register.jsp");
 		view.forward(request, response);
 	}
@@ -48,10 +49,12 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		// Prepare database access
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
         UserDAO userDao = new JDBCUserDAOImpl();
         userDao.setConnection(conn);
         
+		// Read form fields
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
 		String email = request.getParameter("email");
@@ -60,24 +63,29 @@ public class RegisterServlet extends HttpServlet {
 
 		String messages = null;
 
+		// Validate required fields
 		if (name == null || name.trim().isEmpty() || surname == null || surname.trim().isEmpty() || email == null
 				|| email.trim().isEmpty() || password == null || password.trim().isEmpty() || passwordConfirm == null
 				|| passwordConfirm.trim().isEmpty()) {
 			messages = "Todos los campos son obligatorios.";
 		}
 		
+		// Validate password confirmation
 		if (messages == null && !password.equals(passwordConfirm)) {
 		    messages = "Las contrasenas no coinciden.";
 		}
 		
+		// Validate password format
 		if (messages == null && !ValidationUtils.isPasswordValid(password)) {
 		    messages = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial.";
 		}
 		
+		// Validate email uniqueness
 		if (messages == null && userDao.get(email) != null) {
 		    messages = "Ya existe un usuario con ese correo electronico.";
 		}
 		
+		// Render form again on validation errors
 		if (messages != null) {
 			request.setAttribute("messages", messages);
 		    request.setAttribute("name", name);
@@ -90,6 +98,7 @@ public class RegisterServlet extends HttpServlet {
 		    return;
 		}
 		
+		// Build the user object
 		User user = new User();
 		user.setName(name.trim());
 		user.setSurname(surname.trim());
@@ -98,6 +107,7 @@ public class RegisterServlet extends HttpServlet {
 
 		long id = userDao.add(user);
 		
+		// Handle persistence errors
 		if (id < 0) {
 		    request.setAttribute("messages", "No se pudo registrar el usuario.");
 		    request.setAttribute("name", name);
@@ -111,9 +121,11 @@ public class RegisterServlet extends HttpServlet {
 		
 		user.setId(id);
 
+		// Start session after registration
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 
+		// Open the restaurant list
 		response.sendRedirect("ListRestaurantServlet.do");
 
 	}

@@ -39,17 +39,20 @@ public class AddDishToCartServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 	    if (session == null || session.getAttribute("user") == null) {
 	        response.sendRedirect("LoginServlet.do");
 	        return;
 	    }
 	    
+	    // Prepare database access
 	    Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 	    DishDAO dishDao = new JDBCDishDAOImpl();
 	    dishDao.setConnection(conn);
 
+	    // Read and validate dish id
 	    long dishId = 0;
 	    try {
 	        dishId = Long.parseLong(request.getParameter("dishId"));
@@ -64,6 +67,7 @@ public class AddDishToCartServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Load current cart state
 	    Long cartRestaurantId = (Long) session.getAttribute("cartRestaurantId");
 
 	    @SuppressWarnings("unchecked")
@@ -73,18 +77,20 @@ public class AddDishToCartServlet extends HttpServlet {
 	        cartDishIds = new ArrayList<Long>();
 	    }
 	    
+	    // Reset cart if the restaurant changes
 	    if (cartRestaurantId == null || cartRestaurantId.longValue() != dish.getIdr()) {
 	        cartRestaurantId = dish.getIdr();
 	        cartDishIds.clear();
 	    }
 
-	    if (!cartDishIds.contains(dish.getId())) {
-	        cartDishIds.add(dish.getId());
-	    }
-
+	    // Add the dish to the cart
+	    cartDishIds.add(dish.getId());
+	   
+	    // Save cart state
 	    session.setAttribute("cartRestaurantId", cartRestaurantId);
 	    session.setAttribute("cartDishIds", cartDishIds);
 
+	    // Return to the restaurant detail
 	    response.sendRedirect("RestaurantDetailServlet.do?id=" + dish.getIdr());
 	      
 	}

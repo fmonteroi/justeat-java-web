@@ -36,6 +36,7 @@ public class EditDishServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 	    if (session == null || session.getAttribute("user") == null) {
 	        response.sendRedirect("LoginServlet.do");
@@ -44,6 +45,7 @@ public class EditDishServlet extends HttpServlet {
 
 	    User user = (User) session.getAttribute("user");
 
+	    // Prepare database access
 	    Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 	    DishDAO dishDao = new JDBCDishDAOImpl();
@@ -52,6 +54,7 @@ public class EditDishServlet extends HttpServlet {
 	    RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
 	    restaurantDao.setConnection(conn);
 	    
+	    // Read and validate dish id
 	    long dishId = 0;
 	    try {
 	        dishId = Long.parseLong(request.getParameter("id"));
@@ -66,6 +69,7 @@ public class EditDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Check restaurant ownership
 	    Restaurant restaurant = restaurantDao.get(dish.getIdr());
 
 	    if (restaurant == null || restaurant.getIdu() != user.getId()) {
@@ -73,6 +77,7 @@ public class EditDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Prepare form data
 	    request.setAttribute("dish", dish);
 	    request.setAttribute("restaurant", restaurant);
 	    request.setAttribute("formAction", "EditDishServlet.do");
@@ -86,6 +91,7 @@ public class EditDishServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 	    if (session == null || session.getAttribute("user") == null) {
 	        response.sendRedirect("LoginServlet.do");
@@ -94,6 +100,7 @@ public class EditDishServlet extends HttpServlet {
 
 	    User user = (User) session.getAttribute("user");
 
+	    // Prepare database access
 	    Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 	    DishDAO dishDao = new JDBCDishDAOImpl();
@@ -102,6 +109,7 @@ public class EditDishServlet extends HttpServlet {
 	    RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
 	    restaurantDao.setConnection(conn);
 	    
+	    // Read form fields
 	    String idParam = request.getParameter("id");
 	    String name = request.getParameter("dish-name");
 	    String description = request.getParameter("dish-description");
@@ -111,6 +119,7 @@ public class EditDishServlet extends HttpServlet {
 	    String messages = null;
 	    int price = 0;
 
+	    // Validate dish id
 	    try {
 	        dishId = Long.parseLong(idParam);
 	    } catch (NumberFormatException e) {
@@ -124,6 +133,7 @@ public class EditDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Check restaurant ownership
 	    Restaurant restaurant = restaurantDao.get(dish.getIdr());
 
 	    if (restaurant == null || restaurant.getIdu() != user.getId()) {
@@ -131,12 +141,14 @@ public class EditDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Validate required fields
 	    if (name == null || name.trim().isEmpty()
 	            || description == null || description.trim().isEmpty()
 	            || priceParam == null || priceParam.trim().isEmpty()) {
 	        messages = "Todos los campos del plato son obligatorios.";
 	    }
 
+	    // Validate price
 	    if (messages == null) {
 	        try {
 	            price = Integer.parseInt(priceParam);
@@ -148,10 +160,12 @@ public class EditDishServlet extends HttpServlet {
 	        }
 	    }
 	    
+	    // Validate description length
 	    if (messages == null && description != null && description.length() >= 150) {
 		    messages = "La descripcion del plato es demasiado larga, debe ser menor a 150 caracteres.";
 		}
 	    
+	    // Render form again on validation errors
 	    if (messages != null) {
 	        dish.setName(name);
 	        dish.setDescription(description);
@@ -168,12 +182,14 @@ public class EditDishServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Apply dish changes
 	    dish.setName(name.trim());
 	    dish.setDescription(description.trim());
 	    dish.setPrice(price);
 
 	    boolean updated = dishDao.update(dish);
 	    
+	    // Handle persistence errors
 	    if (!updated) {
 	        request.setAttribute("messages", "No se pudo actualizar el plato.");
 	        request.setAttribute("dish", dish);
@@ -186,6 +202,7 @@ public class EditDishServlet extends HttpServlet {
 	        return;
 	    }
 
+	    // Return to the restaurant editor
 	    response.sendRedirect("EditRestaurantServlet.do?id=" + restaurant.getId());
 	}
 

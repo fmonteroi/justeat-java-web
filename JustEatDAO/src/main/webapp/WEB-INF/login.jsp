@@ -14,7 +14,7 @@
 
 <body class="page-login">
 	<header class="top">
-		<a class="back" href="search.jsp" aria-label="Volver">&lt;</a> <a
+		<a class="back" href="SearchServlet.do" aria-label="Volver">&lt;</a> <a
 			class="brand" href="LoginServlet.do" aria-label="Inicio"> <img
 			src="${pageContext.request.contextPath}/images/logo_justeat.svg"
 			alt="Logo Just Eat" width="30" height="30" /> <strong>JUST

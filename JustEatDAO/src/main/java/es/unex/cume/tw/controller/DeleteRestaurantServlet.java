@@ -44,12 +44,14 @@ public class DeleteRestaurantServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("user") == null) {
 		    response.sendRedirect("LoginServlet.do");
 		    return;
 		}
 		
+		// Prepare database access
 		Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 		RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
@@ -58,23 +60,28 @@ public class DeleteRestaurantServlet extends HttpServlet {
 		RestaurantCategoriesDAO restaurantCategoriesDao = new JDBCRestaurantCategoriesDAOImpl();
 		restaurantCategoriesDao.setConnection(conn);
 
+		// Load current user and restaurant
 		User user = (User) session.getAttribute("user");
 		long rid = Long.parseLong(request.getParameter("id"));
 
 		Restaurant restaurant = restaurantDao.get(rid);
 
+		// Check restaurant ownership
 		if (restaurant == null || restaurant.getIdu() != user.getId()) {
 		    response.sendRedirect("ListRestaurantServlet.do");
 		    return;
 		}
 		
 		
+		// Remove category relations
 		List<RestaurantCategories> relations = restaurantCategoriesDao.getAllByRestaurant(rid);
 		for (RestaurantCategories rc : relations) {
 		    restaurantCategoriesDao.delete(rc.getIdr(), rc.getIdct());
 		}
 		
+		// Delete the restaurant
 		restaurantDao.delete(rid);
+		// Return to the restaurant list
 		response.sendRedirect("ListRestaurantServlet.do");
 	}
 

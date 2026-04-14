@@ -47,12 +47,14 @@ public class CreateOrderServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Get session
 		HttpSession session = request.getSession(false);
 	    if (session == null || session.getAttribute("user") == null) {
 	        response.sendRedirect("LoginServlet.do");
 	        return;
 	    }
 	    
+	    // Prepare database access
 	    Connection conn = (Connection) getServletContext().getAttribute("dbConn");
 
 	    DishDAO dishDao = new JDBCDishDAOImpl();
@@ -64,6 +66,7 @@ public class CreateOrderServlet extends HttpServlet {
 	    OrderDishesDAO orderDishesDao = new JDBCOrderDishesDAOImpl();
 	    orderDishesDao.setConnection(conn);
 
+	    // Load user and cart data
 	    User user = (User) session.getAttribute("user");
 
 	    Long cartRestaurantId = (Long) session.getAttribute("cartRestaurantId");
@@ -76,6 +79,7 @@ public class CreateOrderServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Rebuild order dishes and total
 	    List<Dish> dishes = new ArrayList<Dish>();
 	    int totalPrice = 0;
 
@@ -92,6 +96,7 @@ public class CreateOrderServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Build the order object
 	    Order order = new Order();
 	    order.setIdu(user.getId());
 	    order.setTotalPrice(totalPrice);
@@ -103,6 +108,7 @@ public class CreateOrderServlet extends HttpServlet {
 	        return;
 	    }
 	    
+	    // Save order relations
 	    for (Dish dish : dishes) {
 	        OrderDishes orderDish = new OrderDishes();
 	        orderDish.setIdo(orderId);
@@ -110,9 +116,11 @@ public class CreateOrderServlet extends HttpServlet {
 	        orderDishesDao.add(orderDish);
 	    }
 	    
+	    // Clear cart state
 	    session.removeAttribute("cartRestaurantId");
 	    session.removeAttribute("cartDishIds");
 
+	    // Redirect to order history
 	    response.sendRedirect("ListUserOrderServlet.do");
 	    
 	    
