@@ -7,16 +7,48 @@
   const toggleBtn = document.getElementById("togglePassword");
   const formMessages = document.getElementById("formMessages");
 
-  if (!form || !emailInput || !passInput || !toggleBtn || !formMessages) {
-    return;
-  }
-
   const EMAIL_MAX = 120;
   const PASS_MIN = 8;
   const PASS_MAX = 64;
 
   function clearChildren(node) {
     while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
+  /**
+   * Crea un elemento con texto usando los 4 pasos:
+   * 1) createElement
+   * 2) createTextNode
+   * 3) appendChild(text)
+   * 4) appendChild(element) en el contenedor destino (se hace fuera)
+   */
+  function buildTextElement(tagName, text, className, attrs) {
+    // 1) Crear nodo Element
+    const el = document.createElement(tagName);
+
+    if (className) el.className = className;
+
+    if (attrs && typeof attrs === "object") {
+      Object.keys(attrs).forEach((key) => el.setAttribute(key, String(attrs[key])));
+    }
+
+    // 2) Crear nodo Text
+    const txt = document.createTextNode(text);
+
+    // 3) Añadir Text como hijo del Element
+    el.appendChild(txt);
+
+    return el;
+  }
+
+  function setFormMessage(text, type) {
+    clearChildren(formMessages);
+
+    const klass = type === "ok" ? "msg msg--ok" : "msg msg--error";
+    const msg = buildTextElement("div", text, klass, { role: "status" });
+
+    // 4) Añadir Element al DOM (como hijo del contenedor)
+    formMessages.appendChild(msg);
   }
 
   function getErrorIdFor(input) {
@@ -29,51 +61,73 @@
     if (existing) existing.remove();
 
     input.classList.remove("is-invalid");
-    input.removeAttribute("aria-invalid");
+
+    const describedBy = input.getAttribute("aria-describedby") || "";
+    const parts = describedBy
+      .split(" ")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .filter((id) => id !== errId);
+
+    if (parts.length > 0) input.setAttribute("aria-describedby", parts.join(" "));
+    else input.removeAttribute("aria-describedby");
   }
 
   function addFieldError(input, message) {
     const errId = getErrorIdFor(input);
-    const existing = document.getElementById(errId);
 
+    // Si ya existe, actualiza su texto (sin alertas)
+    const existing = document.getElementById(errId);
     if (existing) {
       clearChildren(existing);
       existing.appendChild(document.createTextNode(message));
       input.classList.add("is-invalid");
-      input.setAttribute("aria-invalid", "true");
       return;
     }
 
+    // 1) Element
     const p = document.createElement("p");
     p.className = "field-error";
     p.id = errId;
     p.setAttribute("role", "alert");
-    p.appendChild(document.createTextNode(message));
 
+    // 2) Text
+    const textNode = document.createTextNode(message);
+
+    // 3) Text como hijo del Element
+    p.appendChild(textNode);
+
+    // 4) Element al DOM: lo insertamos debajo del campo dentro de su .field
     const field = input.closest(".field");
-    if (field) field.appendChild(p);
+    if (field) {
+      field.appendChild(p);
+    } else {
+      input.parentNode.appendChild(p);
+    }
 
     input.classList.add("is-invalid");
-    input.setAttribute("aria-invalid", "true");
+
+    // Accesibilidad: asociar el error al input
+    const describedBy = input.getAttribute("aria-describedby");
+    if (describedBy) {
+      if (!describedBy.split(" ").includes(errId)) {
+        input.setAttribute("aria-describedby", `${describedBy} ${errId}`);
+      }
+    } else {
+      input.setAttribute("aria-describedby", errId);
+    }
   }
 
-  function setFormMessage(text) {
-    if (!text) return;
-    clearChildren(formMessages);
-
-    const msg = document.createElement("p");
-    msg.className = "msg msg--error";
-    msg.setAttribute("role", "status");
-    msg.appendChild(document.createTextNode(text));
-
-    formMessages.appendChild(msg);
+  function normalizeEmail(value) {
+    return String(value || "").trim();
   }
 
   function validateEmail() {
-    const value = String(emailInput.value || "").trim();
+    const value = normalizeEmail(emailInput.value);
+
     removeFieldError(emailInput);
 
-    if (!value) {
+    if (value.length === 0) {
       addFieldError(emailInput, "El correo electrónico es obligatorio.");
       return false;
     }
@@ -83,9 +137,10 @@
       return false;
     }
 
+    // Validación razonable adicional (además de type="email")
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     if (!emailRegex.test(value)) {
-      addFieldError(emailInput, "Introduce un correo válido.");
+      addFieldError(emailInput, "Introduce un correo válido (ej.: nombre@dominio.com).");
       return false;
     }
 
@@ -94,9 +149,10 @@
 
   function validatePassword() {
     const value = String(passInput.value || "");
+
     removeFieldError(passInput);
 
-    if (!value) {
+    if (value.length === 0) {
       addFieldError(passInput, "La contraseña es obligatoria.");
       return false;
     }
@@ -119,24 +175,44 @@
     return true;
   }
 
-  toggleBtn.addEventListener("click", () => {
+  function validateForm() {
+    const okEmail = validateEmail();
+    const okPass = validatePassword();
+    return okEmail && okPass;
+  }
+
+  function onTogglePassword() {
     const isHidden = passInput.type === "password";
     passInput.type = isHidden ? "text" : "password";
+
     toggleBtn.setAttribute("aria-pressed", String(isHidden));
     toggleBtn.textContent = isHidden ? "🙈" : "👁";
-  });
+  }
 
-  form.addEventListener("submit", (event) => {
+  function onSubmit(ev) {
     clearChildren(formMessages);
 
-    const emailValid = validateEmail();
-    const passwordValid = validatePassword();
-    if (!(emailValid && passwordValid)) {
-      event.preventDefault();
-      setFormMessage("Revisa los campos marcados en rojo.");
+    const ok = validateForm();
+    if (!ok) {
+      ev.preventDefault();
+      setFormMessage("Revisa los campos marcados en rojo.", "error");
     }
-  });
+  }
 
+  // Eventos (sin onclick en HTML)
+  toggleBtn.addEventListener("click", onTogglePassword);
+
+  form.addEventListener("submit", onSubmit);
+
+  // Validación en tiempo real / al salir del campo
   emailInput.addEventListener("blur", validateEmail);
   passInput.addEventListener("blur", validatePassword);
+
+  emailInput.addEventListener("input", () => {
+    if (emailInput.classList.contains("is-invalid")) validateEmail();
+  });
+
+  passInput.addEventListener("input", () => {
+    if (passInput.classList.contains("is-invalid")) validatePassword();
+  });
 })();

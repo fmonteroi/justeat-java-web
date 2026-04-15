@@ -81,7 +81,7 @@ public class CreateOrderServlet extends HttpServlet {
 	    
 	    // Rebuild order dishes and total
 	    List<Dish> dishes = new ArrayList<Dish>();
-	    int totalPrice = 0;
+	    double totalPrice = 0;
 
 	    for (Long dishId : cartDishIds) {
 	        Dish dish = dishDao.get(dishId);

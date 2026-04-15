@@ -117,7 +117,7 @@ public class EditDishServlet extends HttpServlet {
 	    
 	    long dishId = 0;
 	    String messages = null;
-	    int price = 0;
+	    double price = 0;
 
 	    // Validate dish id
 	    try {
@@ -151,7 +151,7 @@ public class EditDishServlet extends HttpServlet {
 	    // Validate price
 	    if (messages == null) {
 	        try {
-	            price = Integer.parseInt(priceParam);
+	            price = Double.parseDouble(priceParam);
 	            if (price < 0) {
 	                messages = "El precio no puede ser negativo.";
 	            }

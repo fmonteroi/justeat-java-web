@@ -114,7 +114,7 @@ public class CreateDishServlet extends HttpServlet {
 
 		long restaurantId = 0;
 		String messages = null;
-		int price = 0;
+		double price = 0;
 
 		// Validate restaurant id
 		try {
@@ -141,7 +141,7 @@ public class CreateDishServlet extends HttpServlet {
 		// Validate price
 		if (messages == null) {
 			try {
-				price = Integer.parseInt(priceParam);
+				price = Double.parseDouble(priceParam);
 				if (price < 0) {
 					messages = "El precio no puede ser negativo.";
 				}

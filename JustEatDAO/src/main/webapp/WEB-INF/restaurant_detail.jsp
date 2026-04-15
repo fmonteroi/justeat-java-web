@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!doctype html>
 <html lang="es">
@@ -69,7 +70,9 @@
 
 							<p class="detail-sub">
 								<span class="detail-stars" aria-hidden="true">★★★★★</span> <strong
-									class="detail-score">${restaurant.gradesAverage}</strong> <span
+									class="detail-score"><fmt:formatNumber
+											value="${restaurant.gradesAverage}" minFractionDigits="1"
+											maxFractionDigits="1" /></strong> <span
 									class="detail-count">(${reviewsCount} valoraciones)</span> <span
 									class="detail-dot" aria-hidden="true">•</span> <span
 									class="detail-meta">${restaurant.minPrice}-${restaurant.maxPrice}
@@ -99,6 +102,14 @@
 							<div>
 								<strong>Direccion</strong>
 								<p>${restaurant.address}</p>
+							</div>
+						</div>
+
+						<div class="detail-line">
+							<span class="detail-ico" aria-hidden="true">&#128221;</span>
+							<div>
+								<strong>Descripcion</strong>
+								<p>${restaurant.description}</p>
 							</div>
 						</div>
 
@@ -168,7 +179,9 @@
 										</div>
 
 										<div class="menu-item-side">
-											<span class="menu-item-price">${dish.price},00 €</span>
+											<span class="menu-item-price"><fmt:formatNumber
+													value="${dish.price}" minFractionDigits="2"
+													maxFractionDigits="2" /> €</span>
 
 											<c:choose>
 												<c:when test="${sessionScope.user != null}">
@@ -331,7 +344,9 @@
 										</div>
 
 										<div class="menu-item-side">
-											<span class="menu-item-price">${relatedItem.first.gradesAverage}/5</span>
+											<span class="menu-item-price"><fmt:formatNumber
+													value="${relatedItem.first.gradesAverage}"
+													minFractionDigits="1" maxFractionDigits="1" />/5</span>
 											<a class="btn btn-ghost btn-mini"
 												href="RestaurantDetailServlet.do?id=${relatedItem.first.id}">
 												Ver </a>
@@ -421,7 +436,9 @@
 									<article class="menu-item" role="listitem">
 										<div class="menu-item-main">
 											<h4 class="menu-item-title">${cartDish.name}</h4>
-											<p class="menu-item-desc">${cartDish.price},00€</p>
+											<p class="menu-item-desc"><fmt:formatNumber
+													value="${cartDish.price}" minFractionDigits="2"
+													maxFractionDigits="2" />€</p>
 										</div>
 
 										<div class="menu-item-side">
@@ -436,7 +453,8 @@
 
 							<p class="edit-empty-title"
 								style="text-align: center; margin-bottom: 12px;">Total:
-								${cartTotal},00 €</p>
+								<fmt:formatNumber value="${cartTotal}"
+									minFractionDigits="2" maxFractionDigits="2" /> €</p>
 
 							<form action="CreateOrderServlet.do" method="post">
 								<button class="btn btn-primary" type="submit"

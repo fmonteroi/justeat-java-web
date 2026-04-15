@@ -78,7 +78,8 @@ public class TestRestaurantDAO {
 		restaurant01.setName("newRestaurant");
 		restaurant01.setTelephone("777777777");
 		restaurant01.setIdu(0);
-		restaurant01.setGradesAverage(15);
+		restaurant01.setGradesAverage(15.0);
+		restaurant01.setDescription("Descripcion de prueba");
 		restaurant01.setCity("Mérida");
 		restaurant01.setAvailable(1);
 		restaurant01.setContactEmail("info@merida.com");
@@ -88,6 +89,7 @@ public class TestRestaurantDAO {
 		
 		Restaurant restaurant02 = RestaurantDAO.getAllBySearchName("newRestaurant").iterator().next();
 		assertEquals(restaurant01.getTelephone(),restaurant02.getTelephone());
+		assertEquals(restaurant01.getDescription(),restaurant02.getDescription());
 	}
 	
 	@Test

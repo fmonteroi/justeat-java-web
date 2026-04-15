@@ -770,6 +770,27 @@ body.page-listado {
   gap: 12px;
 }
 
+.field-price {
+  gap: 8px;
+}
+
+.price-range {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.price-range input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.price-sep {
+  font-weight: 900;
+  color: #6b7280;
+}
+
 /* Fieldsets de filtros */
 .filters fieldset {
   border: 1px solid rgba(17, 24, 39, 0.25);
@@ -1091,7 +1112,7 @@ body.page-listado {
   inset: auto;
   z-index: auto;
   display: grid; 
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 250px 1fr;
   color: inherit;
   text-decoration: none;
 }
@@ -1111,12 +1132,34 @@ body.page-listado {
   padding: 14px;
   align-self: center;
   z-index: 2;
+  display: grid;
+  gap: 5px;
 }
 
 /* Título de restaurante */
 .r-body h3 {
-  margin: 0 0 6px;
+  margin: 0 0 1px;
   font-size: 18px;
+}
+
+.r-rating {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.r-rating-star,
+.r-rating-value {
+  font-weight: 800;
+}
+
+.r-rating-star {
+  color: #f97316;
 }
 
 /* Meta-info del restaurante */
@@ -1124,6 +1167,88 @@ body.page-listado {
   margin: 0;
   color: #6b7280;
   font-size: 14px;
+  line-height: 1.45;
+}
+
+.r-meta strong {
+  color: #374151;
+}
+
+.r-spacer {
+  height: 5px;
+}
+
+.detail-tags--compact {
+  margin-top: 6px;
+  gap: 10px;
+}
+
+.detail-tags--compact .tag {
+  background: #fff7f0;
+  border-color: #f7c9a7;
+  color: #9a3412;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 7px 12px;
+}
+
+.category-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.category-card {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e7edf5;
+  border-radius: 18px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+  padding: 18px;
+}
+
+.category-card-body {
+  display: grid;
+  gap: 14px;
+}
+
+.category-card-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.category-card-desc {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.category-card-desc strong {
+  color: #374151;
+}
+
+.category-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.category-card-actions form {
+  margin: 0;
 }
 
 /* ===========================

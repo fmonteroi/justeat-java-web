@@ -37,7 +37,7 @@ public interface OrderDAO {
 	 * 
 	 * @return Order object with that id.
 	 */
-	public Order get(long idu,int totalPrice);
+	public Order get(long idu,double totalPrice);
 
 
 	

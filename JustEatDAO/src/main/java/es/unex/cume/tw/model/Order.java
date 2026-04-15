@@ -4,12 +4,12 @@ public class Order {
 
 	private long id;
 	private long idu;
-	private int totalPrice;
+	private double totalPrice;
 
-	public int getTotalPrice() {
+	public double getTotalPrice() {
 		return totalPrice;
 	}
-	public void setTotalPrice(int totalPrice) {
+	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	public long getId() {

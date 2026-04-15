@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!doctype html>
 <html lang="es">
 <head>
@@ -34,8 +35,7 @@
 			<a class="top-userlink" href="EditUserServlet.do"> <span
 				aria-hidden="true">&#128100;</span> <span>${sessionScope.user.name}
 					${sessionScope.user.surname}</span>
-			</a> <span class="badge" aria-hidden="true">2</span> <span class="flag"
-				aria-hidden="true">ES</span>
+			</a> <span class="flag" aria-hidden="true">ES</span>
 			<button class="menu" type="button" aria-label="Menu">=</button>
 		</div>
 	</header>
@@ -50,33 +50,29 @@
 			<aside class="edit-side" aria-label="Menu lateral">
 				<nav class="edit-sidecard" aria-label="Secciones privadas">
 					<ul class="edit-sidemenu">
+
 						<li><a class="edit-sidelink" href="EditUserServlet.do"> <span
-								class="edit-sidelink-icon" aria-hidden="true">&#128100;</span> <span
 								class="edit-sidelink-label">Mi perfil</span>
-						</a></li>
-						<li><a class="edit-sidelink"
-							href="ListUserRestaurantServlet.do"> <span
-								class="edit-sidelink-icon" aria-hidden="true">&#127869;</span> <span
-								class="edit-sidelink-label">Mis restaurantes</span>
-						</a></li>
-						<li><a class="edit-sidelink"
-							href="CreateRestaurantServlet.do"> <span
-								class="edit-sidelink-icon" aria-hidden="true">+</span> <span
-								class="edit-sidelink-label">Anadir restaurante</span>
-						</a></li>
-						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
-								<span class="edit-sidelink-label">Categorías</span>
 						</a></li>
 
 						<li><a class="edit-sidelink is-active"
 							href="ListUserOrderServlet.do"> <span
-								class="edit-sidelink-icon" aria-hidden="true">&#128722;</span> <span
 								class="edit-sidelink-label">Mis pedidos</span>
 						</a></li>
+
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Mis categorías</span>
+						</a></li>
+
+						<li><a class="edit-sidelink"
+							href="ListUserRestaurantServlet.do"> <span
+								class="edit-sidelink-label">Mis restaurantes</span>
+						</a></li>
+
 						<li><a class="edit-sidelink" href="LogoutServlet.do"> <span
-								class="edit-sidelink-icon" aria-hidden="true">&#10140;</span> <span
 								class="edit-sidelink-label">Salir</span>
 						</a></li>
+
 					</ul>
 				</nav>
 			</aside>
@@ -95,8 +91,8 @@
 						<c:when test="${empty ordersList}">
 							<div class="edit-empty">
 								<div class="edit-empty-icon" aria-hidden="true">&#128722;</div>
-								<p class="edit-empty-title">Todavia no has hecho pedidos</p>
-								<p class="help">Cuando confirmes uno, aparecera aqui</p>
+								<p class="edit-empty-title">Todavía no has hecho pedidos</p>
+								<p class="help">Cuando confirmes uno, aparecera aquí</p>
 							</div>
 						</c:when>
 
@@ -122,14 +118,18 @@
 
 											<div class="detail-tags">
 												<c:forEach var="dish" items="${orderItem.third}">
-													<span class="tag">${dish.name} - ${dish.price},00 €</span>
+													<span class="tag">${dish.name} - <fmt:formatNumber
+															value="${dish.price}" minFractionDigits="2"
+															maxFractionDigits="2" /> €
+													</span>
 												</c:forEach>
 											</div>
 										</div>
 
 										<div class="menu-item-side">
-											<span class="menu-item-price">${orderItem.first.totalPrice},00
-												€</span>
+											<span class="menu-item-price"><fmt:formatNumber
+													value="${orderItem.first.totalPrice}" minFractionDigits="2"
+													maxFractionDigits="2" /> €</span>
 
 											<c:if test="${orderItem.second != null}">
 												<a class="btn btn-ghost btn-mini"

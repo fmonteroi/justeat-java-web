@@ -30,7 +30,7 @@ public class JDBCOrderDAOImpl implements OrderDAO {
 			order = new Order();
 			order.setId(rs.getInt("id"));
 			order.setIdu(rs.getInt("idu"));
-			order.setTotalPrice(rs.getInt("totalPrice"));
+			order.setTotalPrice(rs.getDouble("totalPrice"));
 
 			logger.info("fetching Order by id: " + id + " -> " + order.getId());
 		} catch (SQLException e) {
@@ -40,7 +40,7 @@ public class JDBCOrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public Order get(long idu, int totalPrice) {
+	public Order get(long idu, double totalPrice) {
 		if (conn == null)
 			return null;
 
@@ -55,7 +55,7 @@ public class JDBCOrderDAOImpl implements OrderDAO {
 			order = new Order();
 			order.setId(rs.getInt("id"));
 			order.setIdu(rs.getInt("idu"));
-			order.setTotalPrice(rs.getInt("totalPrice"));
+			order.setTotalPrice(rs.getDouble("totalPrice"));
 
 			logger.info("fetching Order id: " + order.getId());
 		} catch (SQLException e) {
@@ -79,7 +79,7 @@ public class JDBCOrderDAOImpl implements OrderDAO {
 				Order order = new Order();
 				order.setId(rs.getInt("id"));
 				order.setIdu(rs.getInt("idu"));
-				order.setTotalPrice(rs.getInt("totalPrice"));
+				order.setTotalPrice(rs.getDouble("totalPrice"));
 				orders.add(order);
 
 				logger.info("fetching Orders by user: " + order.getId());
@@ -106,7 +106,7 @@ public class JDBCOrderDAOImpl implements OrderDAO {
 				Order order = new Order();
 				order.setId(rs.getInt("id"));
 				order.setIdu(rs.getInt("idu"));
-				order.setTotalPrice(rs.getInt("totalPrice"));
+				order.setTotalPrice(rs.getDouble("totalPrice"));
 				orderes.add(order);
 				logger.info("fetching Orders: " + order.getId());
 

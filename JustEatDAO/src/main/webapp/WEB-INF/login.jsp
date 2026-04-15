@@ -6,10 +6,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Iniciar sesion</title>
+<title>Iniciar sesión</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/styles.css" />
-<!-- <script src="${pageContext.request.contextPath}/js/login.js" defer></script> -->
+<script src="${pageContext.request.contextPath}/js/login.js" defer></script>
 </head>
 
 <body class="page-login">
@@ -24,7 +24,7 @@
 
 	<main class="wrap">
 		<section class="card auth-card" aria-label="Iniciar sesion">
-			<h1>Iniciar sesion</h1>
+			<h1>Iniciar sesión</h1>
 
 			<div id="formMessages" class="messages" aria-live="polite">
 				<c:if test="${not empty messages}">
@@ -34,41 +34,40 @@
 
 			<form id="loginForm" action="LoginServlet.do" method="post"
 				novalidate>
-				
+
 				<c:if test="${not empty redirect}">
 					<input type="hidden" name="redirect" value="${redirect}" />
 				</c:if>
-				
+
 				<div class="field">
-					<label for="email">Correo electronico</label> <input id="email"
+					<label for="email">Correo electrónico</label> <input id="email"
 						name="email" type="email" autocomplete="email" inputmode="email"
 						placeholder="nombre@dominio.com" required maxlength="120" />
 				</div>
 
 				<div class="field">
-					<label for="pass">Contrasena</label>
+					<label for="pass">Contraseña</label>
 					<div class="pw">
 						<input id="pass" name="password" type="password"
-							autocomplete="current-password" placeholder="Minimo 8 caracteres"
+							autocomplete="current-password" placeholder="Mínimo 8 caracteres"
 							required minlength="8" maxlength="64" />
 
 						<button id="togglePassword" type="button" class="eye"
-							aria-label="Mostrar u ocultar contrasena" aria-pressed="false">
-							O</button>
+							aria-label="Mostrar u ocultar contraseña">👁</button>
 					</div>
 
 					<p class="hint" id="passHint">Usa al menos 8 caracteres. Evita
 						espacios.</p>
 				</div>
 
-				<button class="boton" type="submit">Iniciar sesion</button>
+				<button class="boton" type="submit">Iniciar sesión</button>
 
 				<p class="center">
-					<a href="#">Has olvidado tu contrasena?</a>
+					<a href="#">¿Has olvidado tu contraseña?</a>
 				</p>
 				<hr />
 				<p class="center muted">
-					No tienes cuenta? <a class="accent" href="RegisterServlet.do">Registrate</a>
+					¿No tienes cuenta? <a class="accent" href="RegisterServlet.do">Regístrate</a>
 				</p>
 			</form>
 		</section>

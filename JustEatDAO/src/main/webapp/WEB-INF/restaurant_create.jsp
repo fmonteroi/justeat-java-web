@@ -9,8 +9,6 @@
 <title>Añadir restaurante</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/styles.css" />
-<script src="${pageContext.request.contextPath}/js/restaurant_create.js"
-	defer></script>
 </head>
 
 <body class="page-editar">
@@ -42,8 +40,8 @@
 
 	<main class="container" role="main">
 		<div class="edit-header">
-			<a class="edit-back" href="ListRestaurantServlet.do"
-				aria-label="Volver al listado">&larr; Volver</a>
+			<a class="edit-back" href="ListUserRestaurantServlet.do"
+				aria-label="Volver">&larr; Volver</a>
 		</div>
 
 		<div class="edit-layout">
@@ -52,19 +50,22 @@
 					<ul class="edit-sidemenu">
 						<li><a class="edit-sidelink" href="EditUserServlet.do"><span
 								class="edit-sidelink-label">Mi perfil</span></a></li>
+								
 						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
 								<span class="edit-sidelink-label">Mis pedidos</span>
 						</a></li>
+						
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Mis categorías</span>
+						</a></li>
+						
 						<li><a class="edit-sidelink"
 							href="ListUserRestaurantServlet.do"><span
 								class="edit-sidelink-label">Mis restaurantes</span></a></li>
+								
 						<li><a class="edit-sidelink is-active"
 							href="CreateRestaurantServlet.do"><span
-								class="edit-sidelink-label">Añadir restaurante</span></a></li>
-
-						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
-								<span class="edit-sidelink-label">Categorías</span>
-						</a></li>
+								class="edit-sidelink-label">&rarr; Añadir restaurante</span></a></li>
 
 
 						<li><a class="edit-sidelink" href="LogoutServlet.do"><span
@@ -97,6 +98,12 @@
 									<label for="restaurant-address">Dirección</label>
 									<textarea id="restaurant-address" name="restaurant-address"
 										rows="2" required>${restaurantAddress}</textarea>
+								</div>
+
+								<div class="field">
+									<label for="restaurant-description">Descripción</label>
+									<textarea id="restaurant-description"
+										name="restaurant-description" rows="4" required>${restaurantDescription}</textarea>
 								</div>
 
 								<div class="field">

@@ -13,6 +13,7 @@ import es.unex.cume.tw.dao.JDBCUserDAOImpl;
 import es.unex.cume.tw.dao.RestaurantCategoriesDAO;
 import es.unex.cume.tw.dao.RestaurantDAO;
 import es.unex.cume.tw.dao.UserDAO;
+import es.unex.cume.tw.model.Category;
 import es.unex.cume.tw.model.Restaurant;
 import es.unex.cume.tw.model.RestaurantCategories;
 import es.unex.cume.tw.model.User;
@@ -76,16 +77,24 @@ public class ListUserRestaurantServlet extends HttpServlet {
 		Iterator<Restaurant> itRestaurants = restaurants.iterator();
 
 		// Build restaurant view models
-		List<Triplet<Restaurant, User, List<RestaurantCategories>>> restaurantsUserList = new ArrayList<Triplet<Restaurant, User, List<RestaurantCategories>>>();
+		List<Triplet<Restaurant, User, List<Category>>> restaurantsUserList = new ArrayList<Triplet<Restaurant, User, List<Category>>>();
 
 		while (itRestaurants.hasNext()) {
 			Restaurant restaurant = itRestaurants.next();
 			User owner = userDao.get(restaurant.getIdu());
 			List<RestaurantCategories> restaurantsCategories = restaurantsCategoriesDao
 					.getAllByRestaurant(restaurant.getId());
+			List<Category> categories = new ArrayList<Category>();
 
-			restaurantsUserList.add(new Triplet<Restaurant, User, List<RestaurantCategories>>(restaurant, owner,
-					restaurantsCategories));
+			for (RestaurantCategories rc : restaurantsCategories) {
+				Category category = categoryDao.get(rc.getIdct());
+				if (category != null) {
+					categories.add(category);
+				}
+			}
+
+			restaurantsUserList.add(new Triplet<Restaurant, User, List<Category>>(restaurant, owner,
+					categories));
 		}
 
 		// Render restaurant list

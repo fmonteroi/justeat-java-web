@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!doctype html>
 <html lang="es">
 <head>
@@ -59,7 +60,7 @@
 							<option value="">Todas</option>
 							<c:forEach var="cat" items="${allCategories}">
 								<option value="${cat.id}"
-									<c:if test="${not empty categoryValue and categoryValue == cat.id}">selected</c:if>>
+									<c:if test="${not empty categoryValue and categoryValue eq cat.id}">selected</c:if>>
 									${cat.name}</option>
 							</c:forEach>
 						</select>
@@ -80,14 +81,15 @@
 							type="text" value="${dishValue}" />
 					</div>
 
-					<div class="field">
-						<label for="minPrice">Precio mínimo</label> <input id="minPrice"
-							name="minPrice" type="number" min="0" value="${minPriceValue}" />
-					</div>
-
-					<div class="field">
-						<label for="maxPrice">Precio máximo</label> <input id="maxPrice"
-							name="maxPrice" type="number" min="0" value="${maxPriceValue}" />
+					<div class="field field-price">
+						<label for="minPrice">Rango de precio</label>
+						<div class="price-range">
+							<input id="minPrice" name="minPrice" type="number" min="0"
+								placeholder="Min" value="${minPriceValue}" /> <span
+								class="price-sep" aria-hidden="true">-</span> <input
+								id="maxPrice" name="maxPrice" type="number" min="0"
+								placeholder="Max" value="${maxPriceValue}" />
+						</div>
 					</div>
 
 					<button class="btn btn-primary" type="submit">Aplicar
@@ -154,50 +156,55 @@
 						<section class="cards" id="cards">
 							<c:forEach var="restaurant" items="${restaurantsList}">
 								<article class="r-card">
-									<img class="r-img"
+									<a class="r-card-link"
+										href="RestaurantDetailServlet.do?id=${restaurant.first.id}"
+										aria-label="Ver detalles de ${restaurant.first.name}"> <img
+										class="r-img"
 										src="${pageContext.request.contextPath}/images/restaurantes/placeholder.webp"
 										alt="Restaurante" />
 
-									<div class="r-body">
-										<h3>
-											<a class="r-card-link"
-												href="RestaurantDetailServlet.do?id=${restaurant.first.id}"
-												aria-label="Ver detalles de ${restaurant.first.name}">
-												${restaurant.first.name} </a>
-										</h3>
+										<div class="r-body">
+											<h3>${restaurant.first.name}</h3>
 
-										<p class="r-meta">Ciudad: ${restaurant.first.city}
-											&middot; Precio:
-											${restaurant.first.minPrice}-${restaurant.first.maxPrice}
-											EUR</p>
+											<p class="r-rating">
+												<span class="r-rating-star">★</span> <span
+													class="r-rating-value"><fmt:formatNumber
+														value="${restaurant.first.gradesAverage}"
+														minFractionDigits="1" maxFractionDigits="1" /></span>
+											</p>
 
-										<p class="r-meta">
-											Propietario: ${restaurant.second.name} &middot; Bike
-											Friendly:
-											<c:choose>
-												<c:when test="${restaurant.first.bikeFriendly eq 1}">Si</c:when>
-												<c:otherwise>No</c:otherwise>
-											</c:choose>
-											&middot;
-											<c:choose>
-												<c:when test="${restaurant.first.available eq 1}">Acepta pedidos</c:when>
-												<c:otherwise>No acepta pedidos</c:otherwise>
-											</c:choose>
-										</p>
+											<div class="r-spacer" aria-hidden="true"></div>
 
-										<p class="r-meta">Categorias:</p>
-										<div class="detail-tags">
-											<c:forEach var="category" items="${restaurant.third}">
-												<span class="tag">${category.name}</span>
-											</c:forEach>
+											<p class="r-meta">
+												<strong>Descripción:</strong>
+												${restaurant.first.description}
+											</p>
+
+											<div class="r-spacer" aria-hidden="true"></div>
+
+											<p class="r-meta">Ciudad: ${restaurant.first.city}</p>
+
+											<p class="r-meta">
+												Rango de precio:
+												${restaurant.first.minPrice}-${restaurant.first.maxPrice}
+												EUR
+											</p>
+
+											<p class="r-meta">
+												Disponibilidad:
+												<c:choose>
+													<c:when test="${restaurant.first.available eq 1}">Acepta pedidos</c:when>
+													<c:otherwise>No acepta pedidos</c:otherwise>
+												</c:choose>
+											</p>
+
+											<div class="detail-tags detail-tags--compact">
+												<c:forEach var="category" items="${restaurant.third}">
+													<span class="tag">${category.name}</span>
+												</c:forEach>
+											</div>
 										</div>
-
-										<p class="r-meta" style="margin-top: 10px;">
-											<a class="btn btn-ghost btn-mini"
-												href="RestaurantDetailServlet.do?id=${restaurant.first.id}">
-												Ver restaurante </a>
-										</p>
-									</div>
+									</a>
 								</article>
 							</c:forEach>
 						</section>

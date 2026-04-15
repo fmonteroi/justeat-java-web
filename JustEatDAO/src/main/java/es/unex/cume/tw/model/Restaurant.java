@@ -5,12 +5,13 @@ public class Restaurant {
 	private long id;
 	private String name;
 	private String address;
+	private String description;
 	private String telephone;
 	private String city;
 	private int minPrice;
 	private int maxPrice;
 	private String contactEmail;
-	private int gradesAverage;
+	private double gradesAverage;
 	private int bikeFriendly;
 	private int available;
 	private int idu;
@@ -30,6 +31,12 @@ public class Restaurant {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public String getCity() {
 		return city;
 	}
@@ -48,10 +55,10 @@ public class Restaurant {
 	public void setMaxPrice(int maxPrice) {
 		this.maxPrice = maxPrice;
 	}
-	public int getGradesAverage() {
+	public double getGradesAverage() {
 		return gradesAverage;
 	}
-	public void setGradesAverage(int gradesAverage) {
+	public void setGradesAverage(double gradesAverage) {
 		this.gradesAverage = gradesAverage;
 	}
 	public int getBikeFriendly() {

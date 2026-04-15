@@ -4,7 +4,7 @@ public class Dish {
 	
 	private long id;
 	private String name;
-	private int price;
+	private double price;
 	private String description;
 	private long idr;
 	public long getId() {
@@ -19,10 +19,10 @@ public class Dish {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public String getDescription() {

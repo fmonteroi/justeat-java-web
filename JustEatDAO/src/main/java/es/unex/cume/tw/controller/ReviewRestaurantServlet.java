@@ -132,7 +132,7 @@ public class ReviewRestaurantServlet extends HttpServlet {
 
 	    // Reset average when there are no reviews
 	    if (reviews == null || reviews.isEmpty()) {
-	        restaurant.setGradesAverage(0);
+	        restaurant.setGradesAverage(0.0);
 	        restaurantDao.update(restaurant);
 	        return;
 	    }
@@ -143,7 +143,7 @@ public class ReviewRestaurantServlet extends HttpServlet {
 	    	total = total + review.getGrade();
 	    }
 
-	    int average = Math.round((float) total / reviews.size());
+	    double average = (double) total / reviews.size();
 	    // Persist the new average
 	    restaurant.setGradesAverage(average);
 	    restaurantDao.update(restaurant);

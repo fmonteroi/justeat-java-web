@@ -46,15 +46,15 @@ public class TestOrderDAO {
 	public void test1BaseData() {
 		Order order00 = orderDAO.get(0);
 		assertEquals(order00.getId(),0);
-		assertEquals(order00.getTotalPrice(),100);
+		assertEquals(100.0, order00.getTotalPrice(), 0.001);
 		
 		Order order01 = orderDAO.get(1);
 		assertEquals(order01.getId(),1);
-		assertEquals(order01.getTotalPrice(),14);
+		assertEquals(14.0, order01.getTotalPrice(), 0.001);
 		
 		Order order02 = orderDAO.get(2);
 		assertEquals(order02.getId(),2);
-		assertEquals(order02.getTotalPrice(),5);
+		assertEquals(5.0, order02.getTotalPrice(), 0.001);
 
 	}
 	
@@ -62,7 +62,7 @@ public class TestOrderDAO {
 	@Test
 	public void test2Add(){
 		Order order01 = new Order();
-		order01.setTotalPrice(1000);
+		order01.setTotalPrice(1000.0);
 		order01.setIdu(1);
 		
 		
@@ -70,36 +70,36 @@ public class TestOrderDAO {
 		
 		Order order02 = orderDAO.get(order01.getIdu(),order01.getTotalPrice());
 		assertEquals(order01.getIdu(),order02.getIdu());
-		assertEquals(order01.getTotalPrice(),order02.getTotalPrice());
+		assertEquals(order01.getTotalPrice(),order02.getTotalPrice(), 0.001);
 		
 	}
 	
 	@Test
 	public void test3Modify(){
 		Order order01 = orderDAO.get(1);
-		int previousPrice = order01.getTotalPrice();
+		double previousPrice = order01.getTotalPrice();
 		
-		order01.setTotalPrice(2000);
+		order01.setTotalPrice(2000.0);
 		orderDAO.update(order01);
 		
 		Order order02 = orderDAO.get(1);		
-		assertEquals(order01.getTotalPrice(),order02.getTotalPrice());
+		assertEquals(order01.getTotalPrice(),order02.getTotalPrice(), 0.001);
 
 		order01.setTotalPrice(previousPrice);
 		orderDAO.update(order01);
 		
 		order02 = orderDAO.get(1);		
-		assertEquals(order01.getTotalPrice(),order02.getTotalPrice());
+		assertEquals(order01.getTotalPrice(),order02.getTotalPrice(), 0.001);
 	
 	}
 
 	
 	@Test
 	public void test4Delete(){
-		 Order order01 = orderDAO.get(1,1000);
+		 Order order01 = orderDAO.get(1,1000.0);
 		 orderDAO.delete(order01.getId());
 		 
-		 Order order02 = orderDAO.get(1,1000);
+		 Order order02 = orderDAO.get(1,1000.0);
  		 assertEquals(null, order02);
  		 
  		orderDAO.getAll();

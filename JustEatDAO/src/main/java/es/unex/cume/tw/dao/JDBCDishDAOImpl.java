@@ -29,7 +29,7 @@ public class JDBCDishDAOImpl implements DishDAO {
 			dish  = new Dish();	 
 			dish.setId(rs.getInt("id"));
 			dish.setName(rs.getString("name"));
-			dish.setPrice(rs.getInt("price"));
+			dish.setPrice(rs.getDouble("price"));
 			dish.setDescription(rs.getString("description"));
 			dish.setIdr(rs.getInt("idr"));
 			
@@ -54,7 +54,7 @@ public class JDBCDishDAOImpl implements DishDAO {
 			dish  = new Dish();	 
 			dish.setId(rs.getInt("id"));
 			dish.setName(rs.getString("name"));
-			dish.setPrice(rs.getInt("price"));
+			dish.setPrice(rs.getDouble("price"));
 			dish.setDescription(rs.getString("description"));
 			dish.setIdr(rs.getInt("idr"));
 			
@@ -81,7 +81,7 @@ public class JDBCDishDAOImpl implements DishDAO {
 				Dish dish = new Dish();
 				dish.setId(rs.getInt("id"));
 				dish.setName(rs.getString("name"));
-				dish.setPrice(rs.getInt("price"));
+				dish.setPrice(rs.getDouble("price"));
 				dish.setDescription(rs.getString("description"));
 				dish.setIdr(rs.getInt("idr"));
 				
@@ -112,7 +112,7 @@ public class JDBCDishDAOImpl implements DishDAO {
 				
 				dish.setId(rs.getInt("id"));
 				dish.setName(rs.getString("name"));
-				dish.setPrice(rs.getInt("price"));
+				dish.setPrice(rs.getDouble("price"));
 				dish.setDescription(rs.getString("description"));
 				dish.setIdr(rs.getInt("idr"));
 				
@@ -232,7 +232,7 @@ public class JDBCDishDAOImpl implements DishDAO {
 	            Dish dish = new Dish();
 	            dish.setId(rs.getInt("id"));
 	            dish.setName(rs.getString("name"));
-	            dish.setPrice(rs.getInt("price"));
+	            dish.setPrice(rs.getDouble("price"));
 	            dish.setDescription(rs.getString("description"));
 	            dish.setIdr(rs.getInt("idr"));
 

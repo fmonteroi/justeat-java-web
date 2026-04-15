@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!doctype html>
 <html lang="es">
 <head>
@@ -56,19 +57,15 @@
 						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
 								<span class="edit-sidelink-label">Mis pedidos</span>
 						</a></li>
+
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Mis categorías</span>
+						</a></li>
+
 						<li><a class="edit-sidelink is-active"
 							href="ListUserRestaurantServlet.do"> <span
 								class="edit-sidelink-label">Mis restaurantes</span>
 						</a></li>
-						<li><a class="edit-sidelink"
-							href="CreateRestaurantServlet.do"> <span
-								class="edit-sidelink-label">Añadir restaurante</span>
-						</a></li>
-
-						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
-								<span class="edit-sidelink-label">Categorías</span>
-						</a></li>
-
 
 						<li><a class="edit-sidelink" href="LogoutServlet.do"> <span
 								class="edit-sidelink-label">Salir</span>
@@ -80,11 +77,18 @@
 			<section class="edit-main" aria-label="Mis restaurantes">
 				<article class="card edit-card" aria-label="Listado de restaurantes">
 					<header class="menu-head">
-						<h2 class="menu-title">Mis restaurantes</h2>
-						<p class="help">
-							<strong><span class="countText">${fn:length(restaurantsList)}</span>
-								restaurantes</strong> asociados a tu cuenta
-						</p>
+						<div class="results-top">
+							<div>
+								<h2 class="menu-title">Mis restaurantes</h2>
+								<p class="help">
+									<strong><span class="countText">${fn:length(restaurantsList)}</span>
+										restaurantes</strong> asociados a tu cuenta
+								</p>
+							</div>
+
+							<a class="btn btn-primary" href="CreateRestaurantServlet.do">
+								Añadir restaurante </a>
+						</div>
 					</header>
 
 					<section class="cards" id="cards">
@@ -96,40 +100,50 @@
 									class="r-img"
 									src="${pageContext.request.contextPath}/images/restaurantes/placeholder.webp"
 									alt="Restaurante" />
+
 									<div class="r-body">
 										<h3>${restaurant.first.name}</h3>
 
-										<p class="r-meta">Ciudad: ${restaurant.first.city}
-											&middot; Precio:
+										<p class="r-rating">
+											<span class="r-rating-star">★</span> <span
+												class="r-rating-value"><fmt:formatNumber
+													value="${restaurant.first.gradesAverage}"
+													minFractionDigits="1" maxFractionDigits="1" /></span>
+										</p>
+
+										<div class="r-spacer" aria-hidden="true"></div>
+
+										<p class="r-meta">
+											<strong>Descripción:</strong> ${restaurant.first.description}
+										</p>
+
+										<div class="r-spacer" aria-hidden="true"></div>
+
+										<p class="r-meta">Ciudad: ${restaurant.first.city}</p>
+
+										<p class="r-meta">Rango de precio:
 											${restaurant.first.minPrice}-${restaurant.first.maxPrice} EUR
 										</p>
 
 										<p class="r-meta">
-											Propietario: ${restaurant.second.name} &middot; Bike
-											Friendly:
-											<c:choose>
-												<c:when test="${restaurant.first.bikeFriendly eq 1}">Si</c:when>
-												<c:otherwise>No</c:otherwise>
-											</c:choose>
-											&middot;
+											Disponibilidad:
 											<c:choose>
 												<c:when test="${restaurant.first.available eq 1}">Acepta pedidos</c:when>
 												<c:otherwise>No acepta pedidos</c:otherwise>
 											</c:choose>
 										</p>
 
-										<p class="r-meta">
-											Categorias:
-											<c:forEach var="category" items="${restaurant.third}"
-												varStatus="status">
-                          ${category.idct}<c:if test="${!status.last}">, </c:if>
+										<div class="detail-tags detail-tags--compact">
+											<c:forEach var="category" items="${restaurant.third}">
+												<span class="tag">${category.name}</span>
 											</c:forEach>
-										</p>
+										</div>
 									</div>
 								</a>
 							</article>
 						</c:forEach>
 					</section>
+
 				</article>
 			</section>
 		</div>

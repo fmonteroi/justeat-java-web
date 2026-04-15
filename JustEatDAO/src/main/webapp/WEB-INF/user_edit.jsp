@@ -48,23 +48,24 @@
 			<aside class="edit-side" aria-label="Menu lateral">
 				<nav class="edit-sidecard" aria-label="Secciones privadas">
 					<ul class="edit-sidemenu">
+					
 						<li><a class="edit-sidelink is-active"
 							href="EditUserServlet.do"> <span class="edit-sidelink-label">Mi
 									perfil</span>
 						</a></li>
+						
+						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
+								<span class="edit-sidelink-label">Mis pedidos</span>
+						</a></li>
+						
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Mis categorías</span>
+						</a></li>
+						
 						<li><a class="edit-sidelink"
 							href="ListUserRestaurantServlet.do"> <span
 								class="edit-sidelink-label">Mis restaurantes</span>
 						</a></li>
-						<li><a class="edit-sidelink"
-							href="CreateRestaurantServlet.do"> <span
-								class="edit-sidelink-label">Añadir restaurante</span>
-						</a></li>
-
-						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
-								<span class="edit-sidelink-label">Categorías</span>
-						</a></li>
-
 
 						<li><a class="edit-sidelink" href="LogoutServlet.do"> <span
 								class="edit-sidelink-label">Salir</span>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="restaurant" value="${sessionScope.restaurant}" />
 <!doctype html>
 <html lang="es">
@@ -44,8 +45,8 @@
 	<main class="container" role="main">
 		<div class="edit-header">
 			<a class="edit-back"
-				href="RestaurantDetailServlet.do?id=${restaurant.id}"
-				aria-label="Volver a detalles">&larr; Volver</a>
+				href="ListUserRestaurantServlet.do"
+				aria-label="Volver">&larr; Volver</a>
 		</div>
 
 		<div class="edit-layout">
@@ -54,21 +55,22 @@
 					<ul class="edit-sidemenu">
 						<li><a class="edit-sidelink" href="EditUserServlet.do"><span
 								class="edit-sidelink-label">Mi perfil</span></a></li>
+								
 						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
 								<span class="edit-sidelink-label">Mis pedidos</span>
 						</a></li>
+						
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Mis categorías</span>
+						</a></li>
+						
 						<li><a class="edit-sidelink"
 							href="ListUserRestaurantServlet.do"><span
 								class="edit-sidelink-label">Mis restaurantes</span></a></li>
-						<li><a class="edit-sidelink"
-							href="CreateRestaurantServlet.do"><span
-								class="edit-sidelink-label">Añadir restaurante</span></a></li>
+								
 						<li><a class="edit-sidelink is-active" href="#"><span
-								class="edit-sidelink-label">Establecimiento</span></a></li>
+								class="edit-sidelink-label">&rarr; Editar restaurante</span></a></li>
 
-						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
-								<span class="edit-sidelink-label">Categorías</span>
-						</a></li>
 
 						<li><a class="edit-sidelink" href="LogoutServlet.do"><span
 								class="edit-sidelink-label">Salir</span></a></li>
@@ -88,6 +90,10 @@
 						action="EditRestaurantServlet.do?id=${restaurant.id}"
 						method="post" novalidate>
 						<div class="messages" aria-live="polite">
+							<c:if test="${not empty successMessage}">
+								<p class="msg msg--ok">${successMessage}</p>
+							</c:if>
+							
 							<c:if test="${not empty messages}">
 								<p class="msg msg--error">${messages}</p>
 							</c:if>
@@ -107,6 +113,12 @@
 									<label for="restaurant-address">Direccion</label>
 									<textarea id="restaurant-address" name="restaurant-address"
 										rows="2" required>${restaurant.address}</textarea>
+								</div>
+
+								<div class="field">
+									<label for="restaurant-description">Descripcion</label>
+									<textarea id="restaurant-description"
+										name="restaurant-description" rows="4" required>${restaurant.description}</textarea>
 								</div>
 
 								<div class="field">
@@ -145,7 +157,9 @@
 								<div class="edit-rating">
 									<span class="edit-rating-label">Media de valoraciones</span> <span
 										class="edit-rating-stars" aria-hidden="true">*****</span> <span
-										class="edit-rating-value">${restaurant.gradesAverage}</span>
+										class="edit-rating-value"><fmt:formatNumber
+											value="${restaurant.gradesAverage}" minFractionDigits="1"
+											maxFractionDigits="1" /></span>
 								</div>
 							</section>
 
@@ -270,8 +284,10 @@
 									<p class="dish-desc">${dish.description}</p>
 
 									<div class="dish-bottom">
-										<span class="dish-price">${dish.price},00 €</span> <a
-											class="dish-edit" href="EditDishServlet.do?id=${dish.id}"
+										<span class="dish-price"><fmt:formatNumber
+											value="${dish.price}" minFractionDigits="2"
+											maxFractionDigits="2" /> €</span> <a class="dish-edit"
+											href="EditDishServlet.do?id=${dish.id}"
 											aria-label="Editar plato">&#9998;</a>
 									</div>
 								</div>

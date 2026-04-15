@@ -104,6 +104,11 @@ public class EditRestaurantServlet extends HttpServlet {
                 session.setAttribute("restaurant", restaurant);
                 session.setAttribute("categories", categoriesChecked);
                 request.setAttribute("dishes", dishes);
+
+                // Show success message after a successful POST-redirect-GET
+                if ("1".equals(request.getParameter("saved"))) {
+                    request.setAttribute("successMessage", "Los cambios se han guardado correctamente.");
+                }
                 
                 RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/restaurant_edit.jsp");
                 view.forward(request, response);
@@ -143,6 +148,7 @@ public class EditRestaurantServlet extends HttpServlet {
         // Apply form changes
         restaurant.setName(request.getParameter("restaurant-name"));
         restaurant.setAddress(request.getParameter("restaurant-address"));
+        restaurant.setDescription(request.getParameter("restaurant-description"));
         restaurant.setTelephone(request.getParameter("restaurant-tel"));
         restaurant.setCity(request.getParameter("restaurant-city"));
         restaurant.setMinPrice(Integer.parseInt(request.getParameter("min-price")));
@@ -175,21 +181,25 @@ public class EditRestaurantServlet extends HttpServlet {
 
         // Save selected categories
         String[] categories = request.getParameterValues("restaurant-category");
-        for (int i = 0; i < categories.length; i++) {
-            try {
-                RestaurantCategories rc = new RestaurantCategories();
-                rc.setIdct(Long.parseLong(categories[i]));
-                rc.setIdr(restaurant.getId());
+        
+        // No selection is valid, so only persist relations when the array exists
+        if (categories != null) {
+            for (int i = 0; i < categories.length; i++) {
+                try {
+                    RestaurantCategories rc = new RestaurantCategories();
+                    rc.setIdct(Long.parseLong(categories[i]));
+                    rc.setIdr(restaurant.getId());
 
-                restaurantsCategoriesDAO.add(rc);
-            } catch (Exception e) {
-                logger.info("id not a number");
+                    restaurantsCategoriesDAO.add(rc);
+                } catch (Exception e) {
+                    logger.info("id not a number");
+                }
             }
         }
 
         // Persist restaurant changes
         if (restaurant.getIdu() == user.getId() && restaurantDao.update(restaurant)) {
-            response.sendRedirect("ListRestaurantServlet.do");
+            response.sendRedirect("EditRestaurantServlet.do?id=" + restaurant.getId() + "&saved=1");
         } else {
             // Render form again on persistence errors
             request.setAttribute("messages", "Hubo un fallo al guardar los datos del restaurante");

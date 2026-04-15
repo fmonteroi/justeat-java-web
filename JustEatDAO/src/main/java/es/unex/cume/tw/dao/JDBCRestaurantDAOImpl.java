@@ -31,10 +31,11 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 			restaurant.setId(rs.getInt("id"));
 			restaurant.setName(rs.getString("name"));
 			restaurant.setAddress(rs.getString("address"));
+			restaurant.setDescription(rs.getString("description"));
 			restaurant.setTelephone(rs.getString("telephone"));
 			restaurant.setCity(rs.getString("city"));
 			restaurant.setIdu(rs.getInt("idu"));
-			restaurant.setGradesAverage(rs.getInt("gradesAverage"));
+			restaurant.setGradesAverage(rs.getDouble("gradesAverage"));
 			restaurant.setMinPrice(rs.getInt("minPrice"));
 			restaurant.setContactEmail(rs.getString("contactemail"));
 			restaurant.setMaxPrice(rs.getInt("maxPrice"));
@@ -70,10 +71,11 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setId(rs.getInt("id"));
 				restaurant.setName(rs.getString("name"));
 				restaurant.setAddress(rs.getString("address"));
+				restaurant.setDescription(rs.getString("description"));
 				restaurant.setTelephone(rs.getString("telephone"));
 				restaurant.setCity(rs.getString("city"));
 				restaurant.setIdu(rs.getInt("idu"));
-				restaurant.setGradesAverage(rs.getInt("gradesAverage"));
+				restaurant.setGradesAverage(rs.getDouble("gradesAverage"));
 				restaurant.setMinPrice(rs.getInt("minPrice"));
 				restaurant.setContactEmail(rs.getString("contactemail"));
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
@@ -111,10 +113,11 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setId(rs.getInt("id"));
 				restaurant.setName(rs.getString("name"));
 				restaurant.setAddress(rs.getString("address"));
+				restaurant.setDescription(rs.getString("description"));
 				restaurant.setTelephone(rs.getString("telephone"));
 				restaurant.setCity(rs.getString("city"));
 				restaurant.setIdu(rs.getInt("idu"));
-				restaurant.setGradesAverage(rs.getInt("gradesAverage"));
+				restaurant.setGradesAverage(rs.getDouble("gradesAverage"));
 				restaurant.setMinPrice(rs.getInt("minPrice"));
 				restaurant.setContactEmail(rs.getString("contactemail"));
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
@@ -154,10 +157,11 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setId(rs.getInt("id"));
 				restaurant.setName(rs.getString("name"));
 				restaurant.setAddress(rs.getString("address"));
+				restaurant.setDescription(rs.getString("description"));
 				restaurant.setTelephone(rs.getString("telephone"));
 				restaurant.setCity(rs.getString("city"));
 				restaurant.setIdu(rs.getInt("idu"));
-				restaurant.setGradesAverage(rs.getInt("gradesAverage"));
+				restaurant.setGradesAverage(rs.getDouble("gradesAverage"));
 				restaurant.setMinPrice(rs.getInt("minPrice"));
 				restaurant.setContactEmail(rs.getString("contactemail"));
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
@@ -199,10 +203,11 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setId(rs.getInt("id"));
 				restaurant.setName(rs.getString("name"));
 				restaurant.setAddress(rs.getString("address"));
+				restaurant.setDescription(rs.getString("description"));
 				restaurant.setTelephone(rs.getString("telephone"));
 				restaurant.setCity(rs.getString("city"));
 				restaurant.setIdu(rs.getInt("idu"));
-				restaurant.setGradesAverage(rs.getInt("gradesAverage"));
+				restaurant.setGradesAverage(rs.getDouble("gradesAverage"));
 				restaurant.setMinPrice(rs.getInt("minPrice"));
 				restaurant.setContactEmail(rs.getString("contactemail"));
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
@@ -245,8 +250,8 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 			try {
 				stmt = conn.createStatement();
 				stmt.executeUpdate(
-						"INSERT INTO restaurant (name,address,telephone,idu,gradesAverage,city,minPrice,contactemail,maxPrice,bikeFriendly,available,instagramUrl,facebookUrl,xUrl) VALUES('"
-								+ restaurant.getName() + "','" + restaurant.getAddress() + "','"
+						"INSERT INTO restaurant (name,address,description,telephone,idu,gradesAverage,city,minPrice,contactemail,maxPrice,bikeFriendly,available,instagramUrl,facebookUrl,xUrl) VALUES('"
+								+ restaurant.getName() + "','" + restaurant.getAddress() + "','" + restaurant.getDescription() + "','"
 								+ restaurant.getTelephone() + "'," + restaurant.getIdu() + ","
 								+ restaurant.getGradesAverage() + ",'" + restaurant.getCity() + "',"
 								+ restaurant.getMinPrice() + ",'" + restaurant.getContactEmail() + "',"
@@ -287,7 +292,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 			try {
 				stmt = conn.createStatement();
 				stmt.executeUpdate("UPDATE restaurant SET name='" + restaurant.getName() + "', address='"
-						+ restaurant.getAddress() + "', telephone='" + restaurant.getTelephone() + "', idu="
+						+ restaurant.getAddress() + "', description='" + restaurant.getDescription() + "', telephone='" + restaurant.getTelephone() + "', idu="
 						+ restaurant.getIdu() + ", gradesAverage=" + restaurant.getGradesAverage() + ", city='"
 						+ restaurant.getCity() + "', minPrice=" + restaurant.getMinPrice() + ", contactemail='"
 						+ restaurant.getContactEmail() + "', maxPrice=" + restaurant.getMaxPrice() + ", bikeFriendly="

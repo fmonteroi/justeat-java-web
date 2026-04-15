@@ -1,27 +1,39 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll(".detail-switch-tab");
-  const panels = document.querySelectorAll(".detail-switch-panel");
+(() => {
+  "use strict";
 
-  tabs.forEach(function (tab) {
-    tab.addEventListener("click", function () {
-      const target = tab.getAttribute("data-target");
+  function setActiveTab(tabs, panels, currentTab) {
+    var target = currentTab.getAttribute("data-target");
+    var i = 0;
 
-      tabs.forEach(function (item) {
-        item.classList.remove("is-active");
-        item.setAttribute("aria-selected", "false");
+    while (i < tabs.length) {
+      tabs[i].classList.remove("is-active");
+      tabs[i].setAttribute("aria-selected", "false");
+      i++;
+    }
+
+    i = 0;
+    while (i < panels.length) {
+      panels[i].classList.remove("is-active");
+      i++;
+    }
+
+    currentTab.classList.add("is-active");
+    currentTab.setAttribute("aria-selected", "true");
+
+    var activePanel = document.getElementById(target);
+    if (activePanel) activePanel.classList.add("is-active");
+  }
+
+  var tabs = document.querySelectorAll(".detail-switch-tab");
+  var panels = document.querySelectorAll(".detail-switch-panel");
+
+  var i = 0;
+  while (i < tabs.length) {
+    (function (tab) {
+      tab.addEventListener("click", function () {
+        setActiveTab(tabs, panels, tab);
       });
-
-      panels.forEach(function (panel) {
-        panel.classList.remove("is-active");
-      });
-
-      tab.classList.add("is-active");
-      tab.setAttribute("aria-selected", "true");
-
-      const activePanel = document.getElementById(target);
-      if (activePanel) {
-        activePanel.classList.add("is-active");
-      }
-    });
-  });
-});
+    })(tabs[i]);
+    i++;
+  }
+})();

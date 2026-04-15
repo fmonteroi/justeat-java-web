@@ -105,7 +105,7 @@
 
 								<div class="field">
 									<label for="dish-price">Precio</label> <input id="dish-price"
-										name="dish-price" type="number" min="0" step="1" required
+										name="dish-price" type="number" min="0" step="0.01" required
 										value="${not empty dish ? dish.price : dishPrice}" />
 								</div>
 							</section>

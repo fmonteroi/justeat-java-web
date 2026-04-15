@@ -296,7 +296,7 @@ public class ListRestaurantServlet extends HttpServlet {
 						@Override
 						public int compare(Triplet<Restaurant, User, List<Category>> o1,
 								Triplet<Restaurant, User, List<Category>> o2) {
-							return Integer.compare(o2.getFirst().getGradesAverage(), o1.getFirst().getGradesAverage());
+							return Double.compare(o2.getFirst().getGradesAverage(), o1.getFirst().getGradesAverage());
 						}
 					});
 		}
@@ -314,6 +314,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
 		// Expose view data
 		request.setAttribute("restaurantsList", restaurantsUserList);
+		request.setAttribute("allCategories", categoryDAO.getAll());
 		request.setAttribute("usersMap", userRestaurantsMap);
 		request.setAttribute("searchValue", search);
 		request.setAttribute("sortValue", sort);

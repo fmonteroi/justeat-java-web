@@ -93,6 +93,7 @@ public class CreateRestaurantServlet extends HttpServlet {
 		// Read form fields
 		String name = request.getParameter("restaurant-name");
 		String address = request.getParameter("restaurant-address");
+		String description = request.getParameter("restaurant-description");
 		String telephone = request.getParameter("restaurant-tel");
 		String city = request.getParameter("restaurant-city");
 		String minPrice = request.getParameter("min-price");
@@ -110,6 +111,7 @@ public class CreateRestaurantServlet extends HttpServlet {
 		// Validate required fields
 		if (name == null || name.trim().isEmpty()
 		        || address == null || address.trim().isEmpty()
+		        || description == null || description.trim().isEmpty()
 		        || telephone == null || telephone.trim().isEmpty()
 		        || city == null || city.trim().isEmpty()
 		        || contactEmail == null || contactEmail.trim().isEmpty()
@@ -160,6 +162,7 @@ public class CreateRestaurantServlet extends HttpServlet {
 		    request.setAttribute("messages", messages);
 		    request.setAttribute("restaurantName", name);
 		    request.setAttribute("restaurantAddress", address);
+		    request.setAttribute("restaurantDescription", description);
 		    request.setAttribute("restaurantTel", telephone);
 		    request.setAttribute("restaurantCity", city);
 		    request.setAttribute("minPrice", minPrice);
@@ -180,12 +183,13 @@ public class CreateRestaurantServlet extends HttpServlet {
 		Restaurant restaurant = new Restaurant();
 		restaurant.setName(name.trim());
 		restaurant.setAddress(address.trim());
+		restaurant.setDescription(description.trim());
 		restaurant.setTelephone(telephone.trim());
 		restaurant.setCity(city.trim());
 		restaurant.setMinPrice(min);
 		restaurant.setMaxPrice(max);
 		restaurant.setContactEmail(contactEmail.trim());
-		restaurant.setGradesAverage(0);
+		restaurant.setGradesAverage(0.0);
 		restaurant.setBikeFriendly(Integer.parseInt(bikeFriendly));
 		restaurant.setAvailable(Integer.parseInt(available));
 		restaurant.setIdu((int) user.getId());
