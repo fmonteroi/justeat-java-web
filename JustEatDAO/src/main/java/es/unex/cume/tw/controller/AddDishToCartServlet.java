@@ -32,7 +32,7 @@ public class AddDishToCartServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("SearchServlet.do");
 	}
 
 	/**
@@ -57,13 +57,13 @@ public class AddDishToCartServlet extends HttpServlet {
 	    try {
 	        dishId = Long.parseLong(request.getParameter("dishId"));
 	    } catch (NumberFormatException e) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("SearchServlet.do");
 	        return;
 	    }
 
 	    Dish dish = dishDao.get(dishId);
 	    if (dish == null) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("SearchServlet.do");
 	        return;
 	    }
 	    

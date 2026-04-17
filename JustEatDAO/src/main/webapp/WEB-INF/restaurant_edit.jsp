@@ -30,8 +30,17 @@
 				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
 						de empresa</span></a> <a href="#"><span class="top-nav-ico"
 					aria-hidden="true">&#128692;</span><span>Trabaja como
-						repartidor</span></a> <a href="#"><span class="top-nav-ico"
-					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+						repartidor</span></a>
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<a href="ListUserRestaurantServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:when>
+					<c:otherwise>
+						<a href="LoginServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:otherwise>
+				</c:choose>
 			</nav>
 
 			<a class="top-userlink" href="EditUserServlet.do"> <span
@@ -156,7 +165,7 @@
 
 								<div class="edit-rating">
 									<span class="edit-rating-label">Media de valoraciones</span> <span
-										class="edit-rating-stars" aria-hidden="true">*****</span> <span
+										class="edit-rating-stars" aria-hidden="true">★</span> <span
 										class="edit-rating-value"><fmt:formatNumber
 											value="${restaurant.gradesAverage}" minFractionDigits="1"
 											maxFractionDigits="1" /></span>

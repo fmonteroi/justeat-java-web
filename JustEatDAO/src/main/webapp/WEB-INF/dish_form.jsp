@@ -26,8 +26,17 @@
 				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
 						de empresa</span></a> <a href="#"><span class="top-nav-ico"
 					aria-hidden="true">&#128692;</span><span>Trabaja como
-						repartidor</span></a> <a href="#"><span class="top-nav-ico"
-					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+						repartidor</span></a>
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<a href="ListUserRestaurantServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:when>
+					<c:otherwise>
+						<a href="LoginServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:otherwise>
+				</c:choose>
 			</nav>
 
 			<a class="top-userlink" href="EditUserServlet.do"> <span
@@ -54,17 +63,18 @@
 						<li><a class="edit-sidelink" href="ListUserOrderServlet.do">
 								<span class="edit-sidelink-label">Mis pedidos</span>
 						</a></li>
+						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
+								<span class="edit-sidelink-label">Mis categorías</span>
+						</a></li>
 						<li><a class="edit-sidelink"
 							href="ListUserRestaurantServlet.do"><span
 								class="edit-sidelink-label">Mis restaurantes</span></a></li>
 						<li><a class="edit-sidelink"
 							href="EditRestaurantServlet.do?id=${restaurant.id}"><span
-								class="edit-sidelink-label">Establecimiento</span></a></li>
+								class="edit-sidelink-label">&rarr; Editar restaurante</span></a></li>
 						<li><a class="edit-sidelink is-active" href="#"><span
-								class="edit-sidelink-label">Carta</span></a></li>
-						<li><a class="edit-sidelink" href="ListCategoryServlet.do">
-								<span class="edit-sidelink-label">Categorías</span>
-						</a></li>
+								class="edit-sidelink-label"><c:choose><c:when
+										test="${not empty dish}">&rarr; Editar plato</c:when><c:otherwise>&rarr; Añadir plato</c:otherwise></c:choose></span></a></li>
 						<li><a class="edit-sidelink" href="LogoutServlet.do"><span
 								class="edit-sidelink-label">Salir</span></a></li>
 					</ul>
@@ -98,13 +108,13 @@
 								</div>
 
 								<div class="field">
-									<label for="dish-description">Descripcion</label>
+									<label for="dish-description">Descripción</label>
 									<textarea id="dish-description" name="dish-description"
 										rows="4" required>${not empty dish ? dish.description : dishDescription}</textarea>
 								</div>
 
 								<div class="field">
-									<label for="dish-price">Precio</label> <input id="dish-price"
+									<label for="dish-price">Precio (€)</label> <input id="dish-price"
 										name="dish-price" type="number" min="0" step="0.01" required
 										value="${not empty dish ? dish.price : dishPrice}" />
 								</div>

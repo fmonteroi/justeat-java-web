@@ -29,9 +29,10 @@ public class JDBCOrderDishesDAOImpl implements OrderDishesDAO {
 				OrderDishes orderDishes = new OrderDishes();
 				orderDishes.setIdo(rs.getInt("ido"));
 				orderDishes.setIddi(rs.getInt("iddi"));
+				orderDishes.setQuantity(rs.getInt("quantity"));
 						
 				OrderDishesList.add(orderDishes);
-				logger.info("fetching all OrderDishes: "+orderDishes.getIdo()+" "+orderDishes.getIddi());
+				logger.info("fetching all OrderDishes: "+orderDishes.getIdo()+" "+orderDishes.getIddi()+" x"+orderDishes.getQuantity());
 					
 			}
 
@@ -57,6 +58,7 @@ public class JDBCOrderDishesDAOImpl implements OrderDishesDAO {
 				OrderDishes orderDishes = new OrderDishes();
 				orderDishes.setIdo(rs.getInt("ido"));
 				orderDishes.setIddi(rs.getInt("iddi"));
+				orderDishes.setQuantity(rs.getInt("quantity"));
 
 				OrderDishesList.add(orderDishes);
 				logger.info("fetching all OrderDishes by ido: "+orderDishes.getIdo()+"->"+orderDishes.getIddi());
@@ -84,6 +86,7 @@ public class JDBCOrderDishesDAOImpl implements OrderDishesDAO {
 				OrderDishes orderDishes = new OrderDishes();
 				orderDishes.setIdo(rs.getInt("ido"));
 				orderDishes.setIddi(rs.getInt("iddi"));
+				orderDishes.setQuantity(rs.getInt("quantity"));
 							
 				OrderDishesList.add(orderDishes);
 				logger.info("fetching all OrderDishes by iddi: "+orderDishes.getIddi()+"-> "+orderDishes.getIdo());
@@ -110,6 +113,7 @@ public class JDBCOrderDishesDAOImpl implements OrderDishesDAO {
 			orderDishes= new OrderDishes();
 			orderDishes.setIdo(rs.getInt("ido"));
 			orderDishes.setIddi(rs.getInt("iddi"));
+			orderDishes.setQuantity(rs.getInt("quantity"));
 
 			logger.info("fetching OrderDishes by ido: "+orderDishes.getIdo()+"  and iddi: "+orderDishes.getIddi());
 		
@@ -132,9 +136,10 @@ public class JDBCOrderDishesDAOImpl implements OrderDishesDAO {
 			Statement stmt;
 			try {
 				stmt = conn.createStatement();
-				stmt.executeUpdate("INSERT INTO OrderDishes (ido,iddi) VALUES('"+
+				stmt.executeUpdate("INSERT INTO OrderDishes (ido,iddi,quantity) VALUES('"+
 									orderDishes.getIdo()+"','"+
-									orderDishes.getIddi()+"')");
+									orderDishes.getIddi()+"','"+
+									orderDishes.getQuantity()+"')");
 						
 				logger.info("creating OrderDishes:("+orderDishes.getIdo()+" "+orderDishes.getIddi());
 				done= true;
@@ -156,6 +161,7 @@ public class JDBCOrderDishesDAOImpl implements OrderDishesDAO {
 				stmt = conn.createStatement();
 				
 				stmt.executeUpdate("UPDATE OrderDishes SET ido = " + newOrderDishes.getIdo() + ", iddi= "+newOrderDishes.getIddi()
+				+", quantity=" + newOrderDishes.getQuantity()
 				+" WHERE ido = "+dbOrderDishes.getIdo() + " AND iddi = " + dbOrderDishes.getIddi());
 				
 				logger.info("updating OrderDishes:("+dbOrderDishes.getIdo()+" "+dbOrderDishes.getIddi());

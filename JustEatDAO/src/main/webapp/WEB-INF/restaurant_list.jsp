@@ -50,6 +50,12 @@
 		<section class="layout">
 			<aside class="filters">
 				<form class="stack" action="ListRestaurantServlet.do" method="get">
+					<div class="filters-head">
+						<p class="filters-eyebrow">Filtros</p>
+						<h2>Afina tu búsqueda</h2>
+						<p class="filters-help">Encuentra restaurantes por categoría, ciudad, platos o rango de precio.</p>
+					</div>
+
 					<input type="hidden" name="search" value="${searchValue}" /> <input
 						type="hidden" name="sort" value="${sortValue}" /> <input
 						type="hidden" name="availability" value="${availabilityValue}" />
@@ -175,19 +181,21 @@
 
 											<div class="r-spacer" aria-hidden="true"></div>
 
-											<p class="r-meta">
-												<strong>Descripción:</strong>
-												${restaurant.first.description}
-											</p>
+											<c:if test="${not empty restaurant.first.description}">
+												<p class="r-meta">
+													<strong>Descripción:</strong>
+													${restaurant.first.description}
+												</p>
 
-											<div class="r-spacer" aria-hidden="true"></div>
+												<div class="r-spacer" aria-hidden="true"></div>
+											</c:if>
 
 											<p class="r-meta">Ciudad: ${restaurant.first.city}</p>
 
 											<p class="r-meta">
 												Rango de precio:
 												${restaurant.first.minPrice}-${restaurant.first.maxPrice}
-												EUR
+												€
 											</p>
 
 											<p class="r-meta">

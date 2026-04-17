@@ -12,9 +12,9 @@
 </head>
 <body class="page-busqueda">
 	<header class="top top-detalle">
-		<a class="back" href="ListRestaurantServlet.do" aria-label="Volver">&lt;</a>
+		<a class="back" href="SearchServlet.do" aria-label="Volver">&lt;</a>
 
-		<a class="brand" href="LoginServlet.do" aria-label="Inicio"> <img
+		<a class="brand" href="SearchServlet.do" aria-label="Inicio"> <img
 			src="${pageContext.request.contextPath}/images/logo_justeat.svg"
 			alt="Logo Just Eat" width="30" height="30" /> <strong>JUST
 				EAT</strong>
@@ -25,8 +25,17 @@
 				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
 						de empresa</span></a> <a href="#"><span class="top-nav-ico"
 					aria-hidden="true">&#128692;</span><span>Trabaja como
-						repartidor</span></a> <a href="#"><span class="top-nav-ico"
-					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+						repartidor</span></a>
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<a href="ListUserRestaurantServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:when>
+					<c:otherwise>
+						<a href="LoginServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:otherwise>
+				</c:choose>
 			</nav>
 
 			<c:choose>
@@ -60,7 +69,7 @@
 						<form class="search" action="ListRestaurantServlet.do"
 							method="get">
 							<input name="search" type="text"
-								placeholder="Busca por ciudad, dirección o nombre del restaurante"
+								placeholder="Busca por ciudad, nombre o descripción del restaurante"
 								autocomplete="address-line1" required />
 							<button class="boton" type="submit">Buscar</button>
 						</form>

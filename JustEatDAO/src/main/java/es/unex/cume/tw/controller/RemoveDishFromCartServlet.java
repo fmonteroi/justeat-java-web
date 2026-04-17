@@ -31,7 +31,7 @@ public class RemoveDishFromCartServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("SearchServlet.do");
 	}
 
 	/**
@@ -56,13 +56,13 @@ public class RemoveDishFromCartServlet extends HttpServlet {
 	    try {
 	        dishId = Long.parseLong(request.getParameter("dishId"));
 	    } catch (NumberFormatException e) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("SearchServlet.do");
 	        return;
 	    }
 
 	    Dish dish = dishDao.get(dishId);
 	    if (dish == null) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("SearchServlet.do");
 	        return;
 	    }
 
@@ -77,8 +77,17 @@ public class RemoveDishFromCartServlet extends HttpServlet {
 	        return;
 	    }
 
-	    // Remove a single dish occurrence
-	    cartDishIds.remove(Long.valueOf(dishId));
+	    // Read removal mode
+	    String removeAll = request.getParameter("removeAll");
+
+	    // Remove one or all dish occurrences
+	    if ("1".equals(removeAll)) {
+	        while (cartDishIds.remove(Long.valueOf(dishId))) {
+	            // Remove all occurrences
+	        }
+	    } else {
+	        cartDishIds.remove(Long.valueOf(dishId));
+	    }
 
 	    // Update cart state
 	    if (cartDishIds.isEmpty()) {

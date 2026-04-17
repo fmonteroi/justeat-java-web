@@ -125,8 +125,7 @@ public class RegisterServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 
-		// Open the restaurant list
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("SearchServlet.do");
 
 	}
 }

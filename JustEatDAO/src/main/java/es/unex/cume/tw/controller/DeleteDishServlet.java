@@ -35,7 +35,7 @@ public class DeleteDishServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("ListUserRestaurantServlet.do");
 	}
 
 	/**
@@ -65,13 +65,13 @@ public class DeleteDishServlet extends HttpServlet {
 	    try {
 	        dishId = Long.parseLong(request.getParameter("id"));
 	    } catch (NumberFormatException e) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("ListUserRestaurantServlet.do");
 	        return;
 	    }
 
 	    Dish dish = dishDao.get(dishId);
 	    if (dish == null) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("ListUserRestaurantServlet.do");
 	        return;
 	    }
 	    
@@ -79,7 +79,7 @@ public class DeleteDishServlet extends HttpServlet {
 	    Restaurant restaurant = restaurantDao.get(dish.getIdr());
 
 	    if (restaurant == null || restaurant.getIdu() != user.getId()) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("ListUserRestaurantServlet.do");
 	        return;
 	    }
 	    

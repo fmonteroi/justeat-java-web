@@ -37,7 +37,7 @@ public class DeleteRestaurantServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("ListUserRestaurantServlet.do");
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class DeleteRestaurantServlet extends HttpServlet {
 
 		// Check restaurant ownership
 		if (restaurant == null || restaurant.getIdu() != user.getId()) {
-		    response.sendRedirect("ListRestaurantServlet.do");
+		    response.sendRedirect("ListUserRestaurantServlet.do");
 		    return;
 		}
 		
@@ -82,7 +82,7 @@ public class DeleteRestaurantServlet extends HttpServlet {
 		// Delete the restaurant
 		restaurantDao.delete(rid);
 		// Return to the restaurant list
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("ListUserRestaurantServlet.do");
 	}
 
 }

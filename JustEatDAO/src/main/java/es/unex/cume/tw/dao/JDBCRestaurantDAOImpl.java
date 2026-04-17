@@ -196,7 +196,8 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM restaurant WHERE " + "UPPER(name) LIKE '%" + search
-					+ "%' OR " + "UPPER(city) LIKE '%" + search + "%' OR " + "UPPER(address) LIKE '%" + search + "%'");
+					+ "%' OR " + "UPPER(city) LIKE '%" + search + "%' OR " + "UPPER(description) LIKE '%" + search
+					+ "%'");
 
 			while (rs.next()) {
 				Restaurant restaurant = new Restaurant();
@@ -256,7 +257,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 								+ restaurant.getGradesAverage() + ",'" + restaurant.getCity() + "',"
 								+ restaurant.getMinPrice() + ",'" + restaurant.getContactEmail() + "',"
 								+ restaurant.getMaxPrice() + "," + restaurant.getBikeFriendly() + ","
-								+ restaurant.getAvailable() + "','" + restaurant.getInstagramUrl() + "','"
+								+ restaurant.getAvailable() + ",'" + restaurant.getInstagramUrl() + "','"
 								+ restaurant.getFacebookUrl() + "','" + restaurant.getxUrl() + "')");
 
 			} catch (SQLException e) {

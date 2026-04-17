@@ -15,7 +15,7 @@
 <body class="page-login">
 	<header class="top">
 		<a class="back" href="SearchServlet.do" aria-label="Volver">&lt;</a> <a
-			class="brand" href="LoginServlet.do" aria-label="Inicio"> <img
+			class="brand" href="SearchServlet.do" aria-label="Inicio"> <img
 			src="${pageContext.request.contextPath}/images/logo_justeat.svg"
 			alt="Logo Just Eat" width="30" height="30" /> <strong>JUST
 				EAT</strong>
@@ -49,15 +49,11 @@
 					<label for="pass">Contraseña</label>
 					<div class="pw">
 						<input id="pass" name="password" type="password"
-							autocomplete="current-password" placeholder="Mínimo 8 caracteres"
-							required minlength="8" maxlength="64" />
+							autocomplete="current-password" placeholder="Contraseña" required />
 
 						<button id="togglePassword" type="button" class="eye"
 							aria-label="Mostrar u ocultar contraseña">👁</button>
 					</div>
-
-					<p class="hint" id="passHint">Usa al menos 8 caracteres. Evita
-						espacios.</p>
 				</div>
 
 				<button class="boton" type="submit">Iniciar sesión</button>

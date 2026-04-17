@@ -121,9 +121,9 @@ public class RestaurantDetailServlet extends HttpServlet {
 			reviewsList.add(new Triplet<Review, User, Boolean>(review, reviewUser, isMine));
 		}
 
-		// Rebuilds the cart for this restaurant from session data
-		List<Dish> cartDishes = new ArrayList<Dish>();
-		int cartTotal = 0;
+		// Rebuild cart summary
+		List<Triplet<Dish, Integer, Double>> cartDishes = new ArrayList<Triplet<Dish, Integer, Double>>();
+		double cartTotal = 0;
 
 		if (session != null) {
 			Long cartRestaurantId = (Long) session.getAttribute("cartRestaurantId");
@@ -135,8 +135,23 @@ public class RestaurantDetailServlet extends HttpServlet {
 				for (Long dishId : cartDishIds) {
 					Dish cartDish = dishDao.get(dishId);
 					if (cartDish != null) {
-						cartDishes.add(cartDish);
 						cartTotal += cartDish.getPrice();
+
+						// Group repeated dishes
+						Triplet<Dish, Integer, Double> existing = null;
+						for (Triplet<Dish, Integer, Double> item : cartDishes) {
+							if (item.getFirst().getId() == cartDish.getId()) {
+								existing = item;
+								break;
+							}
+						}
+
+						if (existing == null) {
+							cartDishes.add(new Triplet<Dish, Integer, Double>(cartDish, 1, cartDish.getPrice()));
+						} else {
+							existing.setSecond(existing.getSecond() + 1);
+							existing.setThird(existing.getFirst().getPrice() * existing.getSecond());
+						}
 					}
 				}
 			}

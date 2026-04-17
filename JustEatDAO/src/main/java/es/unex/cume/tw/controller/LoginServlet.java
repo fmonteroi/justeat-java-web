@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
         // Get session
         HttpSession session = request.getSession();
         if (session.getAttribute("user") != null)
-            response.sendRedirect("ListRestaurantServlet.do");
+            response.sendRedirect("SearchServlet.do");
         else {
         	// Keep optional redirect target
         	String redirect = request.getParameter("redirect");

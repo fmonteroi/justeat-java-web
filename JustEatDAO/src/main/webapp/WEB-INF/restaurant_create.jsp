@@ -26,8 +26,17 @@
 				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
 						de empresa</span></a> <a href="#"><span class="top-nav-ico"
 					aria-hidden="true">&#128692;</span><span>Trabaja como
-						repartidor</span></a> <a href="#"><span class="top-nav-ico"
-					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+						repartidor</span></a>
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<a href="ListUserRestaurantServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:when>
+					<c:otherwise>
+						<a href="LoginServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:otherwise>
+				</c:choose>
 			</nav>
 
 			<a class="top-userlink" href="EditUserServlet.do"> <span
@@ -123,13 +132,13 @@
 
 									<div class="edit-price">
 										<div class="field">
-											<label for="min-price">Mínimo (EUR)</label> <input
+											<label for="min-price">Mínimo (€)</label> <input
 												id="min-price" name="min-price" type="number" required
 												min="0" step="1" value="${minPrice}" />
 										</div>
 
 										<div class="field">
-											<label for="max-price">Máximo (EUR)</label> <input
+											<label for="max-price">Máximo (€)</label> <input
 												id="max-price" name="max-price" type="number" required
 												min="0" step="1" value="${maxPrice}" />
 										</div>
@@ -225,7 +234,7 @@
 						</div>
 
 						<footer class="edit-actions" aria-label="Acciones del formulario">
-							<a class="btn btn-ghost" href="ListRestaurantServlet.do">Cancelar</a>
+							<a class="btn btn-ghost" href="ListUserRestaurantServlet.do">Cancelar</a>
 							<button class="btn btn-primary" type="submit">Crear
 								restaurante</button>
 						</footer>

@@ -20,6 +20,7 @@ import es.unex.cume.tw.model.Dish;
 import es.unex.cume.tw.model.Order;
 import es.unex.cume.tw.model.OrderDishes;
 import es.unex.cume.tw.model.User;
+import es.unex.cume.tw.util.Triplet;
 
 /**
  * Servlet implementation class CreateOrderServlet
@@ -40,7 +41,7 @@ public class CreateOrderServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("ListRestaurantServlet.do");
+		response.sendRedirect("SearchServlet.do");
 	}
 
 	/**
@@ -75,19 +76,34 @@ public class CreateOrderServlet extends HttpServlet {
 	    List<Long> cartDishIds = (List<Long>) session.getAttribute("cartDishIds");
 
 	    if (cartRestaurantId == null || cartDishIds == null || cartDishIds.isEmpty()) {
-	        response.sendRedirect("ListRestaurantServlet.do");
+	        response.sendRedirect("SearchServlet.do");
 	        return;
 	    }
 	    
 	    // Rebuild order dishes and total
-	    List<Dish> dishes = new ArrayList<Dish>();
+	    List<Triplet<Dish, Integer, Double>> dishes = new ArrayList<Triplet<Dish, Integer, Double>>();
 	    double totalPrice = 0;
 
 	    for (Long dishId : cartDishIds) {
 	        Dish dish = dishDao.get(dishId);
 	        if (dish != null && dish.getIdr() == cartRestaurantId.longValue()) {
-	            dishes.add(dish);
 	            totalPrice += dish.getPrice();
+
+	            // Group repeated dishes
+	            Triplet<Dish, Integer, Double> existing = null;
+	            for (Triplet<Dish, Integer, Double> item : dishes) {
+	                if (item.getFirst().getId() == dish.getId()) {
+	                    existing = item;
+	                    break;
+	                }
+	            }
+
+	            if (existing == null) {
+	                dishes.add(new Triplet<Dish, Integer, Double>(dish, 1, dish.getPrice()));
+	            } else {
+	                existing.setSecond(existing.getSecond() + 1);
+	                existing.setThird(existing.getFirst().getPrice() * existing.getSecond());
+	            }
 	        }
 	    }
 
@@ -109,10 +125,11 @@ public class CreateOrderServlet extends HttpServlet {
 	    }
 	    
 	    // Save order relations
-	    for (Dish dish : dishes) {
+	    for (Triplet<Dish, Integer, Double> dish : dishes) {
 	        OrderDishes orderDish = new OrderDishes();
 	        orderDish.setIdo(orderId);
-	        orderDish.setIddi(dish.getId());
+	        orderDish.setIddi(dish.getFirst().getId());
+	        orderDish.setQuantity(dish.getSecond());
 	        orderDishesDao.add(orderDish);
 	    }
 	    

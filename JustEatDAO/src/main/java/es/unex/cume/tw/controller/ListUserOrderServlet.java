@@ -75,17 +75,20 @@ public class ListUserOrderServlet extends HttpServlet {
 		List<Order> orders = orderDao.getAllByUser(user.getId());
 
 		// Build order view models
-		List<Triplet<Order, Restaurant, List<Dish>>> ordersList = new ArrayList<Triplet<Order, Restaurant, List<Dish>>>();
+		List<Triplet<Order, Restaurant, List<Triplet<Dish, Integer, Double>>>> ordersList =
+				new ArrayList<Triplet<Order, Restaurant, List<Triplet<Dish, Integer, Double>>>>();
 
 		for (Order order : orders) {
 			List<OrderDishes> orderDishes = orderDishesDao.getAllByOrder(order.getId());
-			List<Dish> dishes = new ArrayList<Dish>();
+			List<Triplet<Dish, Integer, Double>> dishes = new ArrayList<Triplet<Dish, Integer, Double>>();
 			Restaurant restaurant = null;
 
 			for (OrderDishes relation : orderDishes) {
 				Dish dish = dishDao.get(relation.getIddi());
 				if (dish != null) {
-					dishes.add(dish);
+					// Map stored quantity
+					dishes.add(new Triplet<Dish, Integer, Double>(dish, relation.getQuantity(),
+							dish.getPrice() * relation.getQuantity()));
 
 					if (restaurant == null) {
 						restaurant = restaurantDao.get(dish.getIdr());
@@ -93,7 +96,8 @@ public class ListUserOrderServlet extends HttpServlet {
 				}
 			}
 
-			ordersList.add(new Triplet<Order, Restaurant, List<Dish>>(order, restaurant, dishes));
+			ordersList.add(
+					new Triplet<Order, Restaurant, List<Triplet<Dish, Integer, Double>>>(order, restaurant, dishes));
 		}
 		
 		// Render order history

@@ -30,8 +30,17 @@
 				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
 						de empresa</span></a> <a href="#"><span class="top-nav-ico"
 					aria-hidden="true">&#128692;</span><span>Trabaja como
-						repartidor</span></a> <a href="#"><span class="top-nav-ico"
-					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+						repartidor</span></a>
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<a href="ListUserRestaurantServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:when>
+					<c:otherwise>
+						<a href="LoginServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:otherwise>
+				</c:choose>
 			</nav>
 
 			<c:choose>
@@ -69,7 +78,7 @@
 							<h1 class="detail-name">${restaurant.name}</h1>
 
 							<p class="detail-sub">
-								<span class="detail-stars" aria-hidden="true">★★★★★</span> <strong
+								<span class="detail-stars" aria-hidden="true">★</span> <strong
 									class="detail-score"><fmt:formatNumber
 											value="${restaurant.gradesAverage}" minFractionDigits="1"
 											maxFractionDigits="1" /></strong> <span
@@ -105,13 +114,15 @@
 							</div>
 						</div>
 
-						<div class="detail-line">
+						<c:if test="${not empty restaurant.description}">
+							<div class="detail-line">
 							<span class="detail-ico" aria-hidden="true">&#128221;</span>
 							<div>
-								<strong>Descripcion</strong>
+								<strong>Descripción</strong>
 								<p>${restaurant.description}</p>
 							</div>
-						</div>
+							</div>
+						</c:if>
 
 						<div class="detail-line">
 							<span class="detail-ico" aria-hidden="true">&#128222;</span>
@@ -222,7 +233,8 @@
 										</c:choose>
 									</h3>
 
-									<form action="ReviewRestaurantServlet.do" method="post">
+									<form class="review-form"
+										action="ReviewRestaurantServlet.do" method="post">
 										<input type="hidden" name="restaurantId"
 											value="${restaurant.id}" />
 
@@ -250,7 +262,7 @@
 										<button class="btn btn-primary" type="submit">
 											<c:choose>
 												<c:when test="${not empty myReview}">Guardar cambios</c:when>
-												<c:otherwise>Publicar valoracion</c:otherwise>
+												<c:otherwise>Publicar valoración</c:otherwise>
 											</c:choose>
 										</button>
 									</form>
@@ -286,7 +298,7 @@
 														${reviewItem.second.surname}</h4>
 
 													<p class="menu-item-desc">
-														<strong>Puntuacion:</strong> ${reviewItem.first.grade}/5
+														<strong>Puntuación:</strong> ${reviewItem.first.grade}/5,0
 													</p>
 
 													<c:if test="${not empty reviewItem.first.review}">
@@ -296,7 +308,7 @@
 
 												<div class="menu-item-side">
 													<c:if test="${reviewItem.third}">
-														<span class="tag">Tu valoracion</span>
+														<span class="tag">Tu valoración</span>
 													</c:if>
 												</div>
 											</article>
@@ -346,7 +358,7 @@
 										<div class="menu-item-side">
 											<span class="menu-item-price"><fmt:formatNumber
 													value="${relatedItem.first.gradesAverage}"
-													minFractionDigits="1" maxFractionDigits="1" />/5</span>
+													minFractionDigits="1" maxFractionDigits="1" />/5,0</span>
 											<a class="btn btn-ghost btn-mini"
 												href="RestaurantDetailServlet.do?id=${relatedItem.first.id}">
 												Ver </a>
@@ -435,16 +447,33 @@
 								<c:forEach var="cartDish" items="${cartDishes}">
 									<article class="menu-item" role="listitem">
 										<div class="menu-item-main">
-											<h4 class="menu-item-title">${cartDish.name}</h4>
+											<h4 class="menu-item-title">${cartDish.first.name}</h4>
 											<p class="menu-item-desc"><fmt:formatNumber
-													value="${cartDish.price}" minFractionDigits="2"
+													value="${cartDish.first.price}" minFractionDigits="2"
 													maxFractionDigits="2" />€</p>
+											
+											<div class="cart-item-controls">
+												<form class="cart-qty-form" action="RemoveDishFromCartServlet.do" method="post">
+													<input type="hidden" name="dishId" value="${cartDish.first.id}" />
+													<button class="cart-qty-btn" type="submit">-</button>
+												</form>
+
+												<span class="menu-item-qty">${cartDish.second}</span>
+
+												<form class="cart-qty-form" action="AddDishToCartServlet.do" method="post">
+													<input type="hidden" name="dishId" value="${cartDish.first.id}" />
+													<button class="cart-qty-btn" type="submit">+</button>
+												</form>
+											</div>
 										</div>
 
 										<div class="menu-item-side">
-											<form action="RemoveDishFromCartServlet.do" method="post">
-												<input type="hidden" name="dishId" value="${cartDish.id}" />
-												<button class="btn btn-ghost btn-mini" type="submit">Quitar</button>
+											<form class="cart-remove-form" action="RemoveDishFromCartServlet.do"
+												method="post">
+												<input type="hidden" name="dishId" value="${cartDish.first.id}" />
+												<input type="hidden" name="removeAll" value="1" />
+												<button class="cart-remove-btn" type="submit"
+													aria-label="Eliminar plato de la cesta">x</button>
 											</form>
 										</div>
 									</article>

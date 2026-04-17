@@ -7,10 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import es.unex.cume.tw.dao.JDBCRestaurantDAOImpl;
 import es.unex.cume.tw.dao.RestaurantDAO;
 import es.unex.cume.tw.dao.DishDAO;
 import es.unex.cume.tw.dao.JDBCDishDAOImpl;
+import es.unex.cume.tw.dao.JDBCRestaurantDAOImpl;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -61,7 +61,7 @@ public class CreateDishServlet extends HttpServlet {
 		try {
 			restaurantId = Long.parseLong(request.getParameter("restaurantId"));
 		} catch (NumberFormatException e) {
-			response.sendRedirect("ListRestaurantServlet.do");
+			response.sendRedirect("ListUserRestaurantServlet.do");
 			return;
 		}
 
@@ -69,7 +69,7 @@ public class CreateDishServlet extends HttpServlet {
 
 		// Check restaurant ownership
 		if (restaurant == null || restaurant.getIdu() != user.getId()) {
-			response.sendRedirect("ListRestaurantServlet.do");
+			response.sendRedirect("ListUserRestaurantServlet.do");
 			return;
 		}
 
@@ -120,7 +120,7 @@ public class CreateDishServlet extends HttpServlet {
 		try {
 			restaurantId = Long.parseLong(restaurantIdParam);
 		} catch (NumberFormatException e) {
-			response.sendRedirect("ListRestaurantServlet.do");
+			response.sendRedirect("ListUserRestaurantServlet.do");
 			return;
 		}
 
@@ -128,7 +128,7 @@ public class CreateDishServlet extends HttpServlet {
 
 		// Check restaurant ownership
 		if (restaurant == null || restaurant.getIdu() != user.getId()) {
-			response.sendRedirect("ListRestaurantServlet.do");
+			response.sendRedirect("ListUserRestaurantServlet.do");
 			return;
 		}
 
@@ -146,13 +146,18 @@ public class CreateDishServlet extends HttpServlet {
 					messages = "El precio no puede ser negativo.";
 				}
 			} catch (NumberFormatException e) {
-				messages = "El precio debe ser numerico.";
+				messages = "El precio debe ser numérico.";
 			}
+		}
+		
+		// Validate name length
+		if (messages == null && name != null && name.trim().length() > 80) {
+			messages = "El nombre del plato es demasiado largo, debe ser menor o igual a 80 caracteres.";
 		}
 		
 		// Validate description length
 		if (messages == null && description != null && description.length() >= 150) {
-		    messages = "La descripcion del plato es demasiado larga, debe ser menor a 150 caracteres.";
+		    messages = "La descripción del plato es demasiado larga, debe ser menor a 150 caracteres.";
 		}
 
 		// Render form again on validation errors

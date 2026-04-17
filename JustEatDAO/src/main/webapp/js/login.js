@@ -8,9 +8,7 @@
   const formMessages = document.getElementById("formMessages");
 
   const EMAIL_MAX = 120;
-  const PASS_MIN = 8;
-  const PASS_MAX = 64;
-
+  
   function clearChildren(node) {
     while (node.firstChild) node.removeChild(node.firstChild);
   }
@@ -147,40 +145,6 @@
     return true;
   }
 
-  function validatePassword() {
-    const value = String(passInput.value || "");
-
-    removeFieldError(passInput);
-
-    if (value.length === 0) {
-      addFieldError(passInput, "La contraseña es obligatoria.");
-      return false;
-    }
-
-    if (value.includes(" ")) {
-      addFieldError(passInput, "La contraseña no puede contener espacios.");
-      return false;
-    }
-
-    if (value.length < PASS_MIN) {
-      addFieldError(passInput, `La contraseña debe tener al menos ${PASS_MIN} caracteres.`);
-      return false;
-    }
-
-    if (value.length > PASS_MAX) {
-      addFieldError(passInput, `La contraseña no puede superar ${PASS_MAX} caracteres.`);
-      return false;
-    }
-
-    return true;
-  }
-
-  function validateForm() {
-    const okEmail = validateEmail();
-    const okPass = validatePassword();
-    return okEmail && okPass;
-  }
-
   function onTogglePassword() {
     const isHidden = passInput.type === "password";
     passInput.type = isHidden ? "text" : "password";
@@ -192,7 +156,7 @@
   function onSubmit(ev) {
     clearChildren(formMessages);
 
-    const ok = validateForm();
+    const ok = validateEmail();
     if (!ok) {
       ev.preventDefault();
       setFormMessage("Revisa los campos marcados en rojo.", "error");
@@ -206,13 +170,9 @@
 
   // Validación en tiempo real / al salir del campo
   emailInput.addEventListener("blur", validateEmail);
-  passInput.addEventListener("blur", validatePassword);
 
   emailInput.addEventListener("input", () => {
     if (emailInput.classList.contains("is-invalid")) validateEmail();
   });
 
-  passInput.addEventListener("input", () => {
-    if (passInput.classList.contains("is-invalid")) validatePassword();
-  });
 })();

@@ -67,9 +67,16 @@ public class CreateCategoryServlet extends HttpServlet {
             messages = "El nombre de la categoría es obligatorio.";
         } else {
             name = name.trim();
-            Category existing = categoryDao.get(name);
-            if (existing != null) {
-                messages = "Ya existe una categoría con ese nombre.";
+
+            if (name.length() > 50) {
+                messages = "El nombre de la categoría es demasiado largo, debe ser menor o igual a 50 caracteres.";
+            } else if (description.length() > 150) {
+                messages = "La descripción de la categoría es demasiado larga, debe ser menor o igual a 150 caracteres.";
+            } else {
+                Category existing = categoryDao.get(name);
+                if (existing != null) {
+                    messages = "Ya existe una categoría con ese nombre.";
+                }
             }
         }
 

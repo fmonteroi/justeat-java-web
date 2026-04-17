@@ -22,7 +22,14 @@
       <nav class="top-nav" aria-label="Navegacion principal">
         <a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos de empresa</span></a>
         <a href="#"><span class="top-nav-ico" aria-hidden="true">&#128692;</span><span>Trabaja como repartidor</span></a>
-        <a href="#"><span class="top-nav-ico" aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+        <c:choose>
+          <c:when test="${sessionScope.user != null}">
+            <a href="ListUserRestaurantServlet.do"><span class="top-nav-ico" aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+          </c:when>
+          <c:otherwise>
+            <a href="LoginServlet.do"><span class="top-nav-ico" aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+          </c:otherwise>
+        </c:choose>
       </nav>
 
       <a class="top-userlink" href="EditUserServlet.do">

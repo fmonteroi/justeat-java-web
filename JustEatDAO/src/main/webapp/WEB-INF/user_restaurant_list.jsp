@@ -28,8 +28,17 @@
 				<a href="#"><span class="top-nav-ico" aria-hidden="true">&#128188;</span><span>Pedidos
 						de empresa</span></a> <a href="#"><span class="top-nav-ico"
 					aria-hidden="true">&#128692;</span><span>Trabaja como
-						repartidor</span></a> <a href="#"><span class="top-nav-ico"
-					aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+						repartidor</span></a>
+				<c:choose>
+					<c:when test="${sessionScope.user != null}">
+						<a href="ListUserRestaurantServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:when>
+					<c:otherwise>
+						<a href="LoginServlet.do"><span class="top-nav-ico"
+							aria-hidden="true">&#127970;</span><span>Registra tu negocio</span></a>
+					</c:otherwise>
+				</c:choose>
 			</nav>
 
 			<a class="top-userlink" href="EditUserServlet.do"> <span
@@ -94,15 +103,23 @@
 					<section class="cards" id="cards">
 						<c:forEach var="restaurant" items="${restaurantsList}">
 							<article class="r-card">
-								<a class="r-card-link"
-									href="EditRestaurantServlet.do?id=${restaurant.first.id}"
-									aria-label="Ver detalles de ${restaurant.first.name}"> <img
-									class="r-img"
-									src="${pageContext.request.contextPath}/images/restaurantes/placeholder.webp"
-									alt="Restaurante" />
+								<div class="r-card-link">
+									<a href="EditRestaurantServlet.do?id=${restaurant.first.id}"
+										aria-label="Editar ${restaurant.first.name}"> <img class="r-img"
+										src="${pageContext.request.contextPath}/images/restaurantes/placeholder.webp"
+										alt="Restaurante" />
+									</a>
 
 									<div class="r-body">
-										<h3>${restaurant.first.name}</h3>
+										<div class="r-card-head">
+											<h3>
+												<a class="r-title-link"
+													href="EditRestaurantServlet.do?id=${restaurant.first.id}">${restaurant.first.name}</a>
+											</h3>
+											<a class="btn btn-ghost btn-mini"
+												href="RestaurantDetailServlet.do?id=${restaurant.first.id}">Ver
+												detalles</a>
+										</div>
 
 										<p class="r-rating">
 											<span class="r-rating-star">★</span> <span
@@ -113,16 +130,18 @@
 
 										<div class="r-spacer" aria-hidden="true"></div>
 
-										<p class="r-meta">
-											<strong>Descripción:</strong> ${restaurant.first.description}
-										</p>
+										<c:if test="${not empty restaurant.first.description}">
+											<p class="r-meta">
+												<strong>Descripción:</strong> ${restaurant.first.description}
+											</p>
 
-										<div class="r-spacer" aria-hidden="true"></div>
+											<div class="r-spacer" aria-hidden="true"></div>
+										</c:if>
 
 										<p class="r-meta">Ciudad: ${restaurant.first.city}</p>
 
 										<p class="r-meta">Rango de precio:
-											${restaurant.first.minPrice}-${restaurant.first.maxPrice} EUR
+											${restaurant.first.minPrice}-${restaurant.first.maxPrice} €
 										</p>
 
 										<p class="r-meta">
@@ -139,7 +158,7 @@
 											</c:forEach>
 										</div>
 									</div>
-								</a>
+								</div>
 							</article>
 						</c:forEach>
 					</section>
