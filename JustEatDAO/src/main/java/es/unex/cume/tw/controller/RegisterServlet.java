@@ -72,7 +72,7 @@ public class RegisterServlet extends HttpServlet {
 		
 		// Validate password confirmation
 		if (messages == null && !password.equals(passwordConfirm)) {
-		    messages = "Las contrasenas no coinciden.";
+		    messages = "Las contraseñas no coinciden.";
 		}
 		
 		// Validate password format

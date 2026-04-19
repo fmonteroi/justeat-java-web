@@ -90,22 +90,7 @@ public class EditUserServlet extends HttpServlet {
 		// Read requested action
 		String action = request.getParameter("action");
 
-		if ("delete".equals(action)) {
-			// Delete the current account
-			boolean deleted = userDao.delete(sessionUser.getId());
-
-			if (deleted) {
-				session.invalidate();
-				response.sendRedirect("LoginServlet.do");
-			} else {
-				request.setAttribute("messages", "No se pudo eliminar la cuenta.");
-				request.setAttribute("profileUser", userDao.get(sessionUser.getId()));
-
-				RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/user_edit.jsp");
-				view.forward(request, response);
-			}
-
-		} else if ("update".equals(action)) {
+		if ("update".equals(action)) {
 			// Read form fields
 			String name = request.getParameter("name");
 			String surname = request.getParameter("surname");
@@ -132,7 +117,7 @@ public class EditUserServlet extends HttpServlet {
 			// Validate password only if it changes
 			if (messages == null && password != null && !password.trim().isEmpty()) {
 				if (!password.equals(passwordConfirm)) {
-					messages = "Las contrasenas no coinciden.";
+					messages = "Las contraseñas no coinciden.";
 				} else if (!ValidationUtils.isPasswordValid(password)) {
 					messages = "La contraseña debe tener al menos 8 caracteres, una mayuscula, una minúscula, un número y un caracter especial.";
 				}

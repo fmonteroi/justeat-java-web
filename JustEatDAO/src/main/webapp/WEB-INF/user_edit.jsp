@@ -82,8 +82,7 @@
 					</ul>
 				</nav>
 
-				<form action="EditUserServlet.do" method="post" novalidate>
-					<input type="hidden" name="action" value="delete" />
+				<form action="DeleteUserServlet.do" method="post" novalidate>
 					<button class="btn btn-danger" type="submit">Eliminar
 						cuenta</button>
 				</form>

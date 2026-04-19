@@ -165,7 +165,7 @@ public class CreateDishServlet extends HttpServlet {
 			request.setAttribute("messages", messages);
 			request.setAttribute("restaurant", restaurant);
 			request.setAttribute("formAction", "CreateDishServlet.do");
-			request.setAttribute("formTitle", "Anadir plato");
+			request.setAttribute("formTitle", "Añadir plato");
 			request.setAttribute("dishName", name);
 			request.setAttribute("dishDescription", description);
 			request.setAttribute("dishPrice", priceParam);

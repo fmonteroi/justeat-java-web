@@ -241,6 +241,29 @@ public class CreateRestaurantServlet extends HttpServlet {
 
 		// Persist restaurant
 		long rid = restaurantDao.add(restaurant);
+		
+		// Render form again on persistence errors
+		if (rid < 0) {
+			List<Category> allCategories = categoryDao.getAll();
+			request.setAttribute("categories", allCategories);
+
+			request.setAttribute("messages", "No se pudo crear el restaurante.");
+			request.setAttribute("restaurantName", name);
+			request.setAttribute("restaurantAddress", address);
+			request.setAttribute("restaurantDescription", description);
+			request.setAttribute("restaurantTel", telephone);
+			request.setAttribute("restaurantCity", city);
+			request.setAttribute("minPrice", minPrice);
+			request.setAttribute("maxPrice", maxPrice);
+			request.setAttribute("restaurantEmail", contactEmail);
+			request.setAttribute("instagramUrl", instagramUrl);
+			request.setAttribute("facebookUrl", facebookUrl);
+			request.setAttribute("xUrl", xUrl);
+
+			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/restaurant_create.jsp");
+			view.forward(request, response);
+			return;
+		}
 
 		// Read selected categories
 		if (categories != null) {
