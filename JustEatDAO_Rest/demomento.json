@@ -1,0 +1,1212 @@
+{
+  "version": 6,
+  "entities": [
+    {
+      "entity": {
+        "type": "Project",
+        "description": "",
+        "id": "6eb41e7f-35a5-4844-b49a-f61f0463b07b",
+        "name": "JustEatDAO_Rest_Pruebas"
+      },
+      "children": [
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+              "name": "DELETE"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/usuarios/7"
+            },
+            "description": "Requisito 1. Borrado del usuario Prueba Fran creado. Si el id creado no es 7, cambiarlo en la URL. Esperado: 204 No Content.",
+            "id": "baa5ef79-d4f1-4495-bc79-ada6792b326b",
+            "name": "R1 Usuarios - Borrar usuario Prueba Fran",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "204"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/usuarios/2"
+            },
+            "description": "Requisito 1 y seguridad. Usuario real 1 intenta consultar al usuario real 2, Pilar. Esperado: 403 Forbidden.",
+            "id": "e8b8a9cf-cfd3-4eaa-9aa2-6afff51bd988",
+            "name": "R1 Usuarios - Consultar usuario ajeno",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "403"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/usuarios/1"
+            },
+            "description": "Requisito 1. Consulta del usuario autenticado. Esperado: 200 OK.",
+            "id": "597e66ed-a7be-4ec2-99a2-920898d7f67e",
+            "name": "R1 Usuarios - Consultar usuario autenticado",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"name\": \"Fran\",\n  \"surname\": \"Prueba\",\n  \"email\": \"prueba@prueba.com\",\n  \"password\": \"Password1!\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/usuarios"
+            },
+            "description": "Requisito 1. Alta de usuario Prueba Fran. Ejecutar al final porque cambia la sesion al nuevo usuario. En BD limpia de P3 el id esperado suele ser 7. Esperado: 201 Created.",
+            "id": "6231c3bd-f646-40d9-a885-c3c76ef8bdfd",
+            "name": "R1 Usuarios - Crear usuario de prueba",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "201"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+              "name": "PUT"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"name\": \"José Carlos\",\n  \"surname\": \"Sancho\",\n  \"email\": \"unex@unex.es\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/usuarios/1"
+            },
+            "description": "Requisito 1. Edicion del usuario autenticado manteniendo sus datos. Esperado: 200 OK.",
+            "id": "0ed03e83-50af-46fc-b09f-30e3df0c6917",
+            "name": "R1 Usuarios - Editar usuario autenticado",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+              "name": "DELETE"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/10"
+            },
+            "description": "Requisito 2. Borrado del restaurante creado. Si el id creado no es 10, cambiarlo en la URL. Esperado: 204 No Content.",
+            "id": "910b5b2c-f12e-441a-a56a-24925552f35b",
+            "name": "R2 Restaurantes - Borrar restaurante creado",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "204"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/1"
+            },
+            "description": "Requisito 2. Consulta de detalle de restaurante existente. Esperado: 200 OK.",
+            "id": "3617c430-e2b6-49fc-9418-ecb5409a24fb",
+            "name": "R2 Restaurantes - Consultar detalle de restaurante",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"name\": \"Restaurante de prueba\",\n  \"address\": \"Calle de prueba\",\n  \"telephone\": \"666777888\",\n  \"city\": \"Montijo\",\n  \"minPrice\": 8,\n  \"maxPrice\": 25,\n  \"contactEmail\": \"restauranteprueba@example.com\",\n  \"bikeFriendly\": 1,\n  \"available\": 1\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes"
+            },
+            "description": "Requisito 2. Alta de restaurante para el usuario 1. En BD limpia de P3 el id esperado suele ser 10. Esperado: 201 Created.",
+            "id": "686a861d-27f2-48db-8405-132cac1ecd65",
+            "name": "R2 Restaurantes - Crear restaurante",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "201"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+              "name": "PUT"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"id\": 10,\n  \"name\": \"Restaurante de prueba editado\",\n  \"address\": \"Calle de prueba editada\",\n  \"telephone\": \"666777888\",\n  \"city\": \"Montijo\",\n  \"minPrice\": 8,\n  \"maxPrice\": 25,\n  \"contactEmail\": \"restauranteprueba@example.com\",\n  \"bikeFriendly\": 1,\n  \"available\": 1\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/10"
+            },
+            "description": "Requisito 2. Edicion del restaurante creado en la peticion anterior. Si el id creado no es 10, cambiarlo en la URL y el body. Esperado: 200 OK.",
+            "id": "b8d6eca5-1a9f-439c-8856-18aa694ff593",
+            "name": "R2 Restaurantes - Editar restaurante creado",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+              "name": "DELETE"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/0"
+            },
+            "description": "Requisito 2 y seguridad. Usuario 1 intenta borrar un restaurante ajeno. Esperado: 403 Forbidden.",
+            "id": "61a7c30f-90a3-4fd7-a0f1-d7e01a82a29c",
+            "name": "R2 Restaurantes - Intentar borrar restaurante ajeno",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "403"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes"
+            },
+            "description": "Requisito 2. Listado de restaurantes del usuario autenticado. Esperado: 200 OK.",
+            "id": "e871ca8f-b51e-4ec4-b8b2-5023ac162f2b",
+            "name": "R2 Restaurantes - Listar restaurantes propios",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/all"
+            },
+            "description": "Requisito 2. Listado general de restaurantes. Esperado: 200 OK.",
+            "id": "c05f5f62-3743-42f0-a780-9e437c7aa9c7",
+            "name": "R2 Restaurantes - Listar todos los restaurantes",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+              "name": "DELETE"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/platos/6"
+            },
+            "description": "Requisito 3. Borrado del plato creado. Si el id creado no es 6, cambiarlo en la URL. Esperado: 204 No Content.",
+            "id": "14d1a504-61c4-4f52-a272-7d01311b9395",
+            "name": "R3 Platos - Borrar plato creado",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "204"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"name\": \"Plato de prueba\",\n  \"description\": \"Plato creado para probar\",\n  \"price\": 12\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/1/platos"
+            },
+            "description": "Requisito 3. Alta de plato en restaurante 1, propiedad del usuario 1. En BD limpia de P3 el id esperado suele ser 6. Esperado: 201 Created.",
+            "id": "906b1b7e-a8ab-4bcd-84c9-a8bd4e8528f9",
+            "name": "R3 Platos - Crear plato",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "201"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+              "name": "PUT"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"name\": \"Plato de prueba editado\",\n  \"description\": \"Plato creado para probar pero editado\",\n  \"price\": 14\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/platos/6"
+            },
+            "description": "Requisito 3. Edicion del plato creado. Si el id creado no es 6, cambiarlo en la URL. Esperado: 200 OK.",
+            "id": "2139ec8e-74a3-4e5b-a260-a637e84ff7d8",
+            "name": "R3 Platos - Editar plato creado",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/1/platos"
+            },
+            "description": "Requisito 3. Consulta de platos de un restaurante. Esperado: 200 OK.",
+            "id": "20779970-0a14-4ee0-b41d-745e3bc6fe6d",
+            "name": "R3 Platos - Listar platos de un restaurante",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/pedidos/14"
+            },
+            "description": "Requisito 4. Consulta del pedido creado. Si el id creado no es 14, cambiarlo en la URL. Esperado: 200 OK.",
+            "id": "c8d4f845-c12c-4003-9346-25c1c61976c4",
+            "name": "R4 Pedidos - Consultar pedido creado",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "[1]"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/pedidos"
+            },
+            "description": "Requisito 4. Creacion de pedido con platos existentes. En BD limpia de P3 el id esperado suele ser 14. Esperado: 201 Created.",
+            "id": "a0061dfb-b347-40f0-a525-4ebda5d48bf9",
+            "name": "R4 Pedidos - Crear pedido",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "201"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/usuarios/1/pedidos"
+            },
+            "description": "Requisito 4. Historico de pedidos del usuario autenticado. Esperado: 200 OK.",
+            "id": "c16be82d-6162-4975-85a0-3a72024852fa",
+            "name": "R4 Pedidos - Historico usuario",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"grade\": 4,\n  \"review\": \"Valoracion creada para Pruebas Fran\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/0/valoraciones"
+            },
+            "description": "Requisito 5. Crear o actualizar valoracion del usuario autenticado. El endpoint devuelve 200 OK tanto al crear como al actualizar.",
+            "id": "b784c428-b025-4865-bee7-f50e0cb862bb",
+            "name": "R5 Valoraciones - Crear o actualizar valoracion",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/0/valoraciones"
+            },
+            "description": "Requisito 5. Consulta de valoraciones de un restaurante. Esperado: 200 OK.",
+            "id": "6ce74d86-a552-497b-9353-16f11840948b",
+            "name": "R5 Valoraciones - Listar valoraciones",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "sort",
+                    "value": "valoracionMedia"
+                  }
+                ]
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/all"
+            },
+            "description": "Requisito 5. Restaurantes ordenados por valoracion media. Esperado: 200 OK.",
+            "id": "e75df4e3-c491-4192-b3df-763becd59da8",
+            "name": "R5 Valoraciones - Ordenar por media",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "localidad",
+                    "value": "Cáceres"
+                  }
+                ]
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/all"
+            },
+            "description": "Requisito 6. Busqueda por localidad. Esperado: 200 OK.",
+            "id": "4f9bd3bb-a5ed-45d6-be41-8010d06a1e39",
+            "name": "R6 Busqueda - Buscar por localidad",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "q",
+                    "value": "Atrio"
+                  }
+                ]
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/all"
+            },
+            "description": "Requisito 6. Busqueda general por texto. Esperado: 200 OK.",
+            "id": "66428832-1974-4f90-829f-e42eb7e7da45",
+            "name": "R6 Busqueda - Buscar por texto",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "bodyEvaluationDisabled": true,
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+              "name": "PUT"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"available\": 0\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/10/estado"
+            },
+            "description": "Requisito 7. Cambio de estado del restaurante creado. Si el id creado no es 10, cambiarlo en la URL. Esperado: 200 OK.",
+            "id": "1fc55090-a770-4a89-87c7-63c4f614deee",
+            "name": "R7 Estado - Cambiar estado restaurante",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "estado",
+                    "value": "acepta"
+                  }
+                ]
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/JustEatDAO_Rest/api/restaurantes/all"
+            },
+            "description": "Requisito 7. Filtro de restaurantes que aceptan pedidos. Esperado: 200 OK.",
+            "id": "63751095-9356-45a3-8ee5-e749398d3481",
+            "name": "R7 Estado - Filtrar aceptan pedidos",
+            "headers": [],
+            "assertions": [
+              {
+                "comparison": "Equals",
+                "subject": "ResponseStatus",
+                "path": "code",
+                "value": "200"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -8,8 +8,9 @@ import jakarta.ws.rs.core.Application;
 @ApplicationPath("/api")
 public class RestApplication extends Application {
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        return Set.of(RestaurantsResource.class);
-    }
+	@Override
+	public Set<Class<?>> getClasses() {
+		return Set.of(UsersResource.class, RestaurantsResource.class, RestaurantDishesResource.class,
+				DishesResource.class, OrdersResource.class, UserOrdersResource.class, ReviewsResource.class);
+	}
 }
