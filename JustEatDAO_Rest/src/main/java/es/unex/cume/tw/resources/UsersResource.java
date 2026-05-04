@@ -37,10 +37,6 @@ public class UsersResource {
 
 	/**
 	 * POST /api/usuarios
-	 * 
-	 * @param user
-	 * @param request
-	 * @return
 	 */
 	@POST
 	public Response createUser(User user, @Context HttpServletRequest request) {
@@ -67,11 +63,9 @@ public class UsersResource {
 
 		user.setId(id);
 
-		// Store full user in session
 		HttpSession session = request.getSession(true);
 		session.setAttribute("user", user);
 
-		// Reload user for response and hide password
 		User responseUser = userDao.get(id);
 		responseUser.setPassword(null);
 
@@ -81,10 +75,6 @@ public class UsersResource {
 
 	/**
 	 * GET /api/usuarios/{id}
-	 * 
-	 * @param id
-	 * @param request
-	 * @return
 	 */
 	@GET
 	@Path("/{id: [0-9]+}")
@@ -102,7 +92,7 @@ public class UsersResource {
 		User user = userDao.get(id);
 
 		if (user == null) {
-			throw new WebApplicationException("Usuario no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Usuario no encontrado");
 		}
 
 		user.setPassword(null);
@@ -111,11 +101,6 @@ public class UsersResource {
 
 	/**
 	 * PUT /api/usuarios/{id}
-	 * 
-	 * @param id
-	 * @param user
-	 * @param request
-	 * @return
 	 */
 	@PUT
 	@Path("/{id: [0-9]+}")
@@ -133,21 +118,20 @@ public class UsersResource {
 		User currentUser = userDao.get(id);
 
 		if (currentUser == null) {
-			throw new WebApplicationException("Usuario no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Usuario no encontrado");
 		}
 
 		if (user == null) {
-			throw new WebApplicationException("El cuerpo de la petición es obligatorio", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El cuerpo de la petición es obligatorio");
 		}
 
 		if (user.getName() == null || user.getName().trim().isEmpty() || user.getSurname() == null
 				|| user.getSurname().trim().isEmpty() || user.getEmail() == null || user.getEmail().trim().isEmpty()) {
-			throw new WebApplicationException("Nombre, apellidos y email son obligatorios",
-					Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("Nombre, apellidos y email son obligatorios");
 		}
 
 		if (!user.getEmail().contains("@")) {
-			throw new WebApplicationException("Email no válido", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("Email no válido");
 		}
 
 		User existingByEmail = userDao.get(user.getEmail().trim());
@@ -161,9 +145,8 @@ public class UsersResource {
 
 		if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
 			if (!Utils.isPasswordValid(user.getPassword())) {
-				throw new WebApplicationException(
-						"La contraseña debe tener al menos 8 caracteres, mayúscula, minúscula, número y carácter especial",
-						Response.Status.BAD_REQUEST);
+				throw new CustomBadRequestException(
+						"La contraseña debe tener al menos 8 caracteres, mayúscula, minúscula, número y carácter especial");
 			}
 			currentUser.setPassword(user.getPassword());
 		}
@@ -185,10 +168,6 @@ public class UsersResource {
 
 	/**
 	 * DELETE /api/usuarios/{id}
-	 * 
-	 * @param id
-	 * @param request
-	 * @return
 	 */
 	@DELETE
 	@Path("/{id: [0-9]+}")
@@ -206,7 +185,7 @@ public class UsersResource {
 		User user = userDao.get(id);
 
 		if (user == null) {
-			throw new WebApplicationException("Usuario no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Usuario no encontrado");
 		}
 
 		if (!userDao.delete(id)) {
@@ -223,33 +202,32 @@ public class UsersResource {
 
 	private void validateUser(User user) {
 		if (user == null) {
-			throw new WebApplicationException("El cuerpo de la petición es obligatorio", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El cuerpo de la petición es obligatorio");
 		}
 
 		if (user.getName() == null || user.getName().trim().isEmpty()) {
-			throw new WebApplicationException("El nombre es obligatorio", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El nombre es obligatorio");
 		}
 
 		if (user.getSurname() == null || user.getSurname().trim().isEmpty()) {
-			throw new WebApplicationException("Los apellidos son obligatorios", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("Los apellidos son obligatorios");
 		}
 
 		if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
-			throw new WebApplicationException("El email es obligatorio", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El email es obligatorio");
 		}
 
 		if (!user.getEmail().contains("@")) {
-			throw new WebApplicationException("El email no es válido", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El email no es válido");
 		}
 
 		if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
-			throw new WebApplicationException("La contraseña es obligatoria", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("La contraseña es obligatoria");
 		}
 
 		if (!Utils.isPasswordValid(user.getPassword())) {
-			throw new WebApplicationException(
-					"La contraseña debe tener al menos 8 caracteres, mayúscula, minúscula, número y carácter especial",
-					Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException(
+					"La contraseña debe tener al menos 8 caracteres, mayúscula, minúscula, número y carácter especial");
 		}
 	}
 }

@@ -34,10 +34,6 @@ public class ReviewsResource {
 
     /**
      * GET /api/restaurantes/{id}/valoraciones
-     * 
-     * @param restaurantId
-     * @param request
-     * @return
      */
     @GET
     public List<Review> getRestaurantReviews(@PathParam("id") long restaurantId,
@@ -56,7 +52,7 @@ public class ReviewsResource {
         Restaurant restaurant = restaurantDao.get(restaurantId);
 
         if (restaurant == null) {
-            throw new WebApplicationException("Restaurante no encontrado", Response.Status.NOT_FOUND);
+            throw new CustomNotFoundException("Restaurante no encontrado");
         }
 
         return reviewsDao.getAllByRestaurant(restaurantId);
@@ -64,11 +60,6 @@ public class ReviewsResource {
 
     /**
      * POST /api/restaurantes/{id}/valoraciones
-     * 
-     * @param restaurantId
-     * @param review
-     * @param request
-     * @return
      */
     @POST
     public Review createOrUpdateReview(@PathParam("id") long restaurantId, Review review,
@@ -77,12 +68,11 @@ public class ReviewsResource {
         User user = Utils.getLoggedUser(request);
 
         if (review == null) {
-            throw new WebApplicationException("El cuerpo es obligatorio", Response.Status.BAD_REQUEST);
+            throw new CustomBadRequestException("El cuerpo es obligatorio");
         }
 
-        // Check grade range
         if (review.getGrade() < 1 || review.getGrade() > 5) {
-            throw new WebApplicationException("La puntuación debe estar entre 1 y 5", Response.Status.BAD_REQUEST);
+            throw new CustomBadRequestException("La puntuación debe estar entre 1 y 5");
         }
 
         Connection conn = (Connection) sc.getAttribute("dbConn");
@@ -96,14 +86,13 @@ public class ReviewsResource {
         Restaurant restaurant = restaurantDao.get(restaurantId);
 
         if (restaurant == null) {
-            throw new WebApplicationException("Restaurante no encontrado", Response.Status.NOT_FOUND);
+            throw new CustomNotFoundException("Restaurante no encontrado");
         }
 
         Review existingReview = reviewsDao.get(restaurantId, user.getId());
 
-        // Create a new review or update the existing one from this user
+        // create or update review
         if (existingReview == null) {
-            // Force server-controlled relation fields
             review.setIdr(restaurantId);
             review.setIdu(user.getId());
 
@@ -117,7 +106,6 @@ public class ReviewsResource {
                 throw new WebApplicationException("No se pudo crear la valoración", Response.Status.INTERNAL_SERVER_ERROR);
             }
         } else {
-            // Update previous review from same user
             existingReview.setGrade(review.getGrade());
 
             if (review.getReview() == null) {
@@ -131,7 +119,7 @@ public class ReviewsResource {
             }
         }
 
-        // Update restaurant average grade
+        // refresh average
         updateRestaurantAverage(restaurantId, reviewsDao, restaurantDao);
 
         return reviewsDao.get(restaurantId, user.getId());
@@ -150,12 +138,10 @@ public class ReviewsResource {
         } else {
             int total = 0;
 
-            // Sum all review grades
             for (Review review : reviews) {
                 total += review.getGrade();
             }
 
-            // Round average because database stores integer value
             int average = Math.round((float) total / reviews.size());
             restaurant.setGradesAverage(average);
         }

@@ -15,9 +15,6 @@ public class Restaurant {
 	private int available;
 	private int idu;
 	
-	
-	
-	
 	public String getName() {
 		return name;
 	}

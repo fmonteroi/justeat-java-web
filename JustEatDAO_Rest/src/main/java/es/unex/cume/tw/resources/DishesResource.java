@@ -33,11 +33,6 @@ public class DishesResource {
 
 	/**
 	 * PUT /api/platos/{id}
-	 * 
-	 * @param dishId
-	 * @param dish
-	 * @param request
-	 * @return
 	 */
 	@PUT
 	@Path("/{id: [0-9]+}")
@@ -45,7 +40,6 @@ public class DishesResource {
 
 		User user = Utils.getLoggedUser(request);
 
-		// Validate dish input
 		validateDish(dish);
 
 		Connection conn = (Connection) sc.getAttribute("dbConn");
@@ -59,21 +53,19 @@ public class DishesResource {
 		Dish currentDish = dishDao.get(dishId);
 
 		if (currentDish == null) {
-			throw new WebApplicationException("Plato no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Plato no encontrado");
 		}
 
 		Restaurant restaurant = restaurantDao.get(currentDish.getIdr());
 
 		if (restaurant == null) {
-			throw new WebApplicationException("Restaurante no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Restaurante no encontrado");
 		}
 
-		// Check restaurant ownership
 		if (restaurant.getIdu() != user.getId()) {
 			throw new WebApplicationException("No autorizado", Response.Status.FORBIDDEN);
 		}
 
-		// Update editable fields
 		currentDish.setName(dish.getName().trim());
 		currentDish.setDescription(dish.getDescription().trim());
 		currentDish.setPrice(dish.getPrice());
@@ -87,10 +79,6 @@ public class DishesResource {
 
 	/**
 	 * DELETE /api/platos/{id}
-	 * 
-	 * @param dishId
-	 * @param request
-	 * @return
 	 */
 	@DELETE
 	@Path("/{id: [0-9]+}")
@@ -109,16 +97,15 @@ public class DishesResource {
 		Dish dish = dishDao.get(dishId);
 
 		if (dish == null) {
-			throw new WebApplicationException("Plato no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Plato no encontrado");
 		}
 
 		Restaurant restaurant = restaurantDao.get(dish.getIdr());
 
 		if (restaurant == null) {
-			throw new WebApplicationException("Restaurante no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Restaurante no encontrado");
 		}
 
-		// Check restaurant ownership
 		if (restaurant.getIdu() != user.getId()) {
 			throw new WebApplicationException("No autorizado", Response.Status.FORBIDDEN);
 		}
@@ -132,18 +119,16 @@ public class DishesResource {
 
 	private void validateDish(Dish dish) {
 		if (dish == null) {
-			throw new WebApplicationException("El cuerpo es obligatorio", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El cuerpo es obligatorio");
 		}
 
-		// Check required dish fields
 		if (dish.getName() == null || dish.getName().trim().isEmpty() || dish.getDescription() == null
 				|| dish.getDescription().trim().isEmpty()) {
-			throw new WebApplicationException("Nombre y descripcion son obligatorios", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("Nombre y descripcion son obligatorios");
 		}
 
-		// Check valid price
 		if (dish.getPrice() < 0) {
-			throw new WebApplicationException("El precio no puede ser negativo", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El precio no puede ser negativo");
 		}
 	}
 }

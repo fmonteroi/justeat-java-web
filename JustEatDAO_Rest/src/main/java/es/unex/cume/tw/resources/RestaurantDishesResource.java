@@ -39,10 +39,6 @@ public class RestaurantDishesResource {
 
 	/**
 	 * GET /api/restaurantes/{id}/platos
-	 * 
-	 * @param restaurantId
-	 * @param request
-	 * @return
 	 */
 	@GET
 	public List<Dish> getRestaurantDishes(@PathParam("id") long restaurantId, @Context HttpServletRequest request) {
@@ -60,12 +56,11 @@ public class RestaurantDishesResource {
 		Restaurant restaurant = restaurantDao.get(restaurantId);
 
 		if (restaurant == null) {
-			throw new WebApplicationException("Restaurante no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Restaurante no encontrado");
 		}
 
 		List<Dish> result = new ArrayList<Dish>();
 
-		// Filter dishes by restaurant
 		for (Dish dish : dishDao.getAll()) {
 			if (dish.getIdr() == restaurantId) {
 				result.add(dish);
@@ -77,18 +72,12 @@ public class RestaurantDishesResource {
 
 	/**
 	 * POST /api/restaurantes/{id}/platos
-	 * 
-	 * @param restaurantId
-	 * @param dish
-	 * @param request
-	 * @return
 	 */
 	@POST
 	public Response createDish(@PathParam("id") long restaurantId, Dish dish, @Context HttpServletRequest request) {
 
 		User user = Utils.getLoggedUser(request);
 
-		// Validate dish input
 		validateDish(dish);
 
 		Connection conn = (Connection) sc.getAttribute("dbConn");
@@ -102,15 +91,13 @@ public class RestaurantDishesResource {
 		Restaurant restaurant = restaurantDao.get(restaurantId);
 
 		if (restaurant == null) {
-			throw new WebApplicationException("Restaurante no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Restaurante no encontrado");
 		}
 
-		// Check restaurant ownership
 		if (restaurant.getIdu() != user.getId()) {
 			throw new WebApplicationException("No autorizado", Response.Status.FORBIDDEN);
 		}
 
-		// Force server-controlled fields
 		dish.setId(0);
 		dish.setIdr(restaurantId);
 
@@ -126,18 +113,16 @@ public class RestaurantDishesResource {
 
 	private void validateDish(Dish dish) {
 		if (dish == null) {
-			throw new WebApplicationException("El cuerpo es obligatorio", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El cuerpo es obligatorio");
 		}
 
-		// Check required dish fields
 		if (dish.getName() == null || dish.getName().trim().isEmpty() || dish.getDescription() == null
 				|| dish.getDescription().trim().isEmpty()) {
-			throw new WebApplicationException("Nombre y descripcion son obligatorios", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("Nombre y descripcion son obligatorios");
 		}
 
-		// Check valid price
 		if (dish.getPrice() < 0) {
-			throw new WebApplicationException("El precio no puede ser negativo", Response.Status.BAD_REQUEST);
+			throw new CustomBadRequestException("El precio no puede ser negativo");
 		}
 	}
 }

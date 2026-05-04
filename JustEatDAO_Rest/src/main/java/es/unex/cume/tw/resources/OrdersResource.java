@@ -12,6 +12,10 @@ import es.unex.cume.tw.dao.JDBCRestaurantDAOImpl;
 import es.unex.cume.tw.dao.OrderDAO;
 import es.unex.cume.tw.dao.OrderDishesDAO;
 import es.unex.cume.tw.dao.RestaurantDAO;
+import es.unex.cume.tw.dto.OrderItemRequest;
+import es.unex.cume.tw.dto.OrderItemResponse;
+import es.unex.cume.tw.dto.OrderRequest;
+import es.unex.cume.tw.dto.OrderResponse;
 import es.unex.cume.tw.model.Dish;
 import es.unex.cume.tw.model.Order;
 import es.unex.cume.tw.model.OrderDishes;
@@ -45,18 +49,21 @@ public class OrdersResource {
 
 	/**
 	 * POST /api/pedidos
-	 * 
-	 * @param dishIds
-	 * @param request
-	 * @return
 	 */
 	@POST
-	public Response createOrder(List<Long> dishIds, @Context HttpServletRequest request) {
+	public Response createOrder(OrderRequest orderRequest, @Context HttpServletRequest request) {
 		User user = Utils.getLoggedUser(request);
 
-		// Check order has at least one dish
-		if (dishIds == null || dishIds.isEmpty()) {
-			throw new WebApplicationException("El pedido debe contener al menos un plato", Response.Status.BAD_REQUEST);
+		if (orderRequest == null) {
+			throw new CustomBadRequestException("El cuerpo es obligatorio");
+		}
+
+		if (orderRequest.getItems() == null || orderRequest.getItems().isEmpty()) {
+			throw new CustomBadRequestException("El pedido debe contener al menos un plato");
+		}
+
+		if (orderRequest.getRestaurantId() < 0) {
+			throw new CustomBadRequestException("El restaurante es obligatorio");
 		}
 
 		Connection conn = (Connection) sc.getAttribute("dbConn");
@@ -73,50 +80,55 @@ public class OrdersResource {
 		OrderDishesDAO orderDishesDao = new JDBCOrderDishesDAOImpl();
 		orderDishesDao.setConnection(conn);
 
-		Integer restaurantId = null;
+		Restaurant restaurant = restaurantDao.get(orderRequest.getRestaurantId());
+
+		if (restaurant == null) {
+			throw new CustomBadRequestException("Restaurante no encontrado");
+		}
+
+		if (restaurant.getAvailable() != 1) {
+			throw new WebApplicationException("El restaurante no acepta pedidos", Response.Status.CONFLICT);
+		}
+
 		int totalPrice = 0;
 		List<Dish> dishes = new ArrayList<Dish>();
 		List<Long> usedDishIds = new ArrayList<Long>();
+		List<Integer> quantities = new ArrayList<Integer>();
 
-		for (Long dishId : dishIds) {
-			if (dishId == null) {
-				throw new WebApplicationException("Hay ids de plato nulos", Response.Status.BAD_REQUEST);
+		// quantity per dish
+		for (OrderItemRequest item : orderRequest.getItems()) {
+			if (item == null) {
+				throw new CustomBadRequestException("Hay platos nulos en el pedido");
 			}
 
-			Dish dish = dishDao.get(dishId);
+			if (item.getDishId() < 0) {
+				throw new CustomBadRequestException("Hay ids de plato no validos");
+			}
+
+			if (item.getQuantity() <= 0) {
+				throw new CustomBadRequestException("La cantidad debe ser mayor que 0");
+			}
+
+			Dish dish = dishDao.get(item.getDishId());
 
 			if (dish == null) {
-				throw new WebApplicationException("Plato no encontrado: " + dishId, Response.Status.BAD_REQUEST);
+				throw new CustomBadRequestException("Plato no encontrado: " + item.getDishId());
 			}
 
-			// Check duplicated dish in same order
 			if (usedDishIds.contains(dish.getId())) {
-				throw new WebApplicationException("No se puede repetir el mismo plato", Response.Status.BAD_REQUEST);
+				throw new CustomBadRequestException("No se puede repetir el mismo plato");
 			}
 
 			usedDishIds.add(dish.getId());
 
-			// Check all dishes belong to same restaurant
-			if (restaurantId == null) {
-				restaurantId = (int) dish.getIdr();
-			} else if (restaurantId.intValue() != dish.getIdr()) {
-				throw new WebApplicationException("Todos los platos deben ser del mismo restaurante",
-						Response.Status.BAD_REQUEST);
+			// same restaurant check
+			if (dish.getIdr() != orderRequest.getRestaurantId()) {
+				throw new CustomBadRequestException("Todos los platos deben pertenecer al restaurante indicado");
 			}
 
 			dishes.add(dish);
-			totalPrice += dish.getPrice();
-		}
-
-		Restaurant restaurant = restaurantDao.get(restaurantId.longValue());
-
-		if (restaurant == null) {
-			throw new WebApplicationException("Restaurante no encontrado", Response.Status.BAD_REQUEST);
-		}
-
-		// Check restaurant accepts orders
-		if (restaurant.getAvailable() != 1) {
-			throw new WebApplicationException("El restaurante no acepta pedidos", Response.Status.CONFLICT);
+			quantities.add(item.getQuantity());
+			totalPrice += dish.getPrice() * item.getQuantity();
 		}
 
 		Order order = new Order();
@@ -129,11 +141,12 @@ public class OrdersResource {
 			throw new WebApplicationException("No se pudo crear el pedido", Response.Status.INTERNAL_SERVER_ERROR);
 		}
 
-		// Save order dish relations
-		for (Dish dish : dishes) {
+		for (int i = 0; i < dishes.size(); i++) {
+			Dish dish = dishes.get(i);
 			OrderDishes relation = new OrderDishes();
 			relation.setIdo(orderId);
 			relation.setIddi(dish.getId());
+			relation.setQuantity(quantities.get(i));
 
 			if (!orderDishesDao.add(relation)) {
 				throw new WebApplicationException("No se pudo guardar el pedido", Response.Status.INTERNAL_SERVER_ERROR);
@@ -141,37 +154,65 @@ public class OrdersResource {
 		}
 
 		return Response.created(uriInfo.getAbsolutePathBuilder().path(Long.toString(orderId)).build())
-				.entity(orderDao.get(orderId))
+				.entity(buildOrderResponse(orderDao.get(orderId), orderDishesDao, dishDao))
 				.build();
 	}
 
 	/**
 	 * GET /api/pedidos/{id}
-	 * 
-	 * @param orderId
-	 * @param request
-	 * @return
 	 */
 	@GET
 	@Path("/{id: [0-9]+}")
-	public Order getOrder(@PathParam("id") long orderId, @Context HttpServletRequest request) {
+	public OrderResponse getOrder(@PathParam("id") long orderId, @Context HttpServletRequest request) {
 		User loggedUser = Utils.getLoggedUser(request);
 
 		Connection conn = (Connection) sc.getAttribute("dbConn");
 		OrderDAO orderDao = new JDBCOrderDAOImpl();
 		orderDao.setConnection(conn);
 
+		OrderDishesDAO orderDishesDao = new JDBCOrderDishesDAOImpl();
+		orderDishesDao.setConnection(conn);
+
+		DishDAO dishDao = new JDBCDishDAOImpl();
+		dishDao.setConnection(conn);
+
 		Order order = orderDao.get(orderId);
 
 		if (order == null) {
-			throw new WebApplicationException("Pedido no encontrado", Response.Status.NOT_FOUND);
+			throw new CustomNotFoundException("Pedido no encontrado");
 		}
 
-		// Check user reads only his own order
 		if (order.getIdu() != loggedUser.getId()) {
 			throw new WebApplicationException("No autorizado", Response.Status.FORBIDDEN);
 		}
 
-		return order;
+		return buildOrderResponse(order, orderDishesDao, dishDao);
+	}
+
+	private OrderResponse buildOrderResponse(Order order, OrderDishesDAO orderDishesDao, DishDAO dishDao) {
+		OrderResponse response = new OrderResponse();
+		response.setOrder(order);
+
+		List<OrderItemResponse> items = new ArrayList<OrderItemResponse>();
+		List<OrderDishes> relations = orderDishesDao.getAllByOrder(order.getId());
+
+		if (relations != null) {
+			for (OrderDishes relation : relations) {
+				Dish dish = dishDao.get(relation.getIddi());
+
+				if (dish != null) {
+					OrderItemResponse item = new OrderItemResponse();
+					item.setDish(dish);
+					item.setQuantity(relation.getQuantity());
+					// subtotal for the response
+					item.setSubtotal(dish.getPrice() * relation.getQuantity());
+					items.add(item);
+				}
+			}
+		}
+
+		response.setItems(items);
+
+		return response;
 	}
 }

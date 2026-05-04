@@ -4,6 +4,7 @@ public class OrderDishes {
 
 	private long ido;
 	private long iddi;
+	private int quantity;
 	
 	public long getIdo() {
 		return ido;
@@ -19,5 +20,13 @@ public class OrderDishes {
 	
 	public void setIddi(long iddi) {
 		this.iddi = iddi;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

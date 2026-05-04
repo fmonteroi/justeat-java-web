@@ -4,9 +4,17 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.unex.cume.tw.dao.DishDAO;
+import es.unex.cume.tw.dao.JDBCDishDAOImpl;
 import es.unex.cume.tw.dao.JDBCOrderDAOImpl;
+import es.unex.cume.tw.dao.JDBCOrderDishesDAOImpl;
 import es.unex.cume.tw.dao.OrderDAO;
+import es.unex.cume.tw.dao.OrderDishesDAO;
+import es.unex.cume.tw.dto.OrderItemResponse;
+import es.unex.cume.tw.dto.OrderResponse;
+import es.unex.cume.tw.model.Dish;
 import es.unex.cume.tw.model.Order;
+import es.unex.cume.tw.model.OrderDishes;
 import es.unex.cume.tw.model.User;
 import es.unex.cume.tw.util.Utils;
 import jakarta.servlet.ServletContext;
@@ -29,16 +37,11 @@ public class UserOrdersResource {
 
 	/**
 	 * GET /api/usuarios/{id}/pedidos
-	 * 
-	 * @param userId
-	 * @param request
-	 * @return
 	 */
 	@GET
-	public List<Order> getUserOrders(@PathParam("id") long userId, @Context HttpServletRequest request) {
+	public List<OrderResponse> getUserOrders(@PathParam("id") long userId, @Context HttpServletRequest request) {
 		User loggedUser = Utils.getLoggedUser(request);
 
-		// Check user reads only his own orders
 		if (loggedUser.getId() != userId) {
 			throw new WebApplicationException("No autorizado", Response.Status.FORBIDDEN);
 		}
@@ -47,15 +50,47 @@ public class UserOrdersResource {
 		OrderDAO orderDao = new JDBCOrderDAOImpl();
 		orderDao.setConnection(conn);
 
-		List<Order> result = new ArrayList<Order>();
+		OrderDishesDAO orderDishesDao = new JDBCOrderDishesDAOImpl();
+		orderDishesDao.setConnection(conn);
 
-		// Filter orders by user
+		DishDAO dishDao = new JDBCDishDAOImpl();
+		dishDao.setConnection(conn);
+
+		List<OrderResponse> result = new ArrayList<OrderResponse>();
+
 		for (Order order : orderDao.getAll()) {
 			if (order.getIdu() == userId) {
-				result.add(order);
+				result.add(buildOrderResponse(order, orderDishesDao, dishDao));
 			}
 		}
 
 		return result;
+	}
+
+	private OrderResponse buildOrderResponse(Order order, OrderDishesDAO orderDishesDao, DishDAO dishDao) {
+		OrderResponse response = new OrderResponse();
+		response.setOrder(order);
+
+		List<OrderItemResponse> items = new ArrayList<OrderItemResponse>();
+		List<OrderDishes> relations = orderDishesDao.getAllByOrder(order.getId());
+
+		if (relations != null) {
+			for (OrderDishes relation : relations) {
+				Dish dish = dishDao.get(relation.getIddi());
+
+				if (dish != null) {
+					OrderItemResponse item = new OrderItemResponse();
+					item.setDish(dish);
+					item.setQuantity(relation.getQuantity());
+					// subtotal for the response
+					item.setSubtotal(dish.getPrice() * relation.getQuantity());
+					items.add(item);
+				}
+			}
+		}
+
+		response.setItems(items);
+
+		return response;
 	}
 }

@@ -38,6 +38,8 @@ public class ServletContextListener implements jakarta.servlet.ServletContextLis
             //"Users/jcsn/ABS.db"
             
             conn = DriverManager.getConnection(dbURL);
+            conn.createStatement().execute("PRAGMA foreign_keys = ON");
+            
             if (conn != null) {
                 System.out.println("Connected to the database");
                 DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
