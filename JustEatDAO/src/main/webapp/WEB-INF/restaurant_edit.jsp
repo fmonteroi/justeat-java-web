@@ -234,6 +234,22 @@
 										</label>
 									</div>
 								</fieldset>
+								
+								
+								<fieldset class="edit-fieldset">
+									<legend>Gluten Free</legend>
+									<div class="edit-radios">
+										<label class="radio" for="gluten_yes"> <input
+											id="gluten_yes" type="radio" name="gluten" value="1"
+											<c:if test="${restaurant.gluten eq 1}">checked</c:if> />
+											Sí
+										</label> <label class="radio" for="gluten_no"> <input
+											id="gluten_no" type="radio" name="gluten" value="0"
+											<c:if test="${restaurant.gluten eq 0}">checked</c:if> />
+											No
+										</label>
+									</div>
+								</fieldset>
 
 								<div class="field">
 									<label for="instagramUrl">Instagram</label> <input

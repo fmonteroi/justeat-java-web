@@ -13,6 +13,7 @@ public class Restaurant {
 	private int gradesAverage;
 	private int bikeFriendly;
 	private int available;
+	private int gluten;
 	private int idu;
 	
 	public String getName() {
@@ -44,6 +45,13 @@ public class Restaurant {
 	}
 	public void setMaxPrice(int maxPrice) {
 		this.maxPrice = maxPrice;
+	}
+	
+	public int getGluten() {
+		return gluten;
+	}
+	public void setGluten(int gluten) {
+		this.gluten = gluten;
 	}
 	public int getGradesAverage() {
 		return gradesAverage;

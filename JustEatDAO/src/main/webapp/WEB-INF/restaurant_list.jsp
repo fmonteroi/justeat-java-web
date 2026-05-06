@@ -53,7 +53,8 @@
 					<div class="filters-head">
 						<p class="filters-eyebrow">Filtros</p>
 						<h2>Afina tu búsqueda</h2>
-						<p class="filters-help">Encuentra restaurantes por categoría, ciudad, platos o rango de precio.</p>
+						<p class="filters-help">Encuentra restaurantes por categoría,
+							ciudad, platos o rango de precio.</p>
 					</div>
 
 					<input type="hidden" name="search" value="${searchValue}" /> <input
@@ -161,7 +162,17 @@
 					<c:otherwise>
 						<section class="cards" id="cards">
 							<c:forEach var="restaurant" items="${restaurantsList}">
-								<article class="r-card">
+
+								<%-- Defensa 1y2 - Enunciado 1 --%>
+								<c:set var="isGluten" value="1" />
+
+								<c:if test="${restaurant.first.gluten eq 1}">
+									<c:set var="isGluten" value="true" />
+								</c:if>
+
+
+								<article
+									class="r-card <c:if test='${isGluten}'>r-card--defensa</c:if>">
 									<a class="r-card-link"
 										href="RestaurantDetailServlet.do?id=${restaurant.first.id}"
 										aria-label="Ver detalles de ${restaurant.first.name}"> <img
@@ -181,6 +192,12 @@
 
 											<div class="r-spacer" aria-hidden="true"></div>
 
+											<c:if test="${restaurant.first.gluten eq 1}">
+												<h3>Gluten Free</h3>
+											</c:if>
+
+											<div class="r-spacer" aria-hidden="true"></div>
+
 											<c:if test="${not empty restaurant.first.description}">
 												<p class="r-meta">
 													<strong>Descripción:</strong>
@@ -192,10 +209,8 @@
 
 											<p class="r-meta">Ciudad: ${restaurant.first.city}</p>
 
-											<p class="r-meta">
-												Rango de precio:
-												${restaurant.first.minPrice}-${restaurant.first.maxPrice}
-												€
+											<p class="r-meta">Rango de precio:
+												${restaurant.first.minPrice}-${restaurant.first.maxPrice} €
 											</p>
 
 											<p class="r-meta">

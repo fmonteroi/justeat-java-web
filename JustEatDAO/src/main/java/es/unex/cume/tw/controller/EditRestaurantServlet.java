@@ -161,6 +161,7 @@ public class EditRestaurantServlet extends HttpServlet {
 		String contactEmail = request.getParameter("restaurant-email");
 		String bikeFriendly = request.getParameter("bikefriendly");
 		String available = request.getParameter("available");
+		String gluten = request.getParameter("gluten");
 		String instagramUrl = request.getParameter("instagramUrl");
 		String facebookUrl = request.getParameter("facebookUrl");
 		String xUrl = request.getParameter("xUrl");
@@ -206,6 +207,8 @@ public class EditRestaurantServlet extends HttpServlet {
 				messages = "El valor de bike friendly no es válido.";
 			} else if (available == null || (!available.equals("0") && !available.equals("1"))) {
 				messages = "El estado del restaurante no es válido.";
+			} else if (gluten == null || (!gluten.equals("0") && !gluten.equals("1"))) {
+				messages = "El Gluten Free no es válido.";
 			}
 		}
 
@@ -286,6 +289,7 @@ public class EditRestaurantServlet extends HttpServlet {
 		restaurant.setMaxPrice(max);
 		restaurant.setBikeFriendly(Integer.parseInt(bikeFriendly));
 		restaurant.setAvailable(Integer.parseInt(available));
+		restaurant.setGluten(Integer.parseInt(gluten));
 
 		List<RestaurantCategories> restaurantCategories = restaurantsCategoriesDAO
 				.getAllByRestaurant(restaurant.getId());

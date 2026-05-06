@@ -14,6 +14,7 @@ public class Restaurant {
 	private double gradesAverage;
 	private int bikeFriendly;
 	private int available;
+	private int gluten;
 	private int idu;
 	private String instagramUrl;
 	private String facebookUrl;
@@ -36,6 +37,13 @@ public class Restaurant {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public int getGluten() {
+		return gluten;
+	}
+	public void setGluten(int gluten) {
+		this.gluten = gluten;
 	}
 	public String getCity() {
 		return city;

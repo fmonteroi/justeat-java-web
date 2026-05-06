@@ -14,6 +14,7 @@ import es.unex.cume.tw.dao.JDBCRestaurantDAOImpl;
 import es.unex.cume.tw.dao.JDBCRestaurantCategoriesDAOImpl;
 import es.unex.cume.tw.dao.JDBCReviewsDAOImpl;
 import es.unex.cume.tw.dao.RestaurantDAO;
+import es.unex.cume.tw.dto.Gluten;
 import es.unex.cume.tw.dto.RestaurantRequest;
 import es.unex.cume.tw.dto.RestaurantResponse;
 import es.unex.cume.tw.dao.RestaurantCategoriesDAO;
@@ -240,6 +241,45 @@ public class RestaurantsResource {
 		}
 
 		return responses;
+	}
+	
+	/**
+	 * GET /api/restaurantes/glutenfree
+	 */
+	@GET
+	@Path("/glutenfree")
+	public List<Gluten> getGluten(@Context HttpServletRequest request) {
+		// Defensa 
+		Utils.getLoggedUser(request);
+
+		Connection conn = (Connection) sc.getAttribute("dbConn");
+
+		RestaurantDAO restaurantDao = new JDBCRestaurantDAOImpl();
+		restaurantDao.setConnection(conn);
+
+		List<Restaurant> restaurants = restaurantDao.getAll();
+
+		
+
+		List<Gluten> result = new ArrayList<Gluten>();
+
+		for (Restaurant restaurant : restaurants) {
+			if(restaurant.getGluten()==1) {
+				Gluten response = new Gluten();
+
+				response.setId(restaurant.getId());
+				response.setName(restaurant.getName());
+				response.setRatingAverage(restaurant.getGradesAverage());
+				response.setGlutenFree("si");
+
+				result.add(response);
+			}
+		}
+		
+		// Extra
+		result.sort((r1, r2) -> Integer.compare(r2.getRatingAverage(), r1.getRatingAverage()));
+
+		return result;
 	}
 
 	/**

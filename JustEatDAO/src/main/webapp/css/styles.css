@@ -2326,3 +2326,14 @@ body.page-editar .container {
   margin: 0;
   font-weight: 950;
 }
+
+/* ===========================
+   DEFENSA
+   =========================== */
+   
+/* Defensa */
+.r-card--defensa {
+	background: rgba(0, 255, 0, 0.60);
+	border: 6px double;
+	border-color: rgba(255, 130, 0, 1);
+}

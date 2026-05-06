@@ -41,6 +41,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 			restaurant.setMaxPrice(rs.getInt("maxPrice"));
 			restaurant.setBikeFriendly(rs.getInt("bikeFriendly"));
 			restaurant.setAvailable(rs.getInt("available"));
+			restaurant.setGluten(rs.getInt("gluten"));
 			restaurant.setInstagramUrl(rs.getString("instagramUrl"));
 			restaurant.setFacebookUrl(rs.getString("facebookUrl"));
 			restaurant.setxUrl(rs.getString("xUrl"));
@@ -81,6 +82,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
 				restaurant.setBikeFriendly(rs.getInt("bikeFriendly"));
 				restaurant.setAvailable(rs.getInt("available"));
+				restaurant.setGluten(rs.getInt("gluten"));
 				restaurant.setInstagramUrl(rs.getString("instagramUrl"));
 				restaurant.setFacebookUrl(rs.getString("facebookUrl"));
 				restaurant.setxUrl(rs.getString("xUrl"));
@@ -123,6 +125,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
 				restaurant.setBikeFriendly(rs.getInt("bikeFriendly"));
 				restaurant.setAvailable(rs.getInt("available"));
+				restaurant.setGluten(rs.getInt("gluten"));
 				restaurant.setInstagramUrl(rs.getString("instagramUrl"));
 				restaurant.setFacebookUrl(rs.getString("facebookUrl"));
 				restaurant.setxUrl(rs.getString("xUrl"));
@@ -167,6 +170,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
 				restaurant.setBikeFriendly(rs.getInt("bikeFriendly"));
 				restaurant.setAvailable(rs.getInt("available"));
+				restaurant.setGluten(rs.getInt("gluten"));
 				restaurant.setInstagramUrl(rs.getString("instagramUrl"));
 				restaurant.setFacebookUrl(rs.getString("facebookUrl"));
 				restaurant.setxUrl(rs.getString("xUrl"));
@@ -195,9 +199,9 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM restaurant WHERE " + "UPPER(name) LIKE '%" + search
-					+ "%' OR " + "UPPER(city) LIKE '%" + search + "%' OR " + "UPPER(description) LIKE '%" + search
-					+ "%'");
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM restaurant WHERE " + "UPPER(name) LIKE '%" + search + "%' OR "
+							+ "UPPER(city) LIKE '%" + search + "%' OR " + "UPPER(description) LIKE '%" + search + "%'");
 
 			while (rs.next()) {
 				Restaurant restaurant = new Restaurant();
@@ -214,6 +218,7 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 				restaurant.setMaxPrice(rs.getInt("maxPrice"));
 				restaurant.setBikeFriendly(rs.getInt("bikeFriendly"));
 				restaurant.setAvailable(rs.getInt("available"));
+				restaurant.setGluten(rs.getInt("gluten"));
 				restaurant.setInstagramUrl(rs.getString("instagramUrl"));
 				restaurant.setFacebookUrl(rs.getString("facebookUrl"));
 				restaurant.setxUrl(rs.getString("xUrl"));
@@ -251,13 +256,16 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 			try {
 				stmt = conn.createStatement();
 				stmt.executeUpdate(
-						"INSERT INTO restaurant (name,address,description,telephone,idu,gradesAverage,city,minPrice,contactemail,maxPrice,bikeFriendly,available,instagramUrl,facebookUrl,xUrl) VALUES('"
-								+ restaurant.getName() + "','" + restaurant.getAddress() + "','" + restaurant.getDescription() + "','"
-								+ restaurant.getTelephone() + "'," + restaurant.getIdu() + ","
-								+ restaurant.getGradesAverage() + ",'" + restaurant.getCity() + "',"
-								+ restaurant.getMinPrice() + ",'" + restaurant.getContactEmail() + "',"
-								+ restaurant.getMaxPrice() + "," + restaurant.getBikeFriendly() + ","
-								+ restaurant.getAvailable() + ",'" + restaurant.getInstagramUrl() + "','"
+						"INSERT INTO restaurant (name,address,description,telephone,idu,gradesAverage,city,minPrice,contactemail,maxPrice,bikeFriendly,available,gluten,instagramUrl,facebookUrl,xUrl) VALUES('"
+								+ restaurant.getName() + "','" + restaurant.getAddress() + "','"
+								+ restaurant.getDescription() + "','" + restaurant.getTelephone() + "',"
+								+ restaurant.getIdu() + "," + restaurant.getGradesAverage() + ",'"
+								+ restaurant.getCity() + "'," + restaurant.getMinPrice() + ",'"
+								+ restaurant.getContactEmail() + "'," + restaurant.getMaxPrice() + ","
+								+ restaurant.getBikeFriendly() 
+								+ "," + restaurant.getAvailable()
+								+ "," + restaurant.getGluten() + ",'" 
+								+ restaurant.getInstagramUrl() + "','"
 								+ restaurant.getFacebookUrl() + "','" + restaurant.getxUrl() + "')");
 
 			} catch (SQLException e) {
@@ -293,11 +301,12 @@ public class JDBCRestaurantDAOImpl implements RestaurantDAO {
 			try {
 				stmt = conn.createStatement();
 				stmt.executeUpdate("UPDATE restaurant SET name='" + restaurant.getName() + "', address='"
-						+ restaurant.getAddress() + "', description='" + restaurant.getDescription() + "', telephone='" + restaurant.getTelephone() + "', idu="
-						+ restaurant.getIdu() + ", gradesAverage=" + restaurant.getGradesAverage() + ", city='"
-						+ restaurant.getCity() + "', minPrice=" + restaurant.getMinPrice() + ", contactemail='"
-						+ restaurant.getContactEmail() + "', maxPrice=" + restaurant.getMaxPrice() + ", bikeFriendly="
-						+ restaurant.getBikeFriendly() + ", available=" + restaurant.getAvailable() + ", instagramUrl='"
+						+ restaurant.getAddress() + "', description='" + restaurant.getDescription() + "', telephone='"
+						+ restaurant.getTelephone() + "', idu=" + restaurant.getIdu() + ", gradesAverage="
+						+ restaurant.getGradesAverage() + ", city='" + restaurant.getCity() + "', minPrice="
+						+ restaurant.getMinPrice() + ", contactemail='" + restaurant.getContactEmail() + "', maxPrice="
+						+ restaurant.getMaxPrice() + ", bikeFriendly=" + restaurant.getBikeFriendly() + ", available="
+						+ restaurant.getAvailable() + ", gluten=" + restaurant.getGluten() + ", instagramUrl='"
 						+ restaurant.getInstagramUrl() + "'" + ", facebookUrl='" + restaurant.getFacebookUrl() + "'"
 						+ ", xUrl='" + restaurant.getxUrl() + "'" + " WHERE id = " + restaurant.getId());
 				logger.info("updating restaurant: " + restaurant.getId());
