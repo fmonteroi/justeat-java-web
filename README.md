@@ -4,6 +4,18 @@ Academic clone of Just Eat, developed for the **Web Technologies (Tecnologías W
 
 The project explores restaurant browsing and food ordering through two implementations: a server-rendered application and a REST API version.
 
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/images/home.JPG" alt="JustEat Home" width="700">
+</p>
+
+| Restaurant Listing | Restaurant Details |
+|:---:|:---:|
+| <img src="docs/images/restaurantes_listado.JPG" alt="Restaurant Search and Filters" width="450"> | <img src="docs/images/restaurante_detalles.JPG" alt="Restaurant Details and Shopping Cart" width="450"> |
+
+
 ## Features
 
 - User registration, login and profile management.
