@@ -1,0 +1,22 @@
+# Material de pruebas y practicas fuera del portfolio
+*_[pP][rR][uU][eE][bB][aA][sS]/
+/[pP]ractica1/
+/[tT]eoria/
+
+# Documentacion academica
+*.[pP][dD][fF]
+
+# Scripts y bases de pruebas de las practicas de bases de datos
+/bdp2/**/*.[sS][qQ][lL]
+/bdp3/**/*.[sS][qQ][lL]
+/bdp2/*_[pP][rR][uU][eE][bB][aA][sS].*
+/bdp3/*_[pP][rR][uU][eE][bB][aA][sS].*
+
+# Resultados de compilacion Java
+build/
+*.class
+
+# Archivos locales del sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
